@@ -1,6 +1,7 @@
 import { ProductStatus } from "@prisma/client";
 
 import { getPrismaClient } from "@/server/db/prisma";
+import type { StorefrontData } from "./storefront-actions";
 
 export type StorefrontOverview = {
   username: string;
@@ -12,6 +13,9 @@ export type StorefrontOverview = {
   primaryColor: string;
   followersLabel: string;
   itemsCount: number;
+  hasStorefront: boolean;
+  isPublished: boolean;
+  storefrontId: string | null;
   products: Array<{
     id: string;
     title: string;
@@ -126,7 +130,10 @@ function firstImageFromJson(value: unknown): string | null {
   return null;
 }
 
-async function buildStorefrontOverviewByUser(userId: string): Promise<StorefrontOverview | null> {
+async function buildStorefrontOverviewByUser(
+  userId: string,
+  storefront: StorefrontData | null,
+): Promise<StorefrontOverview | null> {
   const prisma = getPrismaClient();
 
   const [user, products, reviews] = await Promise.all([
@@ -137,14 +144,6 @@ async function buildStorefrontOverviewByUser(userId: string): Promise<Storefront
         username: true,
         bio: true,
         avatarUrl: true,
-        brandKits: {
-          orderBy: { createdAt: "asc" },
-          take: 1,
-          select: {
-            logoUrl: true,
-            primaryColor: true,
-          },
-        },
       },
     }),
     prisma.storeProduct.findMany({
@@ -191,6 +190,10 @@ async function buildStorefrontOverviewByUser(userId: string): Promise<Storefront
     }),
   ]);
 
+  if (!user) {
+    return null;
+  }
+
   const mappedProducts = products
     .map((product) => {
       const imageUrl = firstImageFromJson(product.images);
@@ -218,28 +221,44 @@ async function buildStorefrontOverviewByUser(userId: string): Promise<Storefront
     avatarUrl: review.author.avatarUrl,
   }));
 
-  if (!user) {
-    return null;
-  }
-
   const username = user.username || "creator";
-  const creatorName = user.fullName?.trim() || username;
-  const creatorBio =
-    user.bio?.trim() ||
-    "Official merch store with premium AI-generated apparel and digital design drops.";
+
+  if (!storefront) {
+    return {
+      username,
+      publicStorePath: `/store/${username}`,
+      creatorName: user.fullName?.trim() || username,
+      creatorBio: user.bio?.trim() || "",
+      avatarUrl: user.avatarUrl ?? null,
+      heroImageUrl:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuA3tvsaz82Y4S2NERdl3GqX82uMagmGChplefdFv0TK_M8tXU9LNV5XLg0hH7Gyb5orzswsS9WsTXIqY6E4a3WprnVvKROu_npiYbqHEHqBbIuh1IiE83_BNJaPYtNsn4ivQDNK-313BI8VkzWFKx7HU_Dw5b5lIHCRESCG7bgw985mhNIs4HgSN0ZAGmIgoHCIDAkESt7IblWHRTUbSKAQNoLeZyGYguOoFXC6PES54AOXFTH7idzmpnXdt8WyX9sem_Gp7FE1a-0k",
+      primaryColor: "#895af6",
+      followersLabel: "15.2k Followers",
+      itemsCount: 0,
+      hasStorefront: false,
+      isPublished: false,
+      storefrontId: null,
+      products: [],
+      reviews: mappedReviews.length > 0 ? mappedReviews : FALLBACK_REVIEWS,
+      isDemoData: true,
+    };
+  }
 
   return {
     username,
-    publicStorePath: `/store/${username}`,
-    creatorName,
-    creatorBio,
-    avatarUrl: user.avatarUrl ?? null,
+    publicStorePath: `/store/${storefront.slug}`,
+    creatorName: storefront.storeName,
+    creatorBio: storefront.bio ?? "",
+    avatarUrl: storefront.logoUrl ?? user.avatarUrl ?? null,
     heroImageUrl:
-      user.brandKits[0]?.logoUrl ??
+      storefront.bannerUrl ??
       "https://lh3.googleusercontent.com/aida-public/AB6AXuA3tvsaz82Y4S2NERdl3GqX82uMagmGChplefdFv0TK_M8tXU9LNV5XLg0hH7Gyb5orzswsS9WsTXIqY6E4a3WprnVvKROu_npiYbqHEHqBbIuh1IiE83_BNJaPYtNsn4ivQDNK-313BI8VkzWFKx7HU_Dw5b5lIHCRESCG7bgw985mhNIs4HgSN0ZAGmIgoHCIDAkESt7IblWHRTUbSKAQNoLeZyGYguOoFXC6PES54AOXFTH7idzmpnXdt8WyX9sem_Gp7FE1a-0k",
-    primaryColor: user.brandKits[0]?.primaryColor ?? "#895af6",
+    primaryColor: storefront.primaryColor,
     followersLabel: "15.2k Followers",
     itemsCount: mappedProducts.length > 0 ? mappedProducts.length : FALLBACK_PRODUCTS.length,
+    hasStorefront: true,
+    isPublished: storefront.isPublished,
+    storefrontId: storefront.id,
     products: mappedProducts.length > 0 ? mappedProducts : FALLBACK_PRODUCTS,
     reviews: mappedReviews.length > 0 ? mappedReviews : FALLBACK_REVIEWS,
     isDemoData: mappedProducts.length === 0,
@@ -247,7 +266,32 @@ async function buildStorefrontOverviewByUser(userId: string): Promise<Storefront
 }
 
 export async function getStorefrontOverview(userId: string): Promise<StorefrontOverview> {
-  const overview = await buildStorefrontOverviewByUser(userId);
+  const prisma = getPrismaClient();
+
+  const storefront = await prisma.storefront.findUnique({
+    where: { userId },
+  });
+
+  const storefrontData: StorefrontData | null = storefront
+    ? {
+        id: storefront.id,
+        userId: storefront.userId,
+        storeName: storefront.storeName,
+        slug: storefront.slug,
+        bio: storefront.bio,
+        bannerUrl: storefront.bannerUrl,
+        logoUrl: storefront.logoUrl,
+        primaryColor: storefront.primaryColor,
+        secondaryColor: storefront.secondaryColor,
+        socialLinks: storefront.socialLinks as Record<string, string> | null,
+        customDomain: storefront.customDomain,
+        isPublished: storefront.isPublished,
+        createdAt: storefront.createdAt,
+        updatedAt: storefront.updatedAt,
+      }
+    : null;
+
+  const overview = await buildStorefrontOverviewByUser(userId, storefrontData);
 
   if (overview) {
     return overview;
@@ -257,13 +301,16 @@ export async function getStorefrontOverview(userId: string): Promise<StorefrontO
     username: "creator",
     publicStorePath: "/store/creator",
     creatorName: "Creator",
-    creatorBio: "Official merch store with premium AI-generated apparel and digital design drops.",
+    creatorBio: "",
     avatarUrl: null,
     heroImageUrl:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuA3tvsaz82Y4S2NERdl3GqX82uMagmGChplefdFv0TK_M8tXU9LNV5XLg0hH7Gyb5orzswsS9WsTXIqY6E4a3WprnVvKROu_npiYbqHEHqBbIuh1IiE83_BNJaPYtNsn4ivQDNK-313BI8VkzWFKx7HU_Dw5b5lIHCRESCG7bgw985mhNIs4HgSN0ZAGmIgoHCIDAkESt7IblWHRTUbSKAQNoLeZyGYguOoFXC6PES54AOXFTH7idzmpnXdt8WyX9sem_Gp7FE1a-0k",
     primaryColor: "#895af6",
     followersLabel: "15.2k Followers",
     itemsCount: FALLBACK_PRODUCTS.length,
+    hasStorefront: false,
+    isPublished: false,
+    storefrontId: null,
     products: FALLBACK_PRODUCTS,
     reviews: FALLBACK_REVIEWS,
     isDemoData: true,
@@ -275,25 +322,30 @@ export async function getPublicStorefrontOverviewByUsername(
 ): Promise<StorefrontOverview | null> {
   const prisma = getPrismaClient();
 
-  const [user, products, reviews] = await Promise.all([
-    prisma.user.findUnique({
-      where: { username },
-      select: {
-        id: true,
-        username: true,
-        fullName: true,
-        bio: true,
-        avatarUrl: true,
-        brandKits: {
-          orderBy: { createdAt: "asc" },
-          take: 1,
-          select: {
-            logoUrl: true,
-            primaryColor: true,
-          },
-        },
-      },
-    }),
+  const user = await prisma.user.findUnique({
+    where: { username },
+    select: {
+      id: true,
+      username: true,
+      fullName: true,
+      bio: true,
+      avatarUrl: true,
+    },
+  });
+
+  if (!user) {
+    return null;
+  }
+
+  const storefront = await prisma.storefront.findUnique({
+    where: { userId: user.id },
+  });
+
+  if (!storefront || !storefront.isPublished) {
+    return null;
+  }
+
+  const [products, reviews] = await Promise.all([
     prisma.storeProduct.findMany({
       where: {
         owner: {
@@ -339,10 +391,6 @@ export async function getPublicStorefrontOverviewByUsername(
     }),
   ]);
 
-  if (!user) {
-    return null;
-  }
-
   const mappedProducts = products
     .map((product) => {
       const imageUrl = firstImageFromJson(product.images);
@@ -373,17 +421,20 @@ export async function getPublicStorefrontOverviewByUsername(
   return {
     username: user.username,
     publicStorePath: `/store/${user.username}`,
-    creatorName: user.fullName?.trim() || user.username,
+    creatorName: storefront.storeName,
     creatorBio:
-      user.bio?.trim() ||
+      storefront.bio?.trim() ||
       "Official merch store with premium AI-generated apparel and digital design drops.",
-    avatarUrl: user.avatarUrl,
+    avatarUrl: storefront.logoUrl ?? user.avatarUrl,
     heroImageUrl:
-      user.brandKits[0]?.logoUrl ??
+      storefront.bannerUrl ??
       "https://lh3.googleusercontent.com/aida-public/AB6AXuA3tvsaz82Y4S2NERdl3GqX82uMagmGChplefdFv0TK_M8tXU9LNV5XLg0hH7Gyb5orzswsS9WsTXIqY6E4a3WprnVvKROu_npiYbqHEHqBbIuh1IiE83_BNJaPYtNsn4ivQDNK-313BI8VkzWFKx7HU_Dw5b5lIHCRESCG7bgw985mhNIs4HgSN0ZAGmIgoHCIDAkESt7IblWHRTUbSKAQNoLeZyGYguOoFXC6PES54AOXFTH7idzmpnXdt8WyX9sem_Gp7FE1a-0k",
-    primaryColor: user.brandKits[0]?.primaryColor ?? "#895af6",
+    primaryColor: storefront.primaryColor,
     followersLabel: "Public Store",
     itemsCount: mappedProducts.length,
+    hasStorefront: true,
+    isPublished: true,
+    storefrontId: storefront.id,
     products: mappedProducts,
     reviews: mappedReviews,
     isDemoData: false,

@@ -153,6 +153,29 @@ enum ReviewTargetType {
   TEMPLATE
 }
 
+model Storefront {
+  id             String    @id @default(cuid())
+  userId         String    @unique
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  storeName      String
+  slug           String    @unique
+  bio            String?
+  bannerUrl      String?
+  logoUrl        String?
+  primaryColor   String    @default("#895af6")
+  secondaryColor String?
+  socialLinks    Json?
+  customDomain   String?
+  isPublished    Boolean   @default(false)
+  metadata       Json?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([slug])
+  @@index([isPublished])
+}
+
 model User {
   id                      String              @id @default(cuid())
   supabaseId              String              @unique
@@ -186,6 +209,7 @@ model User {
   brandKits               BrandKit[]
   authoredReviews         Review[]            @relation("ReviewAuthor")
   receivedReviews         Review[]            @relation("ReviewSeller")
+  storefront              Storefront?
   createdAt               DateTime            @default(now())
   updatedAt               DateTime            @updatedAt
   lastLoginAt             DateTime?

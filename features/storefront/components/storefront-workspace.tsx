@@ -75,6 +75,94 @@ function socialLink(icon: string, href: string) {
   );
 }
 
+function EmptyStorefrontState() {
+  return (
+    <div className="flex min-h-[calc(100vh-200px)] flex-col items-center justify-center px-4 py-16">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="text-center"
+      >
+        <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-2xl bg-[#895af6]/10">
+          <span className="material-symbols-outlined text-5xl text-[#895af6]">storefront</span>
+        </div>
+        <h2 className="mb-3 text-2xl font-bold text-slate-900 dark:text-slate-100">
+          No Storefront Yet
+        </h2>
+        <p className="mb-8 max-w-md text-slate-500 dark:text-slate-400">
+          You haven&apos;t created your storefront yet. Set up your store with a custom name, banner, and theme to start selling your products.
+        </p>
+        <Link
+          href="/dashboard/store-builder"
+          className="inline-flex items-center gap-2 rounded-lg bg-[#895af6] px-6 py-3 text-sm font-bold text-white shadow-lg shadow-[#895af6]/20 transition-all hover:brightness-110"
+        >
+          <span className="material-symbols-outlined text-lg">add</span>
+          Create Your Storefront
+        </Link>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4, delay: 0.2 }}
+        className="mt-16 w-full max-w-4xl"
+      >
+        <div className="rounded-xl border border-slate-200 bg-white p-6 dark:border-[#895af6]/10 dark:bg-[#151022]">
+          <h3 className="mb-4 text-lg font-bold text-slate-900 dark:text-slate-100">
+            What you can do with your storefront:
+          </h3>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                icon: "palette",
+                title: "Custom Branding",
+                description: "Set your store name, logo, banner, and theme colors.",
+              },
+              {
+                icon: "inventory_2",
+                title: "Product Catalog",
+                description: "Showcase all your AI-generated designs and products.",
+              },
+              {
+                icon: "share",
+                title: "Share & Sell",
+                description: "Share your public store URL with customers worldwide.",
+              },
+              {
+                icon: "trending_up",
+                title: "Analytics",
+                description: "Track views, sales, and customer engagement.",
+              },
+              {
+                icon: "verified",
+                title: "Verified Store",
+                description: "Get a verified badge for trusted selling.",
+              },
+              {
+                icon: "payments",
+                title: "Easy Payments",
+                description: "Accept payments securely through Stripe.",
+              },
+            ].map((feature) => (
+              <div
+                key={feature.title}
+                className="flex items-start gap-3 rounded-lg bg-slate-50 p-4 dark:bg-[#895af6]/5"
+              >
+                <span className="material-symbols-outlined text-[#895af6]">{feature.icon}</span>
+                <div>
+                  <h4 className="font-semibold text-slate-900 dark:text-slate-100">{feature.title}</h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">{feature.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
 export function StorefrontWorkspace({
   overview,
   mode = "dashboard",
@@ -87,6 +175,8 @@ export function StorefrontWorkspace({
   const [activeTab, setActiveTab] = useState<StorefrontTab>("all");
   const [favoriteProductIds, setFavoriteProductIds] = useState<Record<string, boolean>>({});
   const [shareState, setShareState] = useState<"idle" | "copied" | "error">("idle");
+
+  const hasStorefront = overview.hasStorefront;
 
   const productsWithIndex = useMemo<ProductWithIndex[]>(
     () => overview.products.map((product, index) => ({ ...product, orderIndex: index })),
@@ -129,6 +219,24 @@ export function StorefrontWorkspace({
       setShareState("error");
       window.setTimeout(() => setShareState("idle"), 1800);
     }
+  }
+
+  if (!isPublic && !hasStorefront) {
+    return (
+      <div className="min-h-screen bg-[#f6f5f8] dark:bg-[#151022]">
+        <div className="mx-auto w-full max-w-7xl px-4 pb-20 pt-6 sm:px-6 md:pt-8">
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white p-4 dark:border-[#895af6]/10 dark:bg-[#151022]">
+            <div>
+              <h2 className="text-lg font-bold tracking-tight">Creator Storefront</h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Set up your custom storefront to start selling
+              </p>
+            </div>
+          </div>
+          <EmptyStorefrontState />
+        </div>
+      </div>
+    );
   }
 
   return (

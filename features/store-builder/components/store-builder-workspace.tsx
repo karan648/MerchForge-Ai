@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { ChangeEvent, useRef, useState, useTransition } from "react";
 
 import { UserAvatar } from "@/components/ui/user-avatar";
-import { publishStorefrontAction } from "@/features/store-builder/server/store-builder-actions";
+import { publishStorefrontAction, saveStorefrontDraftAction } from "@/features/store-builder/server/store-builder-actions";
 import type { StorefrontOverview } from "@/features/storefront/server/storefront-service";
 
 function formatCurrency(cents: number): string {
@@ -44,14 +44,14 @@ type StoreBuilderNotice = {
 function NoticeMessage({ notice }: { notice: StoreBuilderNotice }) {
   if (notice.tone === "success") {
     return (
-      <p className="rounded-lg border border-emerald-500/25 bg-emerald-500/10 px-3 py-2 text-xs font-medium text-emerald-300">
+      <p className="rounded-lg border border-emerald-500/25 bg-emerald-500/10 px-3 py-2 text-xs font-medium text-emerald-600 dark:text-emerald-300">
         {notice.message}
       </p>
     );
   }
 
   return (
-    <p className="rounded-lg border border-red-500/25 bg-red-500/10 px-3 py-2 text-xs font-medium text-red-300">
+    <p className="rounded-lg border border-red-500/25 bg-red-500/10 px-3 py-2 text-xs font-medium text-red-600 dark:text-red-300">
       {notice.message}
     </p>
   );
@@ -72,6 +72,7 @@ export function StoreBuilderWorkspace({ overview }: StoreBuilderWorkspaceProps) 
   const [notice, setNotice] = useState<StoreBuilderNotice | null>(null);
 
   const [isPublishing, startPublishing] = useTransition();
+  const [isSavingDraft, startSavingDraft] = useTransition();
 
   const sidebarProducts = overview.products.slice(0, 4);
   const previewProducts = overview.products.slice(0, 6);
@@ -137,6 +138,27 @@ export function StoreBuilderWorkspace({ overview }: StoreBuilderWorkspaceProps) 
 
     setThemeColor(normalized);
     setNotice({ tone: "success", message: "Theme color updated locally. Publish store to save." });
+  }
+
+  function saveDraft() {
+    setNotice(null);
+
+    startSavingDraft(async () => {
+      const result = await saveStorefrontDraftAction({
+        storeName,
+        bio: storeBio,
+        bannerUrl,
+        primaryColor: themeColor,
+      });
+
+      if (!result.ok) {
+        setNotice({ tone: "error", message: result.error });
+        return;
+      }
+
+      setNotice({ tone: "success", message: result.message });
+      router.refresh();
+    });
   }
 
   function publishStore() {
@@ -220,8 +242,15 @@ export function StoreBuilderWorkspace({ overview }: StoreBuilderWorkspaceProps) 
             Preview Site
           </Link>
           <button
+            onClick={saveDraft}
+            disabled={isSavingDraft || isPublishing}
+            className="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors bg-slate-100 dark:bg-[#2d2839]/50 rounded-lg dark:text-slate-300 dark:hover:text-white disabled:opacity-50"
+          >
+            {isSavingDraft ? "Saving..." : "Save Draft"}
+          </button>
+          <button
             onClick={publishStore}
-            disabled={isPublishing}
+            disabled={isPublishing || isSavingDraft}
             className="px-5 py-2 text-xs font-bold bg-[#895af6] text-white rounded-lg shadow-lg shadow-[#895af6]/20 hover:brightness-110 transition-all disabled:opacity-50"
           >
             {isPublishing ? "Publishing..." : "Publish Store"}
