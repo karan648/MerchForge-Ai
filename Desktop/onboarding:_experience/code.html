@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Onboarding Experience - Step 3</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#895af6",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#151022",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .radio-custom:checked + div {
+            border-color: #895af6;
+            background-color: rgba(137, 90, 246, 0.1);
+        }
+        .radio-custom:checked + div .radio-dot {
+            background-color: #895af6;
+            border-color: #895af6;
+        }
+        .radio-custom:checked + div .radio-inner-dot {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Navbar Component -->
+<header class="w-full px-6 py-4 flex items-center justify-between border-b border-slate-200 dark:border-primary/20 bg-white/50 dark:bg-background-dark/50 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-3">
+<div class="bg-primary p-2 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-xl">auto_awesome</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight">Onboarding</h1>
+</div>
+<button class="p-2 hover:bg-slate-200 dark:hover:bg-primary/20 rounded-full transition-colors text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined">close</span>
+</button>
+</header>
+<main class="flex-1 flex items-center justify-center p-6">
+<div class="max-w-md w-full flex flex-col gap-8">
+<!-- Progress Indicator Section -->
+<div class="space-y-3">
+<div class="flex justify-between items-end">
+<div>
+<span class="text-xs font-bold uppercase tracking-widest text-primary">Step 3 of 4</span>
+<h2 class="text-2xl font-bold mt-1">Experience Level</h2>
+</div>
+<span class="text-sm font-medium text-slate-500 dark:text-slate-400">75% Complete</span>
+</div>
+<div class="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-500" style="width: 75%;"></div>
+</div>
+</div>
+<!-- Main Card Content -->
+<div class="glass-card rounded-xl p-8 shadow-2xl space-y-8">
+<div class="text-center">
+<h3 class="text-xl font-semibold mb-2">Tell us about your design experience</h3>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Help us tailor the AI engine to your skill level.</p>
+</div>
+<div class="space-y-4">
+<!-- Option 1: Beginner -->
+<label class="relative block cursor-pointer group">
+<input checked="" class="peer sr-only radio-custom" name="experience" type="radio" value="beginner"/>
+<div class="flex items-center gap-4 p-5 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 hover:border-primary/50 transition-all duration-200">
+<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div class="flex-1">
+<p class="font-bold text-slate-900 dark:text-white">Beginner</p>
+<p class="text-sm text-slate-500 dark:text-slate-400 leading-snug">New to AI and merch design</p>
+</div>
+<div class="radio-dot w-5 h-5 rounded-full border-2 border-slate-300 dark:border-slate-700 flex items-center justify-center">
+<div class="radio-inner-dot w-2 h-2 rounded-full bg-white opacity-0 transition-opacity"></div>
+</div>
+</div>
+</label>
+<!-- Option 2: Advanced -->
+<label class="relative block cursor-pointer group">
+<input class="peer sr-only radio-custom" name="experience" type="radio" value="advanced"/>
+<div class="flex items-center gap-4 p-5 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 hover:border-primary/50 transition-all duration-200">
+<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">rocket_launch</span>
+</div>
+<div class="flex-1">
+<p class="font-bold text-slate-900 dark:text-white">Advanced</p>
+<p class="text-sm text-slate-500 dark:text-slate-400 leading-snug">Experienced creator or designer</p>
+</div>
+<div class="radio-dot w-5 h-5 rounded-full border-2 border-slate-300 dark:border-slate-700 flex items-center justify-center">
+<div class="radio-inner-dot w-2 h-2 rounded-full bg-white opacity-0 transition-opacity"></div>
+</div>
+</div>
+</label>
+</div>
+<div class="flex flex-col gap-4">
+<button class="w-full py-4 bg-primary hover:bg-primary/90 text-white font-bold rounded-xl shadow-lg shadow-primary/25 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+<span>Next Step</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+<button class="w-full py-2 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors text-sm font-medium">
+                        Go Back
+                    </button>
+</div>
+</div>
+<!-- Footer Quote/Info -->
+<div class="text-center px-4">
+<p class="text-xs text-slate-400 dark:text-slate-500 italic">
+                    "This helps us optimize your creative workflow and asset generation speed."
+                </p>
+</div>
+</div>
+</main>
+<!-- Support/Help Button Floating -->
+<div class="fixed bottom-6 right-6">
+<button class="w-12 h-12 rounded-full bg-slate-900 dark:bg-primary/20 text-white dark:text-primary flex items-center justify-center shadow-xl border border-white/10 backdrop-blur-md">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</div>
+</body></html>

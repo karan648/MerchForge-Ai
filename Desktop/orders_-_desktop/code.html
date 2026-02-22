@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Orders | MerchForge AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#895af6",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#0a0a0a",
+                        "surface-dark": "#161122",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(22, 17, 34, 0.7); backdrop-filter: blur(12px); }
+        .sidebar-item-active { background: rgba(137, 90, 246, 0.1); border-right: 3px solid #895af6; }
+        .table-row-hover:hover { background: rgba(137, 90, 246, 0.03); }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 border-r border-slate-200 dark:border-primary/10 flex flex-col h-screen bg-background-light dark:bg-surface-dark shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="size-10 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">auto_awesome</span>
+</div>
+<div>
+<h1 class="text-lg font-bold leading-tight">MerchForge</h1>
+<p class="text-xs text-slate-500 dark:text-primary/60 font-medium uppercase tracking-wider">Premium AI Tools</p>
+</div>
+</div>
+<nav class="flex-1 px-3 space-y-1 mt-4">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-primary/5 transition-colors" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg sidebar-item-active text-primary" href="#">
+<span class="material-symbols-outlined">package_2</span>
+<span class="text-sm font-medium">Orders</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-primary/5 transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Customers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-primary/5 transition-colors" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="text-sm font-medium">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-primary/5 transition-colors" href="#">
+<span class="material-symbols-outlined">palette</span>
+<span class="text-sm font-medium">Design Studio</span>
+</a>
+</nav>
+<div class="p-4 mt-auto border-t border-slate-200 dark:border-primary/10">
+<button class="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-sm">add</span>
+                Create Order
+            </button>
+<div class="mt-4 px-4 py-3 flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200 dark:bg-primary/20 flex-shrink-0 bg-cover bg-center" data-alt="User profile avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDrJzpp8_k-y-YnCR38--pHSiWxz0r9ohx7lyNzgXJF7WdZsHb63x04dfTRi4rIL-ql78PIBwI9ns4AKXs7CFDgC-zXKSAY62ki5V_5fx_RskJogRklcanvDX4gq-rMHRCZzJGc32n1R1gWA7uDsZrOIwVxUSZyD7iC-mEMFVFeO4rueMvjZX661hTXDFykaY7Rt3ttUPlL2N7OM9s7gmW7cbt15ZaTAs48x0YDMfAT942KVFYu0mt9TEQz6F2ShKSxMadH7WPOcDqq')"></div>
+<div class="overflow-hidden">
+<p class="text-xs font-semibold truncate">Alex Rivera</p>
+<p class="text-[10px] text-slate-500 dark:text-slate-400 truncate">Pro Account</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-sm ml-auto">settings</span>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-screen overflow-hidden">
+<!-- Top Header -->
+<header class="h-20 border-b border-slate-200 dark:border-primary/10 flex items-center justify-between px-8 bg-background-light dark:bg-background-dark/50 glass z-10">
+<div class="flex flex-col">
+<div class="flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400">
+<span>Dashboard</span>
+<span class="material-symbols-outlined text-[10px]">chevron_right</span>
+<span class="text-primary">Orders</span>
+</div>
+<h2 class="text-xl font-extrabold tracking-tight">Order Management</h2>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 transition-colors group-focus-within:text-primary">search</span>
+<input class="bg-slate-100 dark:bg-primary/10 border-none rounded-xl pl-10 pr-4 py-2 text-sm w-64 focus:ring-2 focus:ring-primary/40 transition-all placeholder:text-slate-500" placeholder="Search orders..." type="text"/>
+</div>
+<button class="size-10 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-primary/10 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<!-- Main Content Area -->
+<div class="flex-1 overflow-y-auto p-8 space-y-6">
+<!-- Filter Bar -->
+<div class="flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-100 dark:bg-primary/10 border border-transparent dark:border-primary/5 text-sm font-medium hover:dark:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+                        Status: All
+                        <span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-100 dark:bg-primary/10 border border-transparent dark:border-primary/5 text-sm font-medium hover:dark:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-sm">calendar_month</span>
+                        Date Range: Last 30 Days
+                        <span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+<div class="h-6 w-px bg-slate-200 dark:bg-primary/20 mx-1"></div>
+<p class="text-sm text-slate-500 dark:text-slate-400">
+                        Showing <span class="font-semibold text-slate-900 dark:text-slate-100">240</span> orders
+                    </p>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white dark:bg-surface-dark border border-slate-200 dark:border-primary/20 text-sm font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-primary/5 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-sm">download</span>
+                    Export CSV
+                </button>
+</div>
+<!-- Table Container -->
+<div class="bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-primary/10 overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-slate-100 dark:border-primary/10 bg-slate-50/50 dark:bg-primary/5">
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-primary/60">Product</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-primary/60">Customer</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-primary/60">Status</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-primary/60 text-right">Price</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-primary/60">Date</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-primary/60"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-primary/5">
+<!-- Row 1 -->
+<tr class="table-row-hover transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-lg bg-slate-200 dark:bg-primary/20 overflow-hidden flex-shrink-0">
+<div class="w-full h-full bg-gradient-to-br from-primary/40 to-indigo-500/40 flex items-center justify-center" data-alt="Cyberpunk hoodie design preview">
+<span class="material-symbols-outlined text-primary">apparel</span>
+</div>
+</div>
+<div>
+<p class="text-sm font-bold">Neon Cyberpunk Hoodie</p>
+<p class="text-xs text-slate-500">ID: MF-90210</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-cover bg-center border border-slate-200 dark:border-primary/20" data-alt="Customer Sarah Jenkins avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC0_ek2842Fv2bZmP8jrFLCcACtcrrGEl7VGm6ovu1Za905x9Uex8uzecKF0A3XUq2zsZ2T_3TVpm-YNwnMIlb-4L607o1FmcYX_Bi4iFqPrZ8YO3iUnJNghDpnb0KIV9lQrhWG2P3k8RKAt3HpZ1d7c2aYA69CiWrp83nzkTupgtAW_I47ceartV_6ogCDCSaiI73LuDY-AEjR1qC-ywiYS57rhfmKjm70EnZBceH99ps_h70MCqU9Pza5w9UF71qgE9k6yvxn0Gff')"></div>
+<p class="text-sm font-medium">Sarah Jenkins</p>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-green-500/10 text-green-500 border border-green-500/20">
+<span class="size-1.5 rounded-full bg-green-500"></span>
+                                        Delivered
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<p class="text-sm font-bold">$124.00</p>
+</td>
+<td class="px-6 py-4">
+<p class="text-sm text-slate-600 dark:text-slate-400">Oct 24, 2023</p>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="table-row-hover transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-lg bg-slate-200 dark:bg-primary/20 overflow-hidden flex-shrink-0">
+<div class="w-full h-full bg-gradient-to-tr from-orange-400/30 to-rose-500/30 flex items-center justify-center" data-alt="Retro synthwave tee design preview">
+<span class="material-symbols-outlined text-orange-500">checkroom</span>
+</div>
+</div>
+<div>
+<p class="text-sm font-bold">Synthwave Retro Tee</p>
+<p class="text-xs text-slate-500">ID: MF-90211</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-cover bg-center border border-slate-200 dark:border-primary/20" data-alt="Customer Michael Chen avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDS6YLbjv_m7eSPYQKsBcNikVwP6iW4DBCEjoakPmwFOUDV8cr3J-T1C1kXppqWh9Svhx2AeVJyBG6rni3MhNGZeKZCiTqlIj4y4ZYPQDHFkRYmpEh7Hh0J3W6ziV1Malpku8AyAdVO62319jrLWzJ3vAtQjnkaLgkqptyECJniHx7Pq3y4qNbm-R-q1_T5EHHXKm16B0rhCBkoTsVWPh5umsplmvzqV5q5HLNiNMkRHbUKtiPscOoZq7m01VhgMcfnFQid62CYezHQ')"></div>
+<p class="text-sm font-medium">Michael Chen</p>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-primary/10 text-primary border border-primary/20">
+<span class="size-1.5 rounded-full bg-primary"></span>
+                                        Shipped
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<p class="text-sm font-bold">$45.00</p>
+</td>
+<td class="px-6 py-4">
+<p class="text-sm text-slate-600 dark:text-slate-400">Oct 24, 2023</p>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="table-row-hover transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-lg bg-slate-200 dark:bg-primary/20 overflow-hidden flex-shrink-0">
+<div class="w-full h-full bg-gradient-to-bl from-cyan-400/30 to-blue-500/30 flex items-center justify-center" data-alt="AI Mesh Sneakers design preview">
+<span class="material-symbols-outlined text-cyan-500">footprint</span>
+</div>
+</div>
+<div>
+<p class="text-sm font-bold">AI Mesh Sneakers</p>
+<p class="text-xs text-slate-500">ID: MF-90215</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-cover bg-center border border-slate-200 dark:border-primary/20" data-alt="Customer David Miller avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDK246V_QGNyqWuGZyKBmGKVa1_AHxyF0rlA0vKw5y2FSirIr-NED9T4AFAhzDJkin6hww8JdmvRDHXdBx1C7K1pecxQLpQr0oGE0jTsD6UQvmhPcAxSoRos-8ktJg3z7FjyRmlCQlZu31g6UU2nPl8OjJfTWbZKtTZJg7geExHMoJzgaX3YHjap1WLkZYLXE0pvRj5GKuyiMsOx9iRLsBWbElpkqiaKddaNZi6daBamTExKO4Dnn9Rjmfz1X4wiHiRHCaQgptwGJ8r')"></div>
+<p class="text-sm font-medium">David Miller</p>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-amber-500/10 text-amber-500 border border-amber-500/20">
+<span class="size-1.5 rounded-full bg-amber-500"></span>
+                                        Processing
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<p class="text-sm font-bold">$189.99</p>
+</td>
+<td class="px-6 py-4">
+<p class="text-sm text-slate-600 dark:text-slate-400">Oct 23, 2023</p>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="table-row-hover transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-lg bg-slate-200 dark:bg-primary/20 overflow-hidden flex-shrink-0">
+<div class="w-full h-full bg-gradient-to-r from-purple-400/30 to-pink-500/30 flex items-center justify-center" data-alt="Vaporwave cap design preview">
+<span class="material-symbols-outlined text-pink-500">flag_filled</span>
+</div>
+</div>
+<div>
+<p class="text-sm font-bold">Vaporwave Snapback</p>
+<p class="text-xs text-slate-500">ID: MF-90218</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-cover bg-center border border-slate-200 dark:border-primary/20" data-alt="Customer Emily Watson avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBj4C4iHxpaT8e2xnj1wND5tBHH-S3bzJki1W5hgLdo4OVHTCJzSV9LkSjjZlxXil8f1z5TheD2cTB3_glmhZA8wWgB6w6t9sw2h_esvLs8K2y-OcFa0g4ioulBgdljt9jpx89oJPwyHocSs_twySPQrKYimRtBcREgGQkc4CynhEmldHxPkETpg1rDQwuoWjUJ0QVM__AMSix682faFT5JM_vPLWSoCqRryfpf-ZGCXUggL7R8eujyPRqoMuZGvS9XVZ_Y8Z3E3Lze')"></div>
+<p class="text-sm font-medium">Emily Watson</p>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-slate-500/10 text-slate-500 border border-slate-500/20">
+<span class="size-1.5 rounded-full bg-slate-500"></span>
+                                        Cancelled
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<p class="text-sm font-bold">$32.00</p>
+</td>
+<td class="px-6 py-4">
+<p class="text-sm text-slate-600 dark:text-slate-400">Oct 22, 2023</p>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 border-t border-slate-100 dark:border-primary/10 flex items-center justify-between bg-slate-50/30 dark:bg-primary/5">
+<button class="flex items-center gap-1 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-primary transition-colors disabled:opacity-40" disabled="">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+                        Previous
+                    </button>
+<div class="flex items-center gap-2">
+<button class="size-8 rounded-lg bg-primary text-white text-xs font-bold">1</button>
+<button class="size-8 rounded-lg text-xs font-bold hover:bg-slate-100 dark:hover:bg-primary/10 transition-colors">2</button>
+<button class="size-8 rounded-lg text-xs font-bold hover:bg-slate-100 dark:hover:bg-primary/10 transition-colors">3</button>
+<span class="text-xs text-slate-400">...</span>
+<button class="size-8 rounded-lg text-xs font-bold hover:bg-slate-100 dark:hover:bg-primary/10 transition-colors">12</button>
+</div>
+<button class="flex items-center gap-1 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-primary transition-colors">
+                        Next
+                        <span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Stats Overview (Small Bottom Cards) -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="p-5 bg-white dark:bg-surface-dark border border-slate-200 dark:border-primary/10 rounded-xl shadow-sm">
+<p class="text-xs font-bold text-slate-500 dark:text-primary/60 uppercase tracking-widest mb-1">Total Orders</p>
+<p class="text-2xl font-black">1,482</p>
+<p class="text-xs text-green-500 mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">trending_up</span>
+                        +12% this month
+                    </p>
+</div>
+<div class="p-5 bg-white dark:bg-surface-dark border border-slate-200 dark:border-primary/10 rounded-xl shadow-sm">
+<p class="text-xs font-bold text-slate-500 dark:text-primary/60 uppercase tracking-widest mb-1">Processing</p>
+<p class="text-2xl font-black">24</p>
+<p class="text-xs text-slate-400 mt-2">Active now</p>
+</div>
+<div class="p-5 bg-white dark:bg-surface-dark border border-slate-200 dark:border-primary/10 rounded-xl shadow-sm">
+<p class="text-xs font-bold text-slate-500 dark:text-primary/60 uppercase tracking-widest mb-1">Revenue</p>
+<p class="text-2xl font-black">$42,904</p>
+<p class="text-xs text-green-500 mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">trending_up</span>
+                        +8.2% vs last month
+                    </p>
+</div>
+<div class="p-5 bg-white dark:bg-surface-dark border border-slate-200 dark:border-primary/10 rounded-xl shadow-sm">
+<p class="text-xs font-bold text-slate-500 dark:text-primary/60 uppercase tracking-widest mb-1">Average Value</p>
+<p class="text-2xl font-black">$86.40</p>
+<p class="text-xs text-slate-400 mt-2">Per transaction</p>
+</div>
+</div>
+</div>
+</main>
+</body></html>

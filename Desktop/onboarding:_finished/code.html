@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Onboarding Complete - Alex</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#895af6",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#151022",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .celebration-glow {
+            background: radial-gradient(circle at center, rgba(137, 90, 246, 0.15) 0%, transparent 70%);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-display">
+<!-- Top Navigation Bar -->
+<header class="w-full flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-primary/10 bg-white/50 dark:bg-background-dark/50 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-3">
+<div class="bg-primary p-2 rounded-lg">
+<span class="material-symbols-outlined text-white text-xl">rocket_launch</span>
+</div>
+<h2 class="text-lg font-bold tracking-tight">Onboarding</h2>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-xs font-medium text-primary uppercase tracking-wider">Step 4 of 4</span>
+</div>
+<button class="p-2 hover:bg-slate-200 dark:hover:bg-white/10 rounded-full transition-colors">
+<span class="material-symbols-outlined text-slate-500 dark:text-slate-400">close</span>
+</button>
+</div>
+</header>
+<main class="flex-grow flex items-center justify-center p-6 relative overflow-hidden">
+<!-- Decorative Background Glows -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] celebration-glow pointer-events-none"></div>
+<div class="absolute -top-24 -right-24 w-96 h-96 bg-primary/5 rounded-full blur-[100px] pointer-events-none"></div>
+<div class="absolute -bottom-24 -left-24 w-96 h-96 bg-primary/10 rounded-full blur-[100px] pointer-events-none"></div>
+<!-- Main Completion Card -->
+<div class="glass-card max-w-md w-full rounded-xl p-8 md:p-12 text-center shadow-2xl relative z-10">
+<!-- Success Icon Section -->
+<div class="relative mb-8 inline-block">
+<div class="absolute inset-0 bg-primary/20 blur-2xl rounded-full"></div>
+<div class="relative w-24 h-24 bg-gradient-to-br from-primary to-primary/60 rounded-full flex items-center justify-center shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-white text-5xl font-light">task_alt</span>
+</div>
+<!-- Floating decorative elements -->
+<div class="absolute -top-2 -right-2 bg-yellow-400 w-4 h-4 rounded-full blur-[1px]"></div>
+<div class="absolute bottom-2 -left-4 bg-primary w-3 h-3 rounded-full blur-[1px]"></div>
+</div>
+<!-- Content -->
+<h1 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight">
+                You're all set, Alex!
+            </h1>
+<p class="text-slate-600 dark:text-slate-400 text-lg leading-relaxed mb-10">
+                Your workspace is ready. Let's start designing your first bestseller.
+            </p>
+<!-- Progress Summary -->
+<div class="mb-10 p-4 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5">
+<div class="flex justify-between items-center mb-2">
+<span class="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-widest">Setup Status</span>
+<span class="text-sm font-bold text-primary">100% Complete</span>
+</div>
+<div class="w-full h-2 bg-slate-200 dark:bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-full rounded-full"></div>
+</div>
+</div>
+<!-- CTA Actions -->
+<div class="flex flex-col gap-4">
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 px-6 rounded-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 shadow-xl shadow-primary/20">
+                    Go to Dashboard
+                    <span class="material-symbols-outlined text-xl">arrow_forward</span>
+</button>
+<button class="w-full bg-transparent hover:bg-slate-200 dark:hover:bg-white/5 text-slate-600 dark:text-slate-400 font-medium py-3 px-6 rounded-lg transition-colors">
+                    View setup summary
+                </button>
+</div>
+</div>
+<!-- Abstract Visual Accent (Image placeholder as background feature) -->
+<div class="fixed bottom-0 right-0 w-64 h-64 opacity-20 pointer-events-none grayscale" data-alt="Abstract geometric design showing workspace tools" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD8u1VgNraSB_KkOBpSn1ULU8H__0dci_W7Dg_t_RW39Vsnk_PNl_19ww4DfnDRpOoNP9iSkBMWR8bPOy1wphedufbwMEsLXguYfa-rMPY318lA3X08d9S6l-2PkBeU9t0hxi6C4Zw0GWYEAxSYriVz-6AlmiIC9xY7wzvQTedccj6FfkvN6A2nS37oDuH74RQtUEf1aFh3PobcwVk62kKoNSgb35Sg5ZLhAkLbezrDjjEDp0rtovQoEaun7IHLeZwwF9ontJomnYzo'); background-size: contain; background-repeat: no-repeat;">
+</div>
+</main>
+<!-- Footer Information -->
+<footer class="p-6 text-center">
+<p class="text-slate-500 dark:text-slate-500 text-xs tracking-wide">
+            Need help? <a class="text-primary hover:underline font-medium" href="#">Contact Support</a> or <a class="text-primary hover:underline font-medium" href="#">View Tutorials</a>
+</p>
+</footer>
+</body></html>

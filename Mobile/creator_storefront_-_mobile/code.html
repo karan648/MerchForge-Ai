@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MerchForge AI - Creator Storefront</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#895af6",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#151022",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 0px;
+            display: none;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display transition-colors duration-300 min-h-screen flex flex-col">
+<!-- Sticky Header -->
+<header class="sticky top-0 z-50 glass-panel border-b border-primary/10 px-4 py-3 flex items-center justify-between">
+<button class="p-2 hover:bg-primary/10 rounded-full transition-colors">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<h1 class="text-sm font-bold tracking-wider uppercase text-primary">MerchForge AI</h1>
+<button class="p-2 hover:bg-primary/10 rounded-full transition-colors">
+<span class="material-symbols-outlined text-2xl">share</span>
+</button>
+</header>
+<main class="flex-grow pb-24">
+<!-- Hero Banner -->
+<div class="relative h-48 w-full bg-primary/20 overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent to-background-dark/80"></div>
+<img class="w-full h-full object-cover opacity-60" data-alt="Abstract purple and dark digital AI art landscape" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBK_FVDdM9hhY2j4hGa3R_RltXqlxgoXm53U8VFmnQZxh9ae7Zq4AyoBG8xgnfs96fey-R_3XrhDhQK47p8X6Q17Fj1k6Vxf3SXSXvXiPbZ5yLYPLnxSWprMJ_-UU4-b_H1ZU1kz9uj9r4NKOvm7InPEITlYYvczaWbRHdkpkb0A9wnMXAFMtUA7OwV1O9KRcch4I65UjIHGGmWedXkSbiiPSYQdhgwRFVUnpbSZNDpZz7Rosioe4l2sMGXgrG8Hn8aFGjWAm5UQM4k"/>
+</div>
+<!-- Creator Profile Section -->
+<div class="px-6 -mt-16 relative z-10 text-center">
+<div class="inline-block p-1 rounded-full bg-background-dark border-2 border-primary shadow-xl shadow-primary/20">
+<img class="w-28 h-28 rounded-full object-cover" data-alt="Modern creator portrait with tech-focused lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCygK2z3cLZGrRbNmN9ER0J_TRaR_EjgFwKdQBAUKWoaRIb-KO6mEgvBgCSKwwMD24qhqisVcGNYC06KsqrjowR5mk3HQsMq0V583EJsL8NVZDqBR45oJwa0FXIXD4hAWy1_SNOJfjQrghvJ2WtsE6IXahH-dQW6YuxB3FkEtf8RDontv5JG4CrWB04UBoT1t2G_ePe8wZmU6Gwx5E6jUXJLk3erd0JTqhlk9As0JEx45cCCHO-USGIfLBzt9zpUjS1Ax07DPWMuETN"/>
+</div>
+<div class="mt-4 space-y-2">
+<div class="flex items-center justify-center gap-1">
+<h2 class="text-2xl font-bold tracking-tight">MerchForge AI Creator</h2>
+<span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1">verified</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm max-w-xs mx-auto leading-relaxed">
+                    Crafting the future of street-wear with AI. Each piece is uniquely generated using proprietary neural networks.
+                </p>
+<div class="flex justify-center gap-4 py-2">
+<div class="text-center">
+<span class="block text-lg font-bold">12.4k</span>
+<span class="text-[10px] uppercase tracking-widest text-slate-500">Collectors</span>
+</div>
+<div class="w-px h-8 bg-primary/20 self-center"></div>
+<div class="text-center">
+<span class="block text-lg font-bold">48</span>
+<span class="text-[10px] uppercase tracking-widest text-slate-500">Designs</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section Tabs -->
+<div class="flex gap-8 px-6 mt-8 border-b border-primary/10 overflow-x-auto custom-scrollbar">
+<button class="pb-3 border-b-2 border-primary text-primary font-semibold text-sm whitespace-nowrap">Featured Drops</button>
+<button class="pb-3 text-slate-500 font-medium text-sm whitespace-nowrap">All Items</button>
+<button class="pb-3 text-slate-500 font-medium text-sm whitespace-nowrap">Collections</button>
+</div>
+<!-- Product Grid -->
+<div class="px-4 py-6 grid grid-cols-2 gap-4">
+<!-- Product Card 1 -->
+<div class="flex flex-col gap-3 group">
+<div class="relative aspect-[3/4] rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800/50 p-2">
+<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="Premium black t-shirt with neon purple AI graphic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9wMN0FdMmVcTJ-Tx6A53mSojsv75PXmbunJ2FHj1QpYMJXzo3LsZb3rTq5Pj0o6CtT7rwsYgwaA6vB5G_qLS3Sh6RCxsTnKPLJ8_T5eRrSZmGNR27dwh5VzxO0UTs1hY7XVc0FbAZ1qbzAJA05ttmhvCQ79-HX7NaozXIVtafCwF56xe-U1K__EKH2nvvWsP67cW2ibHi2FFM78eZcw63jQz6eOAz8H2BhbXDP4z1dqwkc_vF5iQPvwyXVHjlNXvSThLGWhHCZw7v"/>
+<div class="absolute top-2 right-2 bg-background-dark/80 backdrop-blur-sm px-2 py-1 rounded-md text-[10px] font-bold text-primary">NEW</div>
+</div>
+<div class="px-1">
+<h3 class="font-bold text-sm truncate">Neon Pulse Tee</h3>
+<div class="flex items-center justify-between mt-1">
+<span class="text-primary font-bold">$45.00</span>
+<button class="bg-primary text-white p-1.5 rounded-lg flex items-center justify-center hover:shadow-lg hover:shadow-primary/40 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-lg">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="flex flex-col gap-3 group">
+<div class="relative aspect-[3/4] rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800/50 p-2">
+<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="High-end charcoal hoodie with geometric AI patterns" src="https://lh3.googleusercontent.com/aida-public/AB6AXuADctqqXkhq3e-3k6h5mb1LInbGw9LCTrdxvtx5QBRgnRCddErfntgAuL8aJn8hC_vjDujZ_mBZCIJ7R51lzyM6vJAW3gs2ddK5-nLQVPenFkVncoCiXLA8klxUNe-45P3h0bgpSZ6YL8fbCXELL94EPcmW8ykeSnaR5ItflQqABc1lf2MnavVtjAXesvdhVvV2NYCtPVnGeMj6Uanvr5FJcwFogwYDVVjBzFevC4RCkcrIaEO63QlPudaex7uwpPzj54uM96-9WITR"/>
+</div>
+<div class="px-1">
+<h3 class="font-bold text-sm truncate">Cybernetic Hoodie</h3>
+<div class="flex items-center justify-between mt-1">
+<span class="text-primary font-bold">$85.00</span>
+<button class="bg-primary text-white p-1.5 rounded-lg flex items-center justify-center hover:shadow-lg hover:shadow-primary/40 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-lg">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="flex flex-col gap-3 group">
+<div class="relative aspect-[3/4] rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800/50 p-2">
+<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="Minimalist gray crewneck with algorithm motif" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBC9p4tI91Cr2gvJiMtPDaxPCwzA9WYrACVpXa1x0fbnFK9OmOQN9204KY3yQalGYlImL3ItAD-YfHUy8q0cDfdHFY92sVY4PM0lqqqS_LbMl-SpbJm2wr8nr4MmINtIbT2JPXND3IvyDJRCpTBPYJWrOzQHlanXFna7mPWgpoxUB8uo6asY_A8h4dIBQQMyWzNSGG4D6lzVXowj_wIWppnzy4vQXo12rh2Dbzk62Vrt-SwYtYXVNlQetPgoFwVe9OyxkOdwMU4ZqOS"/>
+</div>
+<div class="px-1">
+<h3 class="font-bold text-sm truncate">Algorithm Gray Crew</h3>
+<div class="flex items-center justify-between mt-1">
+<span class="text-primary font-bold">$65.00</span>
+<button class="bg-primary text-white p-1.5 rounded-lg flex items-center justify-center hover:shadow-lg hover:shadow-primary/40 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-lg">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="flex flex-col gap-3 group">
+<div class="relative aspect-[3/4] rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800/50 p-2">
+<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="Sleek black techwear oversized t-shirt" src="https://lh3.googleusercontent.com/aida-public/AB6AXuClTbX380XHcWxqwQ4b9E5N5CVnbgc5nJaafKyMlMRlVuKNFpMqoRq9kDdwJ3ZbH692zxdBdCJJR70_nRoWD0XPMDGs3j-NumVHK5Ply9m1y0QZnxCt0fbRGv_PGPPB0_22XcTcGOVTrYlWpp2L791dZhmFD9huZJwf6ytG4BJY8CTij8nH0KNX2m7KRhRFnp0dVOc0-Gx8B8kKc-wvJ6MSZGahAfWJlkbB68rIVrtgqIHIN9k-kqod9WIG0yqLfVJDVGxjoDr_8tkH"/>
+</div>
+<div class="px-1">
+<h3 class="font-bold text-sm truncate">Neural Mesh Tee</h3>
+<div class="flex items-center justify-between mt-1">
+<span class="text-primary font-bold">$42.00</span>
+<button class="bg-primary text-white p-1.5 rounded-lg flex items-center justify-center hover:shadow-lg hover:shadow-primary/40 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-lg">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Reviews Section -->
+<section class="mt-10 px-4">
+<div class="flex items-center justify-between mb-6 px-2">
+<h2 class="text-xl font-bold">Community Feedback</h2>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="font-bold">4.9</span>
+</div>
+</div>
+<div class="space-y-4">
+<!-- Review 1 -->
+<div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/30 border border-primary/5">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">JD</div>
+<div>
+<h4 class="text-sm font-bold">Jordan D.</h4>
+<div class="flex gap-0.5">
+<span class="material-symbols-outlined text-primary text-[12px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-primary text-[12px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-primary text-[12px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-primary text-[12px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-primary text-[12px]" style="font-variation-settings: 'FILL' 1">star</span>
+</div>
+</div>
+</div>
+<span class="text-[10px] text-slate-500 font-medium">Verified Buyer</span>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 italic">"The print quality is insane! You can really see the intricate AI patterns clearly."</p>
+</div>
+<!-- Review 2 -->
+<div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/30 border border-primary/5">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">AM</div>
+<div>
+<h4 class="text-sm font-bold">Alex M.</h4>
+<div class="flex gap-0.5">
+<span class="material-symbols-outlined text-primary text-[12px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-primary text-[12px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-primary text-[12px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-primary text-[12px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-primary text-[12px]" style="font-variation-settings: 'FILL' 1">star</span>
+</div>
+</div>
+</div>
+<span class="text-[10px] text-slate-500 font-medium">Verified Buyer</span>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 italic">"Love the AI-generated designs. It feels like wearing a piece of the future. The hoodie is super soft."</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 px-6 py-4 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-xl border-t border-primary/10">
+<div class="flex justify-between items-center max-w-md mx-auto">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1">storefront</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Shop</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl">grid_view</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Explore</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<div class="relative">
+<span class="material-symbols-outlined text-2xl">shopping_bag</span>
+<span class="absolute -top-1 -right-1 bg-primary text-white text-[8px] w-4 h-4 rounded-full flex items-center justify-center font-bold">3</span>
+</div>
+<span class="text-[10px] font-bold uppercase tracking-widest">Cart</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl">person</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Profile</span>
+</a>
+</div>
+</nav>
+</body></html>

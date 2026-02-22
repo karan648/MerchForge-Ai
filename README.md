@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MerchForge AI
 
-## Getting Started
+Production-oriented full-stack SaaS built with Next.js App Router, Supabase Auth, and Prisma.
 
-First, run the development server:
+## Current Scope Implemented
+
+- Landing, auth, onboarding, and dashboard route structure
+- Shared dashboard shell + responsive navigation
+- Framer Motion entry animations for auth and dashboard modules
+- Supabase email/password auth APIs
+  - `POST /api/auth/register`
+  - `POST /api/auth/login`
+  - `POST /api/auth/logout`
+- Route protection via `proxy.ts` for `/dashboard/*` and `/onboarding/*`
+- Full Prisma data model for core SaaS entities:
+  - `User`, `Design`, `Generation`, `Mockup`, `Template`, `TemplatePurchase`, `StoreProduct`, `Order`,
+    `Subscription`, `CreditUsage`, `AffiliateReferral`, `Payout`, `BrandKit`, `Review`
+
+## Tech Stack
+
+- Next.js 16 App Router
+- React 19 + TypeScript (strict)
+- Tailwind CSS 4
+- Framer Motion
+- Supabase Auth
+- Prisma ORM (v7)
+- PostgreSQL
+
+## Setup
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Configure environment:
+
+```bash
+cp .env.example .env.local
+```
+
+Use a pooled connection for `DATABASE_URL` and a direct connection for `DIRECT_URL` when running migrations (Supabase-recommended setup).
+
+3. Generate Prisma client:
+
+```bash
+npm run prisma:generate
+```
+
+4. Apply schema to database:
+
+```bash
+npm run prisma:push
+# or
+npm run prisma:migrate
+```
+
+5. Optional seed:
+
+```bash
+npm run db:seed
+```
+
+6. Run app:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Useful Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `npm run lint`
+- `npm run build -- --webpack`
+- `npm run prisma:studio`
+- `npm run prisma:generate`
+- `npm run prisma:push`
+- `npm run prisma:migrate`
+- `npm run db:seed`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Auth API Contracts
 
-## Learn More
+### Register
 
-To learn more about Next.js, take a look at the following resources:
+`POST /api/auth/register`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```json
+{
+  "fullName": "Alex Rivera",
+  "email": "alex@example.com",
+  "password": "strongpassword"
+}
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Login
 
-## Deploy on Vercel
+`POST /api/auth/login`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```json
+{
+  "email": "alex@example.com",
+  "password": "strongpassword"
+}
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Logout
+
+`POST /api/auth/logout`
+
+No request body required.

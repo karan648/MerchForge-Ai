@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MerchForge AI | Template Marketplace</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#895af6",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#0f0f12",
+                        "card-dark": "#1a1a1e",
+                        "border-dark": "#2d2839",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem", // 12px
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-nav {
+            backdrop-filter: blur(12px);
+            background-color: rgba(15, 15, 18, 0.8);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2d2839;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen font-display">
+<!-- Top Navigation -->
+<nav class="glass-nav sticky top-0 z-50 border-b border-border-dark px-6 py-3">
+<div class="max-w-[1600px] mx-auto flex items-center justify-between gap-8">
+<!-- Logo -->
+<div class="flex items-center gap-3 shrink-0">
+<div class="size-9 bg-primary rounded-lg flex items-center justify-center shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-white">grid_view</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight bg-gradient-to-r from-white to-primary/80 bg-clip-text text-transparent">
+                    MerchForge AI
+                </h1>
+</div>
+<!-- Search Bar -->
+<div class="flex-1 max-w-2xl relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-slate-400 text-xl">search</span>
+</div>
+<input class="block w-full pl-10 pr-20 py-2.5 bg-card-dark border-border-dark rounded-lg focus:ring-primary focus:border-primary text-sm placeholder-slate-400" placeholder="Search premium templates (Cmd + K)" type="text"/>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+<kbd class="hidden sm:inline-block px-1.5 py-0.5 text-xs font-semibold text-slate-500 bg-border-dark rounded">⌘K</kbd>
+</div>
+</div>
+<!-- User Actions -->
+<div class="flex items-center gap-4 shrink-0">
+<button class="p-2 hover:bg-border-dark rounded-lg transition-colors text-slate-400 hover:text-white">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 hover:bg-border-dark rounded-lg transition-colors text-slate-400 hover:text-white">
+<span class="material-symbols-outlined">shopping_cart</span>
+</button>
+<div class="h-8 w-[1px] bg-border-dark mx-2"></div>
+<div class="flex items-center gap-3">
+<div class="text-right hidden sm:block">
+<p class="text-xs font-medium text-slate-100">Alex Rivera</p>
+<p class="text-[10px] text-primary">Pro Creator</p>
+</div>
+<div class="size-10 rounded-full bg-primary/20 p-0.5 border border-primary/30">
+<img alt="User avatar" class="rounded-full" data-alt="Close up portrait of a modern digital artist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8yHOE7egwlLpgsWp3k1MHVzbsWcaFF9ZuFSmwxT8_1N5TZzpMY5o06NxElg1vBdlbO7IjxoiARjgo26wGiWlqnyPOnA2c0mX633X3KZ7rWejZpTTD2QwDgNhXZH39z47k4yGSx6G239S5SY4-SbU06NutTiYGl4JJvoWl5JZ2eemXVhVuC9ShtMEV6WGoGDVdYLTomIfWMnfQjKxTDMfBQEP_CRFEsT1yy0vDVF4HOf93QYZEDdZ5nlOCDl_YltO8Bv1jIiRoutbI"/>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<div class="max-w-[1600px] mx-auto flex">
+<!-- Sidebar -->
+<aside class="w-64 fixed left-0 h-[calc(100vh-68px)] border-r border-border-dark p-6 overflow-y-auto custom-scrollbar hidden lg:block">
+<div class="space-y-8">
+<!-- Main Links -->
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary font-medium" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span>Marketplace</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-border-dark transition-all" href="#">
+<span class="material-symbols-outlined">trending_up</span>
+<span>Trending</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-border-dark transition-all" href="#">
+<span class="material-symbols-outlined">new_releases</span>
+<span>New Arrivals</span>
+</a>
+</div>
+<!-- Category Section -->
+<div>
+<h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 px-3">Category</h3>
+<div class="space-y-1">
+<label class="flex items-center gap-3 px-3 py-2 cursor-pointer group">
+<input checked="" class="rounded border-border-dark bg-card-dark text-primary focus:ring-primary/50" type="checkbox"/>
+<span class="text-sm text-slate-300 group-hover:text-white">T-Shirts</span>
+</label>
+<label class="flex items-center gap-3 px-3 py-2 cursor-pointer group">
+<input class="rounded border-border-dark bg-card-dark text-primary focus:ring-primary/50" type="checkbox"/>
+<span class="text-sm text-slate-300 group-hover:text-white">Hoodies</span>
+</label>
+<label class="flex items-center gap-3 px-3 py-2 cursor-pointer group">
+<input class="rounded border-border-dark bg-card-dark text-primary focus:ring-primary/50" type="checkbox"/>
+<span class="text-sm text-slate-300 group-hover:text-white">Sweatshirts</span>
+</label>
+<label class="flex items-center gap-3 px-3 py-2 cursor-pointer group">
+<input class="rounded border-border-dark bg-card-dark text-primary focus:ring-primary/50" type="checkbox"/>
+<span class="text-sm text-slate-300 group-hover:text-white">Tote Bags</span>
+</label>
+</div>
+</div>
+<!-- Style Section -->
+<div>
+<h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 px-3">Style</h3>
+<div class="flex flex-wrap gap-2 px-1">
+<button class="px-3 py-1.5 rounded-full border border-primary bg-primary/10 text-xs text-primary font-medium">Cyberpunk</button>
+<button class="px-3 py-1.5 rounded-full border border-border-dark hover:border-slate-500 text-xs text-slate-400 transition-colors">Minimalist</button>
+<button class="px-3 py-1.5 rounded-full border border-border-dark hover:border-slate-500 text-xs text-slate-400 transition-colors">Retro</button>
+<button class="px-3 py-1.5 rounded-full border border-border-dark hover:border-slate-500 text-xs text-slate-400 transition-colors">Abstract</button>
+<button class="px-3 py-1.5 rounded-full border border-border-dark hover:border-slate-500 text-xs text-slate-400 transition-colors">Vaporwave</button>
+</div>
+</div>
+<!-- Price Slider -->
+<div>
+<h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 px-3">Price Range</h3>
+<div class="px-3">
+<div class="h-1.5 w-full bg-border-dark rounded-full relative overflow-hidden">
+<div class="absolute h-full bg-primary left-0 right-1/4 rounded-full"></div>
+</div>
+<div class="flex justify-between mt-3">
+<span class="text-xs font-medium text-slate-400">$0</span>
+<span class="text-xs font-medium text-primary">$150</span>
+</div>
+</div>
+</div>
+<!-- Clear Filter -->
+<div class="pt-4 px-3">
+<button class="w-full py-2.5 rounded-lg border border-border-dark hover:bg-border-dark text-sm font-medium transition-colors">
+                        Clear All Filters
+                    </button>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 lg:ml-64 p-8">
+<header class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h2 class="text-3xl font-bold mb-2">Featured Designs</h2>
+<p class="text-slate-400">Discover AI-curated apparel designs ready for your brand.</p>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-sm text-slate-500">Sort by:</span>
+<button class="flex items-center gap-2 px-4 py-2 bg-card-dark border border-border-dark rounded-lg text-sm">
+                        Popularity
+                        <span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+</header>
+<!-- Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
+<!-- Card 1 -->
+<div class="group bg-card-dark rounded-lg border border-border-dark overflow-hidden hover:translate-y-[-4px] transition-all duration-300 shadow-xl shadow-black/20">
+<div class="aspect-square relative overflow-hidden">
+<img alt="Cyberpunk design preview" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Neon cyberpunk aesthetic digital art on black fabric" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBr5CXemqvcBTAOq8KEK-20fZWHyXOJr8E8pFNg2adRVj0DGZK0WtuwnW1NkI354d74CfHlUSE7eurlmDFAKvcN-HF6j8tG7wOxGX9gW4ym39iwUUf5ckbC83nNHio72J8KItN4tHPv7Eqm31mMvKknJW9k6CWqi-XFcKqqqYeBTKmeo-XroaydmtuIHxsH6utcliNjZ_skuMnm3njO4kGRdewVnhmWq6nFabDZ6Hi3aARy4UJSrzD5lkzAID7CrGiZkAHlG50ex8T9"/>
+<div class="absolute top-3 left-3">
+<span class="px-2.5 py-1 bg-primary text-white text-[10px] font-bold rounded-md uppercase tracking-wide shadow-lg">Cyberpunk</span>
+</div>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="px-6 py-2.5 bg-white text-black font-bold rounded-lg transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                                Quick View
+                            </button>
+</div>
+</div>
+<div class="p-5">
+<div class="flex justify-between items-start mb-3">
+<h3 class="font-bold text-lg group-hover:text-primary transition-colors">Neon Samurai V3</h3>
+<span class="text-primary font-bold">$14.99</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<img alt="Creator avatar" class="size-6 rounded-full" data-alt="Cartoon avatar of a digital artist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBR8TqnULDWj2HZjZ_uI8zp0xlo3z5-EPLllOG8bziaPgMlBIAwfxWRA886nORcxx4MHwqJympOv7E5N7pyLtbGOuJ4fHAm7n-ACRVEkb9gLhw8b4Junkj9x7l0kbSQTIAVrkIUwM4Jwa2QgmPKhT81TUOXspMOPPUIFDae0sZQHjqCxP0DLOSEHL-CALeunAbWJYVnHBNRS8hwOd95NoH4QndMGQZ3iQlf8Dmpi3qUWI1xFpxGqj5CFdXBHgmdwuvwmv9aBEZ9c6Py"/>
+<span class="text-xs text-slate-400">AIGenius</span>
+</div>
+<div class="flex items-center gap-1 text-slate-400 text-xs">
+<span class="material-symbols-outlined text-sm text-red-500 fill-current">favorite</span>
+                                1.2k
+                            </div>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group bg-card-dark rounded-lg border border-border-dark overflow-hidden hover:translate-y-[-4px] transition-all duration-300 shadow-xl shadow-black/20">
+<div class="aspect-square relative overflow-hidden">
+<img alt="Abstract design preview" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Flowing colorful liquid abstract patterns on dark fabric" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAG5pzO_oukCxTDkyvuGH6ra126nPsjJvsvUPwI067tAYLBMZBBH9ChrLNpXbDp0M6qGOObJUHWRv8Fq_dQL4y9IJk6lr-54350qb-t7DGw65WKlcwC3CLENb-andQTNOMBQLmws5SAm8YIYEBx5pO-n24mp00R3bIJZThzDuNnjPsP622bWIldytjdjxrsUfO-NYJahlO3n9v2pLjat7iZoV7v222brAhxnbC1kPiWAkGoBzI7S2W0aNCm_2MLlOHPpGXuJ9-8NJTN"/>
+<div class="absolute top-3 left-3">
+<span class="px-2.5 py-1 bg-white/20 backdrop-blur text-white text-[10px] font-bold rounded-md uppercase tracking-wide border border-white/30">Abstract</span>
+</div>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="px-6 py-2.5 bg-white text-black font-bold rounded-lg transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                                Quick View
+                            </button>
+</div>
+</div>
+<div class="p-5">
+<div class="flex justify-between items-start mb-3">
+<h3 class="font-bold text-lg group-hover:text-primary transition-colors">Fluid Dreamscape</h3>
+<span class="text-primary font-bold">$12.50</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<img alt="Creator avatar" class="size-6 rounded-full" data-alt="Stylized pixel art avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEFYJoZWTUkhScTKQ45zy5p8xmGgXm-TPv4YUN5qmAp0iefSH4-9E5l_a8u-0XvWLJ_HjVH1yIPr-DfOk9dGvPqa-6t9DXwmtWI15x-JRhHEjvBP4qllVErfWSgmE2nx-W2sVSwI5afV2_JEahGcOjnFFd0MhR_ckMN02l6eoUvOCL9_QocsmrrAi568tdLBvx-sRbjpxoQGymwSFbiKxSbSw_zR39U7mWPuWKaZ5tTjRDUXpaH4n80nbjNudOUo38Y3IbAvAq7pTL"/>
+<span class="text-xs text-slate-400">PixelWiz</span>
+</div>
+<div class="flex items-center gap-1 text-slate-400 text-xs">
+<span class="material-symbols-outlined text-sm">favorite</span>
+                                842
+                            </div>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group bg-card-dark rounded-lg border border-border-dark overflow-hidden hover:translate-y-[-4px] transition-all duration-300 shadow-xl shadow-black/20">
+<div class="aspect-square relative overflow-hidden">
+<img alt="Minimalist design preview" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Geometric black and white minimalist line art design" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAC955hEiy4cGXekut9EakQMUIiSSe-7DAsuq4BRFtJ64j8UzojMWzgGIpX6djAwOn5-HEX0RAD9Jro8VXqj77PAWoer7GbPQP7lkMEuIH8yCNE8wpm8OOza1OxR1EVwH3sJm7NaKf39dAZrv2bbcX6JbD4JklMwaZVAyf4uDs7ftPCImAHNNgFyKN8J3cfwRabg2nahIvqf9llxjQnk3E8joN260aTD9Z752aR8nxLiJIoWXcdoa4xtp8AyW9WPCzHdZ5nep3SMLvq"/>
+<div class="absolute top-3 left-3">
+<span class="px-2.5 py-1 bg-white/20 backdrop-blur text-white text-[10px] font-bold rounded-md uppercase tracking-wide border border-white/30">Minimalist</span>
+</div>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="px-6 py-2.5 bg-white text-black font-bold rounded-lg transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                                Quick View
+                            </button>
+</div>
+</div>
+<div class="p-5">
+<div class="flex justify-between items-start mb-3">
+<h3 class="font-bold text-lg group-hover:text-primary transition-colors">Mono Line Peak</h3>
+<span class="text-primary font-bold">$18.00</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<img alt="Creator avatar" class="size-6 rounded-full" data-alt="Simple geometric creator icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAA6sBodN_-_41Zrdsrc1lDr1VnPVgefH48QboPjBMx4gdwD_fXv5HQFKxNH6IlAbBsP0FxEE6jdYsN-xvzMvZBM0kSBdlJAfENC4j-yntxXyRt1gQ_sF5VDtkkoloJi6gRFcGm0iWuea8RtHOfc9nzhnbF18X64uJsO6ipv34FXRTUemP8AfZFPqDQcB_pEvLVXqtraU2JXpQMqdNfAOxE1bj4dmX8TmKDSiiDyX5uJuNGfVba_4Edh8dx-t-VYRr7ZVr2-VlBju6J"/>
+<span class="text-xs text-slate-400">MinimaDesign</span>
+</div>
+<div class="flex items-center gap-1 text-slate-400 text-xs">
+<span class="material-symbols-outlined text-sm">favorite</span>
+                                2.1k
+                            </div>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="group bg-card-dark rounded-lg border border-border-dark overflow-hidden hover:translate-y-[-4px] transition-all duration-300 shadow-xl shadow-black/20">
+<div class="aspect-square relative overflow-hidden">
+<img alt="Vaporwave design preview" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Vaporwave grid with sunset and palms digital illustration" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBm100o4xJepL_M16LnC7KZxOZ_R8WKl2Wt2cpEblZ8I87-yG4lCuUv6EFGKRpBVEkhQnfRdilBQS4AGbSeyccRLwHPoKk-eae3JgA1DcbbEaXvaPiLWo5aMggzgam-wO_y-prBxOq61ESUT9BRdLdR8A93815TE0OoeYezHYHduXHO_n0wI-5vbuhkPlRz-95gRM2jZjIdelhmzTq_zWAnvEloHH-GazTE0wcREpEqbOD-lpX52rbrCCsP9eqYUnzKb_wRVxETaTJ1"/>
+<div class="absolute top-3 left-3">
+<span class="px-2.5 py-1 bg-white/20 backdrop-blur text-white text-[10px] font-bold rounded-md uppercase tracking-wide border border-white/30">Vaporwave</span>
+</div>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="px-6 py-2.5 bg-white text-black font-bold rounded-lg transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                                Quick View
+                            </button>
+</div>
+</div>
+<div class="p-5">
+<div class="flex justify-between items-start mb-3">
+<h3 class="font-bold text-lg group-hover:text-primary transition-colors">Retro Grid Horizon</h3>
+<span class="text-primary font-bold">$15.99</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<img alt="Creator avatar" class="size-6 rounded-full" data-alt="80s themed avatar of a cat" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBW8byg-9Ccnn8zl0wXrKq8r5iKR1rG3x7g3S0XLLAbnikNtLV_oblLg1Khvw24BxBXJ9m-VpbDd_PRSFKpfQDjts1_Rnd69DHyNxbxPKzkDp2Fi8EfodzS3S767RP5CBbKfm9_vLVHx1u_okTNEdLL0QmF2eJDHIHmU9VvgqCEVRSmsh0FKFMKcf4mvn3mWmjGm2RduarDETyfieX0PIihXxTUQ6B3zuimIECfyZ8BzX1-4pBrpSYmKJAwZuxqyzrzdq4GQfE5AEEH"/>
+<span class="text-xs text-slate-400">RetroCat</span>
+</div>
+<div class="flex items-center gap-1 text-slate-400 text-xs">
+<span class="material-symbols-outlined text-sm">favorite</span>
+                                533
+                            </div>
+</div>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="group bg-card-dark rounded-lg border border-border-dark overflow-hidden hover:translate-y-[-4px] transition-all duration-300 shadow-xl shadow-black/20">
+<div class="aspect-square relative overflow-hidden">
+<img alt="Abstract design 2" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Dynamic colorful paint splash design for apparel" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBC0dlFQLZUAs9yBFQUoPpV-KZr6q0uQeFjKY_yZegCLLwK4LCXIHPHLmj9JwBSF-92_93b2UmK8xuPcZydfpy2-aBkEjiZwXkFVbJsgyu6UrIkP_z4iWyHToSYy8glfdMh4PavRiksycJUa1TElEg8zFr0ioe6TFaEe37r-5Hp1emHGHe5rKs6JYTwSM2FBX1o446qxwnZCBZS1NRA7Lxmx3k4C00agUZ-Q5KLc8ReHDNaYa8IC2CN1MmkLC8iz_-zO8tQpc7KrBOI"/>
+<div class="absolute top-3 left-3">
+<span class="px-2.5 py-1 bg-white/20 backdrop-blur text-white text-[10px] font-bold rounded-md uppercase tracking-wide border border-white/30">Abstract</span>
+</div>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="px-6 py-2.5 bg-white text-black font-bold rounded-lg transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                                Quick View
+                            </button>
+</div>
+</div>
+<div class="p-5">
+<div class="flex justify-between items-start mb-3">
+<h3 class="font-bold text-lg group-hover:text-primary transition-colors">Vibrant Burst 04</h3>
+<span class="text-primary font-bold">$13.00</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<img alt="Creator avatar" class="size-6 rounded-full" data-alt="Colorful paintbrush profile icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1SDw_TcrgC7JP3o7SI6X6h0wnITmT-4ilUA3axH-CTugolRyZ6Ei2j_3SxPIEeZpp-35Ojr3eQxtYli5iGvsmT_f7TGnP-_Mrsvf72JrwCujlfxNUUQVSQ7YN9XB-24v-OhksXviVVoUvx8jvvcIbwl5cGUvIY2MVmLDk-NiBp-Ev4xAT-fcMNfKS3VZv-AhbkaC5EDSLttSV1Q3oLVjyWT2g-Uq9OBD-yRpi1uwiBhS6MlurIuk2WqLMb1ODDr0jZ7jKfJTtbmsJ"/>
+<span class="text-xs text-slate-400">Colorist</span>
+</div>
+<div class="flex items-center gap-1 text-slate-400 text-xs">
+<span class="material-symbols-outlined text-sm text-red-500 fill-current">favorite</span>
+                                2.4k
+                            </div>
+</div>
+</div>
+</div>
+<!-- Card 6 -->
+<div class="group bg-card-dark rounded-lg border border-border-dark overflow-hidden hover:translate-y-[-4px] transition-all duration-300 shadow-xl shadow-black/20">
+<div class="aspect-square relative overflow-hidden">
+<img alt="Typography design" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Bold futuristic font typography design on sweatshirt" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUVXJwbzzqrl2CSm-CElHYKZ3a2QCvJ-QBza3PyLWiv6x34weLP8taq-kRnt0T3483sD-2S1OVPPu6RIdZ8MXVuJLA963lFUpXsd9EcKiYUkwH8NKd-SbFGfW3l6lMscbZAmT1yL9cYnF_5y9UTveq5hP_UEpoup4YT7thL1ubnCp7HB2E6SReC2F0i94PGS9eNdupnxsKA3h_TMASYwP0B9naK5yu2qANa7d1tkaL6NA-GbpajBq9uTSckdXfMnAINqQJOjzjhaVS"/>
+<div class="absolute top-3 left-3">
+<span class="px-2.5 py-1 bg-white/20 backdrop-blur text-white text-[10px] font-bold rounded-md uppercase tracking-wide border border-white/30">Typography</span>
+</div>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="px-6 py-2.5 bg-white text-black font-bold rounded-lg transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                                Quick View
+                            </button>
+</div>
+</div>
+<div class="p-5">
+<div class="flex justify-between items-start mb-3">
+<h3 class="font-bold text-lg group-hover:text-primary transition-colors">Future Script X</h3>
+<span class="text-primary font-bold">$19.99</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<img alt="Creator avatar" class="size-6 rounded-full" data-alt="Letter T logo for a typography artist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAo2dULq1kspvdoCt6H8_Gfb67rizamb8AQL0P1q94I48KnqY-Yib30-2RAofGaZ88bcywKW_oKgg_dDO2BY95yLEVE_rvLnkqnT7e2nE4jfEJTu8uqVUw5x1zS-B1i4I1947jeLWfoabl5VN0-ah27T6DyX3VApkpVoZ9Swf-pe5-VSv5SQr0ePjnzDeQu3KzCoc1k9Pth4_6OWS0RAvBv1W5t2OGE0NqDNnm8E9-LbbpLUxuyp_N7xeYcVe889iy6ZgJKpGMBElZ5"/>
+<span class="text-xs text-slate-400">TypeKing</span>
+</div>
+<div class="flex items-center gap-1 text-slate-400 text-xs">
+<span class="material-symbols-outlined text-sm">favorite</span>
+                                312
+                            </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination/Footer Area -->
+<div class="mt-12 flex justify-center">
+<nav class="flex items-center gap-2">
+<button class="p-2 border border-border-dark rounded-lg hover:bg-border-dark disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="size-10 bg-primary text-white font-bold rounded-lg shadow-lg shadow-primary/20">1</button>
+<button class="size-10 border border-border-dark hover:bg-border-dark font-medium rounded-lg">2</button>
+<button class="size-10 border border-border-dark hover:bg-border-dark font-medium rounded-lg">3</button>
+<span class="px-2 text-slate-500">...</span>
+<button class="size-10 border border-border-dark hover:bg-border-dark font-medium rounded-lg">12</button>
+<button class="p-2 border border-border-dark rounded-lg hover:bg-border-dark">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</nav>
+</div>
+</main>
+</div>
+<!-- Mobile Navigation (Floating Toggle) -->
+<div class="fixed bottom-6 right-6 lg:hidden z-50">
+<button class="size-14 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center shadow-primary/40">
+<span class="material-symbols-outlined">filter_alt</span>
+</button>
+</div>
+</body></html>

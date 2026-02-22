@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MerchForge AI - Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#895af6",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#0b0b0c",
+                        "card-dark": "#1a1625",
+                        "border-dark": "#2d2839",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .active-tab-glow {
+            box-shadow: 0 0 15px rgba(137, 90, 246, 0.3);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Header -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-border-dark px-4 py-3 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined">arrow_back_ios_new</span>
+</div>
+<h1 class="text-lg font-bold tracking-tight">Settings</h1>
+</div>
+<button class="relative flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 dark:bg-card-dark text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2.5 right-2.5 h-2 w-2 rounded-full bg-primary ring-2 ring-white dark:ring-background-dark"></span>
+</button>
+</header>
+<!-- Scrollable Tab Bar -->
+<nav class="sticky top-[65px] z-40 bg-background-light dark:bg-background-dark border-b border-slate-200 dark:border-border-dark overflow-x-auto no-scrollbar">
+<div class="flex px-4 min-w-max">
+<a class="flex flex-col items-center justify-center border-b-2 border-primary text-primary px-4 py-4 transition-colors" href="#">
+<span class="text-sm font-semibold">Profile</span>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 px-4 py-4 hover:text-primary transition-colors" href="#">
+<span class="text-sm font-semibold">Brand Kit</span>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 px-4 py-4 hover:text-primary transition-colors" href="#">
+<span class="text-sm font-semibold">Security</span>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 px-4 py-4 hover:text-primary transition-colors" href="#">
+<span class="text-sm font-semibold">Notifications</span>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 px-4 py-4 hover:text-primary transition-colors" href="#">
+<span class="text-sm font-semibold">Integrations</span>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 px-4 py-4 hover:text-primary transition-colors" href="#">
+<span class="text-sm font-semibold">API Keys</span>
+</a>
+</div>
+</nav>
+<main class="flex-1 p-4 space-y-6 pb-32">
+<!-- Profile Header Section -->
+<section class="flex flex-col items-center gap-4 py-2">
+<div class="relative group">
+<div class="size-24 rounded-full ring-4 ring-primary/20 overflow-hidden bg-slate-200 dark:bg-card-dark">
+<img alt="Alex Rivera" class="w-full h-full object-cover" data-alt="Modern professional headshot of a smiling man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzSL2NBEvHQUK_rKlDqRMfqfjYgIdpDemyhK6MBbsnWu6F7kV1rJcPGKQ-tgiQzKCFxCGV_F7Fn8ammUmSFLD8kFh36mObFEUpm39ciPtN5bhQTvdq8nGRMljUFOMpRJyArn8wN2qDzbHbhhwePMmaDyVLY9-ofR8Cd4Ae6AY60-amTnIt_Eb6L4AoqOj6zECBPpdRRYg23Oha65G_UjHJQpVB_LdrFNNj6MjWL96KNhNwdKZfPDlzWnYBxn6gSLgYxw2n5cbvpAHo"/>
+</div>
+<button class="absolute bottom-0 right-0 size-8 bg-primary rounded-full flex items-center justify-center text-white border-2 border-background-light dark:border-background-dark shadow-lg">
+<span class="material-symbols-outlined text-sm">photo_camera</span>
+</button>
+</div>
+<div class="text-center">
+<h2 class="text-xl font-bold">Alex Rivera</h2>
+<div class="flex items-center justify-center gap-2 mt-1">
+<span class="bg-primary/20 text-primary text-[10px] uppercase font-black px-2 py-0.5 rounded-full tracking-wider">Pro Member</span>
+<span class="text-slate-500 dark:text-slate-400 text-sm">alex.rivera@merchforge.ai</span>
+</div>
+</div>
+</section>
+<!-- Account Information Card -->
+<div class="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-border-dark overflow-hidden shadow-sm">
+<div class="p-4 border-b border-slate-100 dark:border-border-dark flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">person</span>
+<h3 class="font-bold">Account Information</h3>
+</div>
+<div class="p-4 space-y-4">
+<div class="space-y-1.5">
+<label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 px-1">Full Name</label>
+<input class="w-full h-12 rounded-lg bg-slate-50 dark:bg-background-dark border-slate-200 dark:border-border-dark focus:ring-primary focus:border-primary px-4" type="text" value="Alex Rivera"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 px-1">Email Address</label>
+<input class="w-full h-12 rounded-lg bg-slate-50 dark:bg-background-dark border-slate-200 dark:border-border-dark focus:ring-primary focus:border-primary px-4" type="email" value="alex.rivera@merchforge.ai"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 px-1">Bio</label>
+<textarea class="w-full rounded-lg bg-slate-50 dark:bg-background-dark border-slate-200 dark:border-border-dark focus:ring-primary focus:border-primary px-4 py-2" rows="3">Creative Director at Forge Labs. Pushing the boundaries of AI-driven merch.</textarea>
+</div>
+</div>
+</div>
+<!-- Preferences Card -->
+<div class="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-border-dark overflow-hidden shadow-sm">
+<div class="p-4 border-b border-slate-100 dark:border-border-dark flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">tune</span>
+<h3 class="font-bold">Preferences</h3>
+</div>
+<div class="divide-y divide-slate-100 dark:divide-border-dark">
+<div class="flex items-center justify-between p-4">
+<div class="flex flex-col">
+<span class="font-medium">Public Profile</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">Allow others to see your designs</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 dark:bg-background-dark peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between p-4">
+<div class="flex flex-col">
+<span class="font-medium">Beta Features</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">Try new AI models before release</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 dark:bg-background-dark peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</div>
+<!-- Danger Zone -->
+<div class="bg-red-500/5 dark:bg-red-500/10 rounded-xl border border-red-500/20 overflow-hidden shadow-sm">
+<div class="p-4 space-y-4">
+<div class="flex items-center gap-2 text-red-600 dark:text-red-400">
+<span class="material-symbols-outlined">warning</span>
+<h3 class="font-bold">Danger Zone</h3>
+</div>
+<p class="text-xs text-slate-600 dark:text-slate-400">Once you delete your account, there is no going back. Please be certain.</p>
+<button class="w-full h-11 rounded-lg border border-red-500/50 text-red-600 dark:text-red-400 font-bold text-sm hover:bg-red-500/10 transition-colors">
+                    Deactivate Account
+                </button>
+</div>
+</div>
+</main>
+<!-- Floating Save Button -->
+<div class="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background-light dark:from-background-dark via-background-light/95 dark:via-background-dark/95 to-transparent">
+<button class="w-full h-14 bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/30 flex items-center justify-center gap-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">save</span>
+            Save Changes
+        </button>
+</div>
+<!-- Bottom Navigation Bar -->
+<div class="fixed bottom-0 left-0 right-0 z-50 pointer-events-none">
+<div class="pointer-events-auto flex justify-around items-center bg-white/80 dark:bg-card-dark/80 backdrop-blur-xl border-t border-slate-200 dark:border-border-dark px-2 pb-6 pt-3 h-20 max-w-screen-xl mx-auto">
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">home</span>
+<p class="text-[10px] font-medium">Home</p>
+</a>
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">brush</span>
+<p class="text-[10px] font-medium">Design</p>
+</a>
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<p class="text-[10px] font-medium">Gallery</p>
+</a>
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<p class="text-[10px] font-medium">Sales</p>
+</a>
+<a class="flex flex-1 flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">settings</span>
+<p class="text-[10px] font-medium">Settings</p>
+</a>
+</div>
+</div>
+</body></html>

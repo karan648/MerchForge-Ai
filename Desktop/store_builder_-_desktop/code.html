@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MerchForge AI | Store Builder</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#895af6",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#0f0f15",
+                        "panel-dark": "#1a1a24",
+                        "border-dark": "#2d2839",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #2d2839; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #895af6; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased overflow-hidden font-display">
+<!-- Persistent Header -->
+<header class="h-16 border-b border-slate-200 dark:border-border-dark flex items-center justify-between px-6 bg-white/50 dark:bg-background-dark/50 backdrop-blur-md z-50 sticky top-0">
+<div class="flex items-center gap-3">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-xl">auto_awesome</span>
+</div>
+<div>
+<h1 class="text-sm font-bold leading-none">MerchForge AI</h1>
+<div class="flex items-center gap-2 mt-1">
+<span class="size-2 rounded-full bg-emerald-500 animate-pulse"></span>
+<p class="text-[10px] uppercase tracking-wider text-slate-500 font-semibold">Changes Saved</p>
+</div>
+</div>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-xs font-medium text-slate-400 hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="text-xs font-medium text-slate-400 hover:text-primary transition-colors" href="#">Analytics</a>
+<a class="text-xs font-medium text-slate-100 border-b-2 border-primary pb-5 mt-5" href="#">Store Builder</a>
+<a class="text-xs font-medium text-slate-400 hover:text-primary transition-colors" href="#">Settings</a>
+</nav>
+<div class="flex items-center gap-3">
+<button class="px-4 py-2 text-xs font-bold text-slate-300 hover:text-white transition-colors bg-border-dark/50 rounded-lg">Preview Site</button>
+<button class="px-5 py-2 text-xs font-bold bg-primary text-white rounded-lg shadow-lg shadow-primary/20 hover:brightness-110 transition-all">Publish Store</button>
+<div class="size-8 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center ml-2 overflow-hidden">
+<img alt="Creator Avatar" class="size-full object-cover" data-alt="Abstract colorful user avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgpi7cKNDjfTcbNYqLIeayivt0Xrxagzs43tw_TwBis1HsJTtHzob-UyuGvJa_8hvPdN_1CrycUbHzQ4kg8qDJ8F9nnQlttV9kgy_LRsOgTBYQRb-G7LpVNqXAKKP7rfKxoNqaqqE51macpBtNQCdlHRElGaqT_QSvUiq6jNB-RyO5UxFWann27i45anaK0523MEFsDdU3wsphjlh8_EFgRCNVtS16SA1bcvICg3iIQMNSagN6oCLbr361mszU2f38InpzjQcNSsxK"/>
+</div>
+</div>
+</header>
+<main class="flex h-[calc(100vh-64px)] overflow-hidden">
+<!-- Scrollable Settings Panel (Left) -->
+<aside class="w-[400px] border-r border-slate-200 dark:border-border-dark flex flex-col bg-white dark:bg-panel-dark">
+<div class="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-8">
+<!-- Section: Banner -->
+<section>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary text-lg">image</span>
+<h3 class="text-sm font-bold">Store Banner</h3>
+</div>
+<div class="group relative flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-slate-200 dark:border-border-dark rounded-xl bg-slate-50 dark:bg-background-dark/30 hover:border-primary transition-colors cursor-pointer overflow-hidden">
+<img alt="Banner Preview" class="absolute inset-0 size-full object-cover opacity-20 group-hover:opacity-40 transition-opacity" data-alt="Abstract purple and blue fluid gradient" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqwPO44I8EPuwDP5Nb-m4iWBS5sbIiGDq2Vtuz1-c2g9xvMTKiwI0fPHp7GMGHqwvQc2L309h2kHdtQgLmhxv06GOvSP2vouJprlU1YUoHGz7cVa1Ht84kEjsvRakJhj3_51aDHITyLZT7hDyhzokrJEZiNHNXPDoXKWi5FLhRNxe8dR7L8U4DO0zC6hna4Vk0aRf5XoM3suFBbvlktCb5qWRckccbu8yuwfxd9y15tCvURnZNwDQ--29dtpQp1MI_SisFW1xBB6qY"/>
+<div class="relative z-10 flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary">cloud_upload</span>
+<p class="text-[11px] text-slate-400 font-medium">Click to upload or drag &amp; drop</p>
+<p class="text-[9px] text-slate-500">Recommended size: 1920x400</p>
+</div>
+</div>
+</section>
+<!-- Section: Profile Info -->
+<section class="space-y-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg">person</span>
+<h3 class="text-sm font-bold">Profile Details</h3>
+</div>
+<div class="flex items-center gap-4 p-4 bg-background-dark/50 rounded-xl border border-border-dark">
+<div class="relative group cursor-pointer">
+<img alt="Avatar" class="size-16 rounded-full border-2 border-primary/50 object-cover" data-alt="User profile photo placeholder" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWyFQ5WrLN7eeTGv_acdFy3372Z_yCvQXm8z0uNP9ugcpsi4lPzG5mSEZlS1VlLoIMs3zxfFev7MwB52LKmAkgqOuTQGPOgHMYfch5_UwWCjhPnC-vXz_rJZgtn07CmtxlJt4n7UqMxrP0hA_BnIaOCulDUnI3M7_LGJYJrht9emWYnGMhAQsB_wcc042jdiJ9Xqn5o6MPd5lfKwe6ztiVck3YtoQzrwM52EXHOtXrKGWlV_hBA8_dn5SM6ZBcyN_Axo9OqIulf2rr"/>
+<div class="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white text-sm">edit</span>
+</div>
+</div>
+<div class="flex-1 space-y-1">
+<label class="text-[10px] font-bold uppercase text-slate-500">Storefront Name</label>
+<input class="w-full bg-transparent border-none p-0 text-sm focus:ring-0 placeholder-slate-600 font-medium" type="text" value="The Creative Collective"/>
+</div>
+</div>
+<div class="space-y-1">
+<label class="text-[10px] font-bold uppercase text-slate-500">Bio / Description</label>
+<textarea class="w-full bg-background-dark/50 border border-border-dark rounded-xl p-3 text-sm focus:ring-1 focus:ring-primary focus:border-primary resize-none" rows="3">Official merch store for the Creative Collective. Premium apparel and digital assets for digital creators.</textarea>
+</div>
+</section>
+<!-- Section: Theme Selection -->
+<section>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary text-lg">palette</span>
+<h3 class="text-sm font-bold">Theme Style</h3>
+</div>
+<div class="grid grid-cols-4 gap-3">
+<button class="h-10 rounded-lg bg-primary border-4 border-white dark:border-slate-800 ring-2 ring-primary"></button>
+<button class="h-10 rounded-lg bg-rose-500 hover:scale-105 transition-transform"></button>
+<button class="h-10 rounded-lg bg-emerald-500 hover:scale-105 transition-transform"></button>
+<button class="h-10 rounded-lg bg-amber-500 hover:scale-105 transition-transform"></button>
+<button class="h-10 rounded-lg bg-sky-500 hover:scale-105 transition-transform"></button>
+<button class="h-10 rounded-lg bg-indigo-500 hover:scale-105 transition-transform"></button>
+<button class="h-10 rounded-lg bg-zinc-800 border border-border-dark hover:scale-105 transition-transform"></button>
+<button class="h-10 rounded-lg border border-border-dark flex items-center justify-center hover:bg-border-dark/30 transition-colors">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</section>
+<!-- Section: Products -->
+<section>
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg">shopping_bag</span>
+<h3 class="text-sm font-bold">Products</h3>
+</div>
+<button class="text-[10px] font-bold text-primary hover:underline">Add New</button>
+</div>
+<div class="space-y-2">
+<!-- Product Item -->
+<div class="flex items-center gap-3 p-3 bg-background-dark/30 hover:bg-background-dark/60 rounded-xl border border-border-dark group cursor-grab active:cursor-grabbing">
+<span class="material-symbols-outlined text-slate-600 cursor-move">drag_indicator</span>
+<div class="size-10 rounded-lg bg-slate-800 overflow-hidden flex-shrink-0">
+<img alt="T-Shirt" class="size-full object-cover" data-alt="Plain white oversized cotton t-shirt" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8aGnbwmdbr8QGFShl9qnvfwCyuqsO_QQapYSYrzveeUy5NPId41kaadIGf7-F_8cesrtoch5aOlI8Xryb8UPw4imsJf6xrkhE7T34LalkcHHS5_uLLwI6KqWFV4cYSAP4DMHlCQa4vZMT0DHMPRfS6wEV6ffre9w_QdHoXker4K9Gx081rCywmguHJbCVZkFjo1ntNffekDzZHgJr1DPGZIQvpeSIHZ7sE79pZr2DxeR6LdYXp85hKbGOH7W4pK9Fp02dFK8hz9Oz"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-xs font-semibold truncate">Classic White Tee</p>
+<p class="text-[10px] text-slate-500">$32.00</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-8 h-4 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Product Item -->
+<div class="flex items-center gap-3 p-3 bg-background-dark/30 hover:bg-background-dark/60 rounded-xl border border-border-dark group cursor-grab">
+<span class="material-symbols-outlined text-slate-600">drag_indicator</span>
+<div class="size-10 rounded-lg bg-slate-800 overflow-hidden flex-shrink-0">
+<img alt="Hoodie" class="size-full object-cover" data-alt="Minimalist black hoodie on hanger" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhIHFxA6N4pPV8mEmu0h6nNcvi1HbghGYF0XXkx_AW7RQ4VQ5QK2MVYnzeFmmjBJIf_D0QfCT0CDFnOlbGGfVBhkVfIOdC3i4RcxoT69JdFcPM66r6YyoVHKN7xFoj_XyHwonRl_Cj2IuhS6A2PMNrfyCBqM9-rFq4y9xe8A-SA0nWFQ60fy7nXgPwRpyuCaTdkSCiuwWRBnJ2_TAhh_zENeUJWIiGQErIt9svBnKweLQEEncYdQKhOtOlazULJccpJVITlMdtR3o5"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-xs font-semibold truncate">Oversized Hoodie</p>
+<p class="text-[10px] text-slate-500">$64.00</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-8 h-4 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer controls -->
+<div class="p-4 border-t border-border-dark flex items-center justify-between">
+<button class="flex items-center gap-2 text-xs font-medium text-slate-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">help</span> Help Center
+                </button>
+<div class="flex items-center gap-3">
+<button class="p-2 text-slate-400 hover:text-white hover:bg-border-dark/50 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm">settings</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Interactive Live Preview (Right) -->
+<section class="flex-1 bg-background-light dark:bg-[#050508] p-8 flex flex-col items-center">
+<!-- Preview Controls Overlay (Mobile/Desktop/Zoom) -->
+<div class="mb-6 flex items-center gap-1 p-1 bg-white dark:bg-panel-dark border border-slate-200 dark:border-border-dark rounded-xl shadow-xl">
+<button class="p-2 bg-primary/10 text-primary rounded-lg">
+<span class="material-symbols-outlined text-lg">desktop_windows</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-white hover:bg-border-dark/50 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-lg">smartphone</span>
+</button>
+<div class="h-4 w-px bg-border-dark mx-2"></div>
+<div class="flex items-center gap-2 px-3">
+<span class="text-[10px] font-bold text-slate-500 uppercase">Zoom</span>
+<span class="text-[11px] font-mono font-bold">85%</span>
+</div>
+<div class="h-4 w-px bg-border-dark mx-2"></div>
+<button class="p-2 text-slate-400 hover:text-white hover:bg-border-dark/50 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-lg">zoom_in</span>
+</button>
+</div>
+<!-- Preview Frame -->
+<div class="w-full max-w-5xl flex-1 bg-white dark:bg-background-dark rounded-2xl shadow-2xl border border-slate-200 dark:border-border-dark overflow-hidden flex flex-col relative">
+<!-- Mock Browser Toolbar -->
+<div class="h-10 bg-slate-100 dark:bg-background-dark/80 border-b border-slate-200 dark:border-border-dark flex items-center px-4 gap-4">
+<div class="flex gap-1.5">
+<div class="size-2.5 rounded-full bg-rose-500/30"></div>
+<div class="size-2.5 rounded-full bg-amber-500/30"></div>
+<div class="size-2.5 rounded-full bg-emerald-500/30"></div>
+</div>
+<div class="flex-1 max-w-md mx-auto h-6 bg-white dark:bg-panel-dark border border-slate-200 dark:border-border-dark rounded-md flex items-center px-3 gap-2">
+<span class="material-symbols-outlined text-[10px] text-slate-500">lock</span>
+<p class="text-[10px] text-slate-500 truncate">merchforge.ai/creative-collective</p>
+</div>
+</div>
+<!-- Actual Website Mockup Scrollable -->
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<!-- Store Banner -->
+<div class="relative h-48 w-full bg-gradient-to-r from-primary to-indigo-800">
+<img alt="Banner" class="size-full object-cover opacity-60" data-alt="Abstract fluid wave pattern" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiH1Eq2lYSq3OX5LgB2Mo27Y4H9exGp9k4j8XzahCoUcowMsQvl3Ex1eTHSdEimV57ypBmFhnHQ-4d2VZ_UaCPm8TfDbOrAIqdtKiQuTOtxPHxkLuv_ebPokZ1SWr5l0kptvc6B-PsVkhGODoYhL57_xsk1mmb7-uoVq-oq7EScEEaPwW_G1XjeLGmlcdcLDoIKhXVkDK-nK2YakPBe-s119jq6YP8v9NHHG5Z3XNOSli4Vcoeq912Lo_QhBjt0l0jz74hDGk_bnCM"/>
+</div>
+<div class="max-w-4xl mx-auto px-8 -mt-10 pb-20 relative">
+<!-- Profile Header -->
+<div class="flex flex-col items-center text-center">
+<div class="size-24 rounded-full border-4 border-white dark:border-background-dark overflow-hidden bg-slate-200">
+<img alt="Avatar" class="size-full object-cover" data-alt="Person profile photo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNhGhkDKsr_LID_fLnCUkvSQLwqIajSkHZEj1NtlRtpv8ucewKbhaFC__w5eI_EsEuDWNJ5f62OrLtAjziGRm2MuX2u-N78apcuu2JJf70OYbPWFhkUc2wvaj-tj26Stdi5oSLxr7ZDmmQwdRFBclDGvxnLMgvLx4xK_GYEmWnyrMbVqRtiS7Ru3IWDUlQRthObFdyd55Ac8UrAk_vGWZymF08OcZsm3oCoAwPGDg3yJr6LP0YD4cta64xNtvM09WLfLq2uF01tYnD"/>
+</div>
+<h2 class="mt-4 text-2xl font-bold">The Creative Collective</h2>
+<p class="mt-2 text-slate-400 text-sm max-w-md">Official merch store for the Creative Collective. Premium apparel and digital assets for digital creators.</p>
+<div class="flex gap-4 mt-6">
+<button class="px-6 py-2 bg-primary text-white text-xs font-bold rounded-full">Follow Store</button>
+<button class="px-6 py-2 bg-white dark:bg-panel-dark border border-border-dark text-xs font-bold rounded-full">Share Profile</button>
+</div>
+</div>
+<!-- Product Grid -->
+<div class="mt-16 grid grid-cols-3 gap-6">
+<!-- Product Card -->
+<div class="bg-slate-50 dark:bg-panel-dark/40 rounded-xl overflow-hidden border border-border-dark/50 hover:border-primary/50 transition-colors group cursor-pointer">
+<div class="aspect-square bg-slate-200 dark:bg-slate-800 overflow-hidden">
+<img alt="Product" class="size-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Model wearing a white t-shirt" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBO7OJElyXcwkpNMfSdBQ6xRc_N9lKfDPU2K3UO52S3JudJxDVdTTVwQXPXqV50EqeGhg-DudmIOzmsUn8McTq60IY6zBJ66KAEsbC-lAGMdv0Uoi9mWFOYts4Tu_1qw0eYvInkUwHoQVR6KQZnIi1tuA4O1EDtGH4Kbq1jjsPTPFmLO5_d47PlQIynK7ixDIehH9b8_KNu6kRWD-y0pu5ONAKMoxVa78gdM6gRFDUDodYxSEP-ovzf6VZRJIupTKq_qrtgSqYszmM2"/>
+</div>
+<div class="p-4 flex justify-between items-start">
+<div>
+<h4 class="text-sm font-bold">Classic White Tee</h4>
+<p class="text-xs text-slate-500 mt-1">Apparel</p>
+</div>
+<p class="text-sm font-bold text-primary">$32</p>
+</div>
+</div>
+<!-- Product Card -->
+<div class="bg-slate-50 dark:bg-panel-dark/40 rounded-xl overflow-hidden border border-border-dark/50 hover:border-primary/50 transition-colors group cursor-pointer">
+<div class="aspect-square bg-slate-200 dark:bg-slate-800 overflow-hidden">
+<img alt="Product" class="size-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Close up of black hoodie texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPlQdRCOSBZ11rPvCstnnXI9CEHwumuOQMCXc3CAVjkV1IeMui67KHMulBaKgNXjjuNZj-0-JieUgIUK5pGZ9S47Nd4Srv1n87rWjJl4yp61t_KJHQ_UDQrU-P7S0FNce8yczTuU1VT_O67tmfBLtK8iLARcjzGAaUKCgdvmPh-PS8P2cD1DKJjnEPCLrJEWCb-p_J4n4r3w0JRIumgTHi98z_9hr2dx9QQ9KyAY_i7HthL3VcyvJ1RYbX-jIyq3BrfiAAMDh945sc"/>
+</div>
+<div class="p-4 flex justify-between items-start">
+<div>
+<h4 class="text-sm font-bold">Oversized Hoodie</h4>
+<p class="text-xs text-slate-500 mt-1">Apparel</p>
+</div>
+<p class="text-sm font-bold text-primary">$64</p>
+</div>
+</div>
+<!-- Product Card -->
+<div class="bg-slate-50 dark:bg-panel-dark/40 rounded-xl overflow-hidden border border-border-dark/50 hover:border-primary/50 transition-colors group cursor-pointer">
+<div class="aspect-square bg-slate-200 dark:bg-slate-800 overflow-hidden relative">
+<img alt="Product" class="size-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Canvas tote bag with minimalist logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAu67-LfoBDNGxdgq3UZ6bj-WUhfKEx1e6IOBE42B3V6jjyD6QwAUOUj1Bj2KilGxmQUWNQg_HRt1b0r7Duij4fDMnYIYbCX6sCcwfj2Z2lGdMRIXM1h-qlP_iu8tiDy7FxTdoMqkOyzYw06XAo5Ep3IBOR8E2M74b2PAC-e1dxZ2AkeEC4Y_quI6sK64Ex-pdulLrBul7x-xxQKOO78eO0OJOWRK91adKJHEUQg0UDXHwO-5PgLUkz5va5vJ23hijkWN1oWc2EcB6-"/>
+<div class="absolute top-2 right-2 px-2 py-1 bg-primary text-white text-[8px] font-black uppercase rounded">New Drop</div>
+</div>
+<div class="p-4 flex justify-between items-start">
+<div>
+<h4 class="text-sm font-bold">Creator Tote</h4>
+<p class="text-xs text-slate-500 mt-1">Accessories</p>
+</div>
+<p class="text-sm font-bold text-primary">$24</p>
+</div>
+</div>
+</div>
+<!-- Footer Mock -->
+<footer class="mt-20 py-10 border-t border-border-dark/30 text-center">
+<p class="text-[10px] text-slate-600 font-medium">Powered by MerchForge AI</p>
+</footer>
+</div>
+</div>
+<!-- Refresh/Sync Indicator Toast -->
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2 bg-panel-dark border border-border-dark rounded-full shadow-2xl">
+<span class="material-symbols-outlined text-xs text-primary animate-spin">sync</span>
+<span class="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Live Syncing</span>
+</div>
+</div>
+<!-- Bottom floating tips -->
+<p class="mt-4 text-[11px] text-slate-500 font-medium flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">info</span>
+                Tip: Use high-quality PNGs for apparel designs to ensure best print results.
+            </p>
+</section>
+</main>
+</body></html>

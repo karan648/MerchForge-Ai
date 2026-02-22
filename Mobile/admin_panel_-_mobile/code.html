@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MerchForge AI Admin Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#895af6",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#0f0f12",
+                        "surface": "#1c1c21",
+                        "surface-light": "#2d2d35",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .chart-gradient {
+            background: linear-gradient(180deg, rgba(137, 90, 246, 0.2) 0%, rgba(137, 90, 246, 0) 100%);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen pb-24">
+<!-- Header Section -->
+<header class="sticky top-0 z-30 flex items-center justify-between p-4 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">auto_awesome</span>
+</div>
+<div>
+<h1 class="text-sm font-medium text-slate-500 dark:text-slate-400">MerchForge AI</h1>
+<p class="text-lg font-bold leading-none">Admin Panel</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="size-10 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-surface hover:bg-slate-200 dark:hover:bg-surface-light transition-colors relative">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-300">notifications</span>
+<span class="absolute top-2.5 right-2.5 size-2 bg-primary rounded-full border-2 border-background-light dark:border-background-dark"></span>
+</button>
+<button class="size-10 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-surface hover:bg-slate-200 dark:hover:bg-surface-light transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-300">menu</span>
+</button>
+</div>
+</header>
+<main class="p-4 space-y-6 max-w-2xl mx-auto">
+<!-- Welcome Section -->
+<section>
+<h2 class="text-2xl font-bold tracking-tight">Hello, Admin</h2>
+<p class="text-slate-500 dark:text-slate-400">Platform activity is up 12% today.</p>
+</section>
+<!-- Stats Horizontal Scroll -->
+<section class="flex gap-4 overflow-x-auto custom-scrollbar pb-2 -mx-4 px-4">
+<div class="flex-none w-40 p-4 rounded-xl bg-white dark:bg-surface border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Total Users</p>
+<p class="text-xl font-bold">12,840</p>
+<div class="mt-2 flex items-center gap-1 text-emerald-500 text-xs font-bold">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>+12%</span>
+</div>
+</div>
+<div class="flex-none w-40 p-4 rounded-xl bg-white dark:bg-surface border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Daily Revenue</p>
+<p class="text-xl font-bold">$4,250</p>
+<div class="mt-2 flex items-center gap-1 text-emerald-500 text-xs font-bold">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>+5%</span>
+</div>
+</div>
+<div class="flex-none w-40 p-4 rounded-xl bg-white dark:bg-surface border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Pending Mods</p>
+<p class="text-xl font-bold">18</p>
+<div class="mt-2 flex items-center gap-1 text-amber-500 text-xs font-bold">
+<span class="material-symbols-outlined text-sm">priority_high</span>
+<span>Action Req.</span>
+</div>
+</div>
+</section>
+<!-- Revenue Chart Preview -->
+<section class="p-5 rounded-xl bg-white dark:bg-surface border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-bold text-lg">Revenue Overview</h3>
+<div class="flex bg-slate-100 dark:bg-background-dark rounded-lg p-1">
+<button class="px-3 py-1 text-xs font-medium rounded-md bg-white dark:bg-surface shadow-sm">Week</button>
+<button class="px-3 py-1 text-xs font-medium text-slate-500">Month</button>
+</div>
+</div>
+<div class="relative h-40 w-full">
+<!-- SVG Chart Mockup -->
+<svg class="w-full h-full" viewbox="0 0 400 100">
+<defs>
+<lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#895af6" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#895af6" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,80 Q50,70 100,40 T200,50 T300,20 T400,30 V100 H0 Z" fill="url(#chartGradient)"></path>
+<path d="M0,80 Q50,70 100,40 T200,50 T300,20 T400,30" fill="none" stroke="#895af6" stroke-linecap="round" stroke-width="3"></path>
+<!-- Points -->
+<circle cx="100" cy="40" fill="#895af6" r="4"></circle>
+<circle cx="300" cy="20" fill="#895af6" r="4"></circle>
+</svg>
+<div class="absolute bottom-0 left-0 right-0 flex justify-between text-[10px] text-slate-400 font-medium px-1">
+<span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span><span>SUN</span>
+</div>
+</div>
+</section>
+<!-- Recent Activity / User Management -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="font-bold text-lg">Recent Users</h3>
+<button class="text-primary text-sm font-semibold">View All</button>
+</div>
+<div class="bg-white dark:bg-surface rounded-xl border border-slate-200 dark:border-slate-800 divide-y divide-slate-100 dark:divide-slate-800 overflow-hidden">
+<!-- User Item 1 -->
+<div class="p-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img alt="User Avatar" class="size-10 rounded-full bg-slate-100 dark:bg-background-dark" data-alt="Stylized user avatar for Felix" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCARNeg7PVXkwrB_a5ygPxgJBRHt4jLf0B_jjV-6G_ch_VPSatfSh0CrfpBgtVqlFAf0KiXCiT_VvLwhfx68gokk9loJYcbEImav02H-03iT7xF7deQ1-4U-40PuYBHEVZhLlK0jDxr5c2z29dwJfefM_0nyMz9OYvPvjWz1mVp_0UHajWT0g5WOywRVn0THpt5EwoQ4X6YR6Cew1QOFzkZLKpVpXHzjLJS4XJ7IAClq9npKz7ChmU6pK4M1mXbDwzapkfyDTho_Fp_"/>
+<div>
+<p class="font-semibold text-sm">Felix Miller</p>
+<p class="text-xs text-slate-500">felix@merchforge.ai</p>
+</div>
+</div>
+<span class="px-2 py-1 rounded-full bg-emerald-100 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold uppercase tracking-wider">Active</span>
+</div>
+<!-- User Item 2 -->
+<div class="p-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img alt="User Avatar" class="size-10 rounded-full bg-slate-100 dark:bg-background-dark" data-alt="Stylized user avatar for Sarah" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfJVzYx6_WTepa6Vl__KAfpzyNRL6ZnMqJc6KRe0KdZtxObG4ooDbeES0LNgDE5tZEdJDnmL1rWDXXm22140lA91DiemGdBFh8XxSJPPNy1EIFoLKgqw3d7XHw_RvbxlLk32cMDnlPykqoReeQ64s97jlJj-TB0PTZxqjRg7r6w7huszywKTbiqXT95KwwlykWoowiJb7JARVw0Z4L2gNDtnxrCeWmH-QGDYmwwa5DU6YFU_R1AbEH0Q14mcdS5U8GWS8R3MTiw1Ke"/>
+<div>
+<p class="font-semibold text-sm">Sarah Jenkins</p>
+<p class="text-xs text-slate-500">s.jenkins@gmail.com</p>
+</div>
+</div>
+<span class="px-2 py-1 rounded-full bg-amber-100 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[10px] font-bold uppercase tracking-wider">Pending</span>
+</div>
+<!-- User Item 3 -->
+<div class="p-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img alt="User Avatar" class="size-10 rounded-full bg-slate-100 dark:bg-background-dark" data-alt="Stylized user avatar for Marcus" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpfvlSIaX_H4IJZCDYlpjh7lHXCGb3e0fIT5bmNA5gbgoBY53Eisk9qSUwSM5oii1F99-_kq949ZUSDxCA5HmlHCvsznzbJ6Azme1RPfnrEYFaXTVfMK3TgUJxysQW48SOiH0BGnSaowIZ0Sy5KeF9xXlwKj46vxRYPjV-LNjs3o6EzUDSVM-cQ7VLSj6a8wXyerdb1XR-SqfjN-RqGg31uAbyrKx5uSO3J0odQLDbetS0ZCGrU9dhBXyQCjaDQlBSxjl4VGBAeZTC"/>
+<div>
+<p class="font-semibold text-sm">Marcus Chen</p>
+<p class="text-xs text-slate-500">m.chen@outlook.com</p>
+</div>
+</div>
+<span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-500/10 text-slate-500 text-[10px] font-bold uppercase tracking-wider">Banned</span>
+</div>
+</div>
+</section>
+<!-- System Settings Quick Toggles -->
+<section class="space-y-4">
+<h3 class="font-bold text-lg">System Health</h3>
+<div class="grid grid-cols-1 gap-3">
+<div class="flex items-center justify-between p-4 bg-white dark:bg-surface rounded-xl border border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">security</span>
+<p class="text-sm font-medium">Auto-Moderation</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between p-4 bg-white dark:bg-surface rounded-xl border border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">speed</span>
+<p class="text-sm font-medium">High Performance Mode</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</section>
+</main>
+<!-- Floating Action Button -->
+<button class="fixed right-6 bottom-24 size-14 bg-primary text-white rounded-full shadow-xl shadow-primary/30 flex items-center justify-center z-40">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-background-dark/90 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 px-6 py-3 flex items-center justify-between z-50">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">dashboard</span>
+<span class="text-[10px] font-bold">Dashboard</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-medium">Users</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">shield_person</span>
+<span class="text-[10px] font-medium">Moderation</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="text-[10px] font-medium">Analytics</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium">Settings</span>
+</a>
+</nav>
+</body></html>

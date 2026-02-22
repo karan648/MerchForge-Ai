@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Store Builder - Brand &amp; Logo</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#895af6",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#0a0a0c",
+                        "card-dark": "#151022",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-primary/10 bg-white/50 dark:bg-card-dark/50 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-3">
+<div class="bg-primary p-1.5 rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-2xl">rocket_launch</span>
+</div>
+<h2 class="text-xl font-bold tracking-tight">Store Builder</h2>
+</div>
+<div class="flex items-center gap-4">
+<div class="text-right hidden sm:block">
+<p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Signed in as</p>
+<p class="text-sm font-semibold">Alex Rivera</p>
+</div>
+<div class="size-10 rounded-full border-2 border-primary/20 p-0.5 overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover rounded-full" data-alt="User profile avatar showing a modern professional person" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFsJSFe__sezh1-JdlMWJZh769Hdrp7JSOal_CXdCcVqy18TYUBnJsieH-XwEtKw7fUWaZZGBD7Y-h1rEBOzIpQZsodf1EPD4eNJe31PSDZdia0kIRJ99WdAFRefKVq0ykVzVHEqgqIn3CL15wue3hnryjPNDr759CjRfeCqlP9mvICAl6Gj3uOsJRm90Hi-uvVfyihmQlc_NtJikN-AhO74swlzlMEmK2ah8ybSdZwMVdZ7XefH_MnMa8FJvNYUEU5dsBrOoSNmrt"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 flex items-center justify-center p-6">
+<div class="w-full max-w-xl">
+<!-- Progress Section -->
+<div class="mb-10">
+<div class="flex justify-between items-end mb-4">
+<div>
+<span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">Step 1 of 4</span>
+<h1 class="text-3xl font-black mt-3 tracking-tight">Let's start with your brand.</h1>
+</div>
+<p class="text-primary font-bold text-lg">25%</p>
+</div>
+<div class="h-2 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-500" style="width: 25%;"></div>
+</div>
+<p class="mt-4 text-slate-600 dark:text-slate-400 leading-relaxed text-lg">Give your merch store a name and identity to stand out from the crowd.</p>
+</div>
+<!-- Onboarding Card -->
+<div class="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-primary/10 shadow-2xl shadow-primary/5 p-8">
+<div class="space-y-8">
+<!-- Brand Name Input -->
+<div class="space-y-2">
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 ml-1" for="brand-name">
+                            Brand Name
+                        </label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">
+                                storefront
+                            </span>
+<input class="w-full bg-slate-50 dark:bg-background-dark/50 border border-slate-200 dark:border-slate-800 rounded-lg py-4 pl-12 pr-4 text-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600" id="brand-name" placeholder="e.g. Neon Nights" type="text"/>
+</div>
+</div>
+<!-- Logo Upload Area -->
+<div class="space-y-2">
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 ml-1">
+                            Logo Upload
+                        </label>
+<div class="relative">
+<input class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" id="logo-upload" type="file"/>
+<div class="border-2 border-dashed border-slate-300 dark:border-slate-800 rounded-xl p-10 flex flex-col items-center justify-center gap-4 bg-slate-50/50 dark:bg-background-dark/30 hover:bg-primary/5 hover:border-primary/50 transition-all group">
+<div class="size-16 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl">cloud_upload</span>
+</div>
+<div class="text-center">
+<p class="text-lg font-bold">Drag and drop or <span class="text-primary hover:underline">browse</span></p>
+<p class="text-sm text-slate-500 mt-1">Supports PNG, JPG, SVG (Max 5MB)</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="pt-4">
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 px-6 rounded-lg text-lg flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/20 hover:shadow-primary/30 active:scale-[0.98]">
+                            Next Step
+                            <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button class="w-full mt-4 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 font-medium py-2 text-sm transition-colors">
+                            Skip for now
+                        </button>
+</div>
+</div>
+</div>
+<!-- Trust Footer -->
+<div class="mt-8 flex items-center justify-center gap-8 opacity-40 grayscale">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">shield</span>
+<span class="text-xs font-bold uppercase tracking-widest">Secure Data</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">verified</span>
+<span class="text-xs font-bold uppercase tracking-widest">Premium Tools</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Background Decoration -->
+<div class="fixed top-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/10 blur-[120px] rounded-full -z-10"></div>
+<div class="fixed bottom-[-10%] left-[-10%] w-[30%] h-[30%] bg-primary/5 blur-[100px] rounded-full -z-10"></div>
+</body></html>

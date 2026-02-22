@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MerchForge AI - Design Generator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#895af6",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#09090b",
+                        "surface-dark": "#18181b",
+                        "border-dark": "#27272a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 4px;
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 10px;
+        }
+        .glass-nav {
+            backdrop-filter: blur(12px);
+            background-color: rgba(9, 9, 11, 0.8);
+        }
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased font-display">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 border-r border-slate-200 dark:border-border-dark flex flex-col bg-white dark:bg-background-dark shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-xl">pest_control</span>
+</div>
+<div class="flex flex-col">
+<span class="font-bold text-sm tracking-tight">MerchForge AI</span>
+<span class="text-[10px] text-primary font-semibold uppercase tracking-widest">Premium Plan</span>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-surface-dark rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+                    Dashboard
+                </a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium bg-primary/10 text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px] fill-current">magic_button</span>
+                    Generator
+                </a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-surface-dark rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">photo_library</span>
+                    My Library
+                </a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-surface-dark rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">app_registration</span>
+                    Mockups
+                </a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-surface-dark rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+                    Settings
+                </a>
+</nav>
+<div class="p-4 mt-auto">
+<div class="p-4 bg-slate-100 dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-border-dark">
+<p class="text-xs text-slate-500 dark:text-slate-400 mb-2">Usage</p>
+<div class="w-full bg-slate-200 dark:bg-border-dark h-1.5 rounded-full overflow-hidden mb-2">
+<div class="bg-primary h-full w-[65%]"></div>
+</div>
+<p class="text-[10px] font-medium uppercase tracking-wider text-slate-700 dark:text-slate-200">150 / 500 Credits Left</p>
+</div>
+<div class="mt-4 flex items-center gap-3 px-2">
+<div class="w-8 h-8 rounded-full bg-slate-300 dark:bg-border-dark overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="User profile avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAN5-DJk3MIHwTVLPtBiPraoEbiTMRKCVRbJPJZJfMaobYeT9Rx1PMRmeEXV2pjNE-90Outompn-CNk_wwEQ0rRILu7bO5T18J2MwzvT1Odk_LQH4VSgSq8eX_fZ0pOmiZzXF_9RSi6dLPFFDVZNTCB8D9rfyw9vGFvLwySpyj4VDddmx2NfWWcVARa7jhzWuSlErByLpdt3-aU3r6tbEvVlm_eWogMEKwlHwMjCa6MqMRxE5sY95HOHaI1gnrHafkYf1tIk97qQEGZ"/>
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-semibold">Alex Rivera</span>
+<span class="text-[10px] text-slate-500">alex@merchforge.ai</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col overflow-hidden">
+<!-- Top Navbar -->
+<header class="h-16 border-b border-slate-200 dark:border-border-dark flex items-center justify-between px-8 bg-white dark:bg-background-dark/50 backdrop-blur-md shrink-0 z-10">
+<div class="flex-1 max-w-xl">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full bg-slate-100 dark:bg-surface-dark border-none rounded-xl py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-slate-500" placeholder="Search generations, styles or projects..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+                        Buy Credits
+                    </button>
+<div class="h-8 w-[1px] bg-slate-200 dark:border-border-dark mx-2"></div>
+<button class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+</header>
+<!-- Scrollable Page Content -->
+<div class="flex-1 overflow-y-auto custom-scrollbar p-8">
+<div class="max-w-6xl mx-auto space-y-8">
+<!-- Generator Input Section -->
+<section class="space-y-4">
+<div class="relative group">
+<textarea class="w-full h-32 bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark rounded-xl p-6 text-lg font-medium resize-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600 shadow-sm" placeholder="Describe the merch of your dreams (e.g., A cyberpunk oni mask with neon accents, vector art style)..."></textarea>
+<div class="absolute bottom-4 right-4 flex items-center gap-2">
+<span class="text-[10px] text-slate-400 font-mono">⌘ + Enter to generate</span>
+<button class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg font-bold shadow-[0_0_20px_rgba(137,90,246,0.3)] flex items-center gap-2 transition-all active:scale-95">
+<span class="material-symbols-outlined text-xl">auto_awesome</span>
+                                    Generate
+                                </button>
+</div>
+</div>
+<!-- Row of Controls -->
+<div class="flex flex-wrap items-center gap-6 p-4 bg-slate-50 dark:bg-surface-dark/50 border border-slate-200 dark:border-border-dark rounded-xl">
+<!-- Style Preset Chips -->
+<div class="flex flex-col gap-2 flex-1 min-w-[300px]">
+<span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Style Preset</span>
+<div class="flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
+<button class="px-4 py-1.5 rounded-full bg-primary text-white text-xs font-semibold whitespace-nowrap">Cyberpunk</button>
+<button class="px-4 py-1.5 rounded-full bg-white dark:bg-border-dark border border-slate-200 dark:border-border-dark text-slate-600 dark:text-slate-300 text-xs font-semibold whitespace-nowrap hover:border-primary/50 transition-colors">Minimalist</button>
+<button class="px-4 py-1.5 rounded-full bg-white dark:bg-border-dark border border-slate-200 dark:border-border-dark text-slate-600 dark:text-slate-300 text-xs font-semibold whitespace-nowrap hover:border-primary/50 transition-colors">Vintage</button>
+<button class="px-4 py-1.5 rounded-full bg-white dark:bg-border-dark border border-slate-200 dark:border-border-dark text-slate-600 dark:text-slate-300 text-xs font-semibold whitespace-nowrap hover:border-primary/50 transition-colors">Vaporwave</button>
+<button class="px-4 py-1.5 rounded-full bg-white dark:bg-border-dark border border-slate-200 dark:border-border-dark text-slate-600 dark:text-slate-300 text-xs font-semibold whitespace-nowrap hover:border-primary/50 transition-colors">Vector Art</button>
+<button class="px-4 py-1.5 rounded-full bg-white dark:bg-border-dark border border-slate-200 dark:border-border-dark text-slate-600 dark:text-slate-300 text-xs font-semibold whitespace-nowrap hover:border-primary/50 transition-colors">90s Streetwear</button>
+</div>
+</div>
+<!-- Color Palette Selector -->
+<div class="flex flex-col gap-2">
+<span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Color Palette</span>
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-primary ring-2 ring-primary ring-offset-2 dark:ring-offset-background-dark cursor-pointer shadow-sm"></div>
+<div class="w-6 h-6 rounded-full bg-pink-500 cursor-pointer hover:scale-110 transition-transform"></div>
+<div class="w-6 h-6 rounded-full bg-cyan-400 cursor-pointer hover:scale-110 transition-transform"></div>
+<div class="w-6 h-6 rounded-full bg-emerald-400 cursor-pointer hover:scale-110 transition-transform"></div>
+<button class="w-6 h-6 rounded-full border border-dashed border-slate-400 dark:border-slate-600 flex items-center justify-center text-slate-400">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+<!-- Upload Reference -->
+<div class="flex flex-col gap-2">
+<span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Reference Image</span>
+<button class="flex items-center gap-2 bg-white dark:bg-border-dark border border-slate-200 dark:border-border-dark px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-[18px]">upload</span>
+                                    Upload
+                                </button>
+</div>
+<!-- Variations Slider -->
+<div class="flex flex-col gap-2 w-32">
+<div class="flex justify-between items-center">
+<span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Variations</span>
+<span class="text-[10px] font-mono font-bold text-primary">4</span>
+</div>
+<input class="w-full h-1.5 bg-slate-200 dark:bg-border-dark rounded-lg appearance-none cursor-pointer accent-primary" max="8" min="1" type="range" value="4"/>
+</div>
+</div>
+</section>
+<!-- Generations Grid -->
+<section class="space-y-6">
+<div class="flex items-center justify-between">
+<h2 class="text-xl font-bold tracking-tight">Your Generations</h2>
+<div class="flex items-center gap-2">
+<button class="p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-surface-dark rounded-lg transition-colors">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+<button class="p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-surface-dark rounded-lg transition-colors">
+<span class="material-symbols-outlined">grid_view</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<!-- Loading Card: Generating -->
+<div class="aspect-square bg-slate-100 dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-border-dark relative overflow-hidden flex flex-col items-center justify-center p-8 text-center space-y-4">
+<div class="absolute inset-0 shimmer"></div>
+<div class="w-16 h-16 bg-slate-200 dark:bg-border-dark rounded-full flex items-center justify-center animate-pulse">
+<span class="material-symbols-outlined text-primary text-3xl">brush</span>
+</div>
+<div class="space-y-2 w-full max-w-[140px] relative z-10">
+<p class="text-xs font-semibold text-slate-400 dark:text-slate-500">Generating...</p>
+<div class="w-full bg-slate-200 dark:bg-border-dark h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[65%] rounded-full shadow-[0_0_8px_rgba(137,90,246,0.5)]"></div>
+</div>
+<p class="text-[10px] text-slate-400/60">Estimated: 12s</p>
+</div>
+</div>
+<!-- Loading Card: Queued -->
+<div class="aspect-square bg-slate-50 dark:bg-surface-dark/30 border border-dashed border-slate-300 dark:border-border-dark rounded-xl flex flex-col items-center justify-center p-8 text-center space-y-2">
+<div class="w-10 h-10 border-2 border-slate-300 dark:border-border-dark rounded-full flex items-center justify-center animate-spin border-t-primary"></div>
+<p class="text-xs font-semibold text-slate-400">Queued</p>
+<p class="text-[10px] text-slate-400/60 uppercase tracking-widest">#3 in line</p>
+</div>
+<!-- Generation Card: Completed 1 -->
+<div class="group relative aspect-square bg-slate-200 dark:bg-border-dark rounded-xl border border-slate-200 dark:border-border-dark overflow-hidden shadow-sm hover:shadow-xl hover:shadow-primary/5 hover:border-primary/30 transition-all">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Cyberpunk oni mask design with neon purple accents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPSjjvewf3fpztpQFQlVfm9zG6IvAbIWjOTJVabrTBIiaLE8V79jNAQQrN44bKUkTge40gkmyl2CNa6wMYFfyNuEcMtu-j0nvcGkQXQmSnu0RLZ7nnHAMx6lHBp7vO362R_ukQoD-BTRYugJGd-41FqA9DuusQiSbsATk9sk5vPn4XxlDiT0mwp-kg6poHa6yPGeErh6vqx__OwvR8x9JGa-x2ETv1OK53dS4fhFz3izSmdNqv5ZqDofTBUflUHXHfQcD4UXQYw6-T"/>
+<!-- Hover Actions -->
+<div class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-4">
+<div class="flex justify-end gap-2">
+<button class="w-8 h-8 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center hover:bg-white/20 transition-colors">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center hover:bg-white/20 transition-colors">
+<span class="material-symbols-outlined text-[18px]">share</span>
+</button>
+</div>
+<div class="flex items-center gap-1.5 justify-center bg-black/60 backdrop-blur-xl border border-white/10 p-1.5 rounded-xl shadow-2xl">
+<button class="flex-1 flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-white/10 text-white transition-colors" title="Upscale">
+<span class="material-symbols-outlined text-[18px]">zoom_out_map</span>
+<span class="text-[8px] font-bold uppercase tracking-tighter">Upscale</span>
+</button>
+<button class="flex-1 flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-white/10 text-white transition-colors" title="Edit">
+<span class="material-symbols-outlined text-[18px]">auto_fix_high</span>
+<span class="text-[8px] font-bold uppercase tracking-tighter">Edit</span>
+</button>
+<button class="flex-1 flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-white/10 text-white transition-colors" title="Remove BG">
+<span class="material-symbols-outlined text-[18px]">layers_clear</span>
+<span class="text-[8px] font-bold uppercase tracking-tighter">No BG</span>
+</button>
+<button class="flex-1 flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-primary text-white transition-colors" title="Mockup">
+<span class="material-symbols-outlined text-[18px]">checkroom</span>
+<span class="text-[8px] font-bold uppercase tracking-tighter">Mockup</span>
+</button>
+<button class="flex-1 flex flex-col items-center gap-1 p-2 rounded-lg bg-primary hover:bg-primary/90 text-white transition-colors" title="Sell">
+<span class="material-symbols-outlined text-[18px]">shopping_cart</span>
+<span class="text-[8px] font-bold uppercase tracking-tighter">Sell</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Generation Card: Completed 2 -->
+<div class="group relative aspect-square bg-slate-200 dark:bg-border-dark rounded-xl border border-slate-200 dark:border-border-dark overflow-hidden shadow-sm hover:shadow-xl hover:shadow-primary/5 hover:border-primary/30 transition-all">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Minimalist abstract wave pattern graphic for apparel" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYTX7ML9nQkBRu5N04tb4y4I4xCos-9ko9WakFlx0XXQk5QRFTRKfHqFb6_kG37fgjIkoy-f5ge8AbL2JbFuxpTMm_CL7i7DnSVFf8wZh0mp8bVZvF0TEf5oBB_CfnI8inGD4vfuZ4jJPY5E77z_evL3gsBN8_3Uw-wZAo_caQACM_LdKwLcDgMSGHvih-WWbB2XeoLEp5BZwZVdNP4Q8c8l6UojfsjjEMqxWgVtukrXHc5YD4xHlDIdapX8eNjX1F-gpoMufipCJF"/>
+<!-- Hover Actions -->
+<div class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+<div class="flex items-center gap-1.5 justify-center bg-black/60 backdrop-blur-xl border border-white/10 p-1.5 rounded-xl shadow-2xl">
+<button class="flex-1 flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-white/10 text-white">
+<span class="material-symbols-outlined text-[18px]">zoom_out_map</span>
+<span class="text-[8px] font-bold uppercase tracking-tighter">Upscale</span>
+</button>
+<button class="flex-1 flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-white/10 text-white">
+<span class="material-symbols-outlined text-[18px]">auto_fix_high</span>
+<span class="text-[8px] font-bold uppercase tracking-tighter">Edit</span>
+</button>
+<button class="flex-1 flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-white/10 text-white">
+<span class="material-symbols-outlined text-[18px]">layers_clear</span>
+<span class="text-[8px] font-bold uppercase tracking-tighter">No BG</span>
+</button>
+<button class="flex-1 flex flex-col items-center gap-1 p-2 rounded-lg bg-primary text-white">
+<span class="material-symbols-outlined text-[18px]">checkroom</span>
+<span class="text-[8px] font-bold uppercase tracking-tighter">Mockup</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Generation Card: Completed 3 -->
+<div class="group relative aspect-square bg-slate-200 dark:bg-border-dark rounded-xl border border-slate-200 dark:border-border-dark overflow-hidden shadow-sm hover:shadow-xl hover:shadow-primary/5 hover:border-primary/30 transition-all">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Vintage 90s style streetwear illustration with pastel colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2R4H1iXzuH5xEaGvZdISqWyqNyI_JbkmmGY9RI8sI-mFdmbbW4KNoozRdpAKYsUfrwQNBtRcsejXCpjVM1-FV6S62D4mFmD3aWWk1rHcK4327WsfrQf4DJEipzZ2nsJNgilY_E5ebSGNo5LaOM7UfUiGybAQ1TO9baPjwq1ycV-oHVcjafBXeRa63GhTqIal-17N1k0obyAgI-IK3BFMRu0xCrFmCXH56zkWWWek13d6nFf6NLuLRtnJXVhxwcIq_BOrvNu9fqLus"/>
+<!-- Hover Actions -->
+<div class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+<div class="flex items-center gap-1.5 justify-center bg-black/60 backdrop-blur-xl border border-white/10 p-1.5 rounded-xl shadow-2xl">
+<button class="flex-1 flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-white/10 text-white">
+<span class="material-symbols-outlined text-[18px]">zoom_out_map</span>
+<span class="text-[8px] font-bold uppercase tracking-tighter">Upscale</span>
+</button>
+<button class="flex-1 flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-white/10 text-white">
+<span class="material-symbols-outlined text-[18px]">auto_fix_high</span>
+<span class="text-[8px] font-bold uppercase tracking-tighter">Edit</span>
+</button>
+<button class="flex-1 flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-white/10 text-white">
+<span class="material-symbols-outlined text-[18px]">layers_clear</span>
+<span class="text-[8px] font-bold uppercase tracking-tighter">No BG</span>
+</button>
+<button class="flex-1 flex flex-col items-center gap-1 p-2 rounded-lg bg-primary text-white">
+<span class="material-symbols-outlined text-[18px]">checkroom</span>
+<span class="text-[8px] font-bold uppercase tracking-tighter">Mockup</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Empty State Marker (Optional if grid fills up) -->
+<div class="hidden py-20 flex flex-col items-center justify-center text-center opacity-40">
+<span class="material-symbols-outlined text-6xl mb-4">image_search</span>
+<h3 class="text-lg font-semibold">Ready to create?</h3>
+<p class="text-sm">Describe your idea above to see your first generations here.</p>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

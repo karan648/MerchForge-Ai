@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Register | MerchForge AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#895af6",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#09090b",
+                        "surface-dark": "#18181b",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .glass-effect {
+            background: rgba(24, 24, 27, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .bg-mesh {
+            background-image: radial-gradient(at 0% 0%, rgba(137, 90, 246, 0.15) 0px, transparent 50%),
+                              radial-gradient(at 100% 100%, rgba(137, 90, 246, 0.1) 0px, transparent 50%);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-display bg-mesh">
+<!-- Top Navigation -->
+<header class="w-full px-6 py-4 flex items-center justify-between fixed top-0 z-50">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-white text-xl">auto_awesome</span>
+</div>
+<span class="text-xl font-bold tracking-tight dark:text-white">MerchForge <span class="text-primary">AI</span></span>
+</div>
+<div>
+<a class="text-sm font-medium text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-primary transition-colors" href="#">Help &amp; Support</a>
+</div>
+</header>
+<main class="flex-1 flex items-center justify-center p-6 mt-16 mb-8">
+<!-- Registration Card -->
+<div class="w-full max-w-[460px] glass-effect rounded-xl shadow-2xl p-8 md:p-10">
+<div class="text-center mb-8">
+<h1 class="text-3xl font-bold tracking-tight mb-2">Create an account</h1>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Join the future of AI-powered merchandise design.</p>
+</div>
+<!-- Social Auth Group -->
+<div class="grid grid-cols-2 gap-4 mb-8">
+<button class="flex items-center justify-center gap-2 h-11 px-4 rounded-lg bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 hover:bg-slate-50 dark:hover:bg-zinc-700 transition-all text-sm font-medium">
+<img alt="Google Logo" class="w-5 h-5" data-alt="Google colorful logo icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2Fq8I5TLAXzfcEmFxUrYDoHeDlGgoXvUCpr0ahPDnCEapU6vpYO9o5cFO6L-PZD1O0ybw1xDms-yhx8yKZRBugfBGNxE3hrgdst1L0pVCB_d5kj9JeI14vMwbDQ1_lxFRAbHpLAXzc8TxtlQcG7eLzMXv_f7uqoIswV8eKOylRrpWf4mVnS-b-10u9yZDWyk-j0-_jahcXn5xDBXSEwEwI4QUQgsdip6FyRqCaUG7ljFIexUvLv7kvGnt_bZWAO2eCymHRrofqyQU"/>
+<span>Google</span>
+</button>
+<button class="flex items-center justify-center gap-2 h-11 px-4 rounded-lg bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 hover:bg-slate-50 dark:hover:bg-zinc-700 transition-all text-sm font-medium">
+<span class="material-symbols-outlined text-xl">ios</span>
+<span>Apple</span>
+</button>
+</div>
+<!-- Divider -->
+<div class="relative mb-8">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-slate-200 dark:border-zinc-800"></div>
+</div>
+<div class="relative flex justify-center text-xs uppercase">
+<span class="bg-background-light dark:bg-[#18181b] px-4 text-slate-500">Or continue with email</span>
+</div>
+</div>
+<!-- Registration Form -->
+<form action="#" class="space-y-5">
+<div>
+<label class="block text-sm font-medium mb-1.5 text-slate-700 dark:text-slate-300" for="full-name">Full Name</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">person</span>
+<input class="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm" id="full-name" placeholder="John Doe" type="text"/>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium mb-1.5 text-slate-700 dark:text-slate-300" for="email">Email Address</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">mail</span>
+<input class="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm" id="email" placeholder="name@company.com" type="email"/>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium mb-1.5 text-slate-700 dark:text-slate-300" for="password">Password</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">lock</span>
+<input class="w-full pl-10 pr-12 py-2.5 bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm" id="password" placeholder="••••••••" type="password"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" type="button">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+</div>
+</div>
+<div class="flex items-start gap-3 py-1">
+<div class="flex items-center h-5">
+<input class="w-4 h-4 text-primary bg-zinc-900 border-zinc-700 rounded focus:ring-primary focus:ring-offset-zinc-900" id="terms" type="checkbox"/>
+</div>
+<label class="text-sm text-slate-500 dark:text-slate-400 leading-tight" for="terms">
+                        I agree to the <a class="text-primary hover:underline" href="#">Terms and Conditions</a> and <a class="text-primary hover:underline" href="#">Privacy Policy</a>.
+                    </label>
+</div>
+<button class="w-full h-12 bg-primary hover:bg-primary/90 text-white font-bold rounded-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2 group" type="submit">
+<span>Get Started</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</form>
+<div class="mt-8 text-center text-sm">
+<p class="text-slate-500 dark:text-slate-400">
+                    Already have an account? 
+                    <a class="text-primary font-semibold hover:underline decoration-2 underline-offset-4" href="#">Log in</a>
+</p>
+</div>
+</div>
+</main>
+<!-- Footer Decoration / Info -->
+<footer class="w-full py-8 text-center">
+<div class="flex justify-center gap-8 mb-4">
+<div class="flex items-center gap-2 text-xs text-slate-500">
+<span class="material-symbols-outlined text-sm">verified_user</span>
+                Secure 256-bit SSL Encryption
+            </div>
+<div class="flex items-center gap-2 text-xs text-slate-500">
+<span class="material-symbols-outlined text-sm">cloud_done</span>
+                Automated Cloud Backup
+            </div>
+</div>
+<p class="text-[10px] uppercase tracking-widest text-slate-600 dark:text-zinc-600 font-medium">
+            © 2024 MerchForge AI. All rights reserved.
+        </p>
+</footer>
+<!-- Background decorative elements -->
+<div class="fixed top-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+<div class="fixed bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+</body></html>

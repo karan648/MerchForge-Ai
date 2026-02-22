@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MerchForge AI | Alex Rivera Storefront</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#895af6",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#151022",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(21, 16, 34, 0.7); backdrop-filter: blur(12px); }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<!-- Minimalist Header -->
+<header class="sticky top-0 z-50 glass border-b border-primary/10 px-6 py-4">
+<div class="max-w-7xl mx-auto flex items-center justify-between">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-3xl">diamond</span>
+<h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">MerchForge <span class="text-primary">AI</span></h1>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Shop All</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Collections</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">About</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+<input class="bg-slate-200/50 dark:bg-primary/5 border-none rounded-lg pl-10 pr-4 py-2 text-sm w-64 focus:ring-2 focus:ring-primary" placeholder="Search designs..." type="text"/>
+</div>
+<button class="p-2 rounded-lg hover:bg-primary/10 transition-colors relative">
+<span class="material-symbols-outlined">shopping_bag</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full"></span>
+</button>
+<div class="w-10 h-10 rounded-full border-2 border-primary/20 bg-cover bg-center" data-alt="User profile avatar small circular thumbnail" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAwVowIfhJvp_EFEZHjdYrPYr4sC3L04IaJWFFNNU86yh3-0HomJT-oI9XFfsOoa83AIYGQB5dBEDGCn0h25RgdvS5HTXAzLIPebvDKvlRM8fpaAGVtqFa4EnrEFQF3h3MXb2TmEn-mhjOH1OL2ixFU_5eWKsQJ8zXK4CH2Qqpnschw1zf27MzAyg-FsTbb0xDQ5ctxTvnBRBiRCajtsfAxtlE0_IIXsn9mxArKZ818jI7_l10P8ms_0fSk1YA1O7ojv48TWvlIWQ_T')"></div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-6 pb-20">
+<!-- Hero Banner -->
+<section class="mt-6 relative h-[400px] w-full rounded-xl overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent z-10"></div>
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Abstract AI generated purple and black flowing patterns" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA3tvsaz82Y4S2NERdl3GqX82uMagmGChplefdFv0TK_M8tXU9LNV5XLg0hH7Gyb5orzswsS9WsTXIqY6E4a3WprnVvKROu_npiYbqHEHqBbIuh1IiE83_BNJaPYtNsn4ivQDNK-313BI8VkzWFKx7HU_Dw5b5lIHCRESCG7bgw985mhNIs4HgSN0ZAGmIgoHCIDAkESt7IblWHRTUbSKAQNoLeZyGYguOoFXC6PES54AOXFTH7idzmpnXdt8WyX9sem_Gp7FE1a-0k')"></div>
+<div class="absolute bottom-12 left-12 z-20">
+<span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block backdrop-blur-md border border-primary/30">Limited Edition Release</span>
+<h2 class="text-5xl font-extrabold text-white mb-2">The Alex Rivera Collection</h2>
+<p class="text-slate-300 text-lg max-w-xl">AI-Designed. Human-Inspired. Discover a unique synthesis of algorithmic complexity and human emotion.</p>
+</div>
+</section>
+<!-- Creator Profile Area -->
+<section class="flex flex-col md:flex-row items-end gap-6 -mt-16 relative z-30 px-12 mb-16">
+<div class="w-32 h-32 rounded-xl border-4 border-background-dark shadow-2xl bg-cover bg-center overflow-hidden" data-alt="Professional portrait of creator Alex Rivera" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCTJQMcQOrHsymP6kBk3K-Iu05xlVPEKLk8p9CMS2qwPV2KYMYJJb8Tjq-kY9pkPUqlIiLLKqBpuuR0gv3LzEMrr9Ua6-NOLC1wX7dsa1lPRiEZKYo6w4xxF3FLozC_K2stLhWqe7egD-jvNTntFrXwVHVYeDzBqC7-aHWcZO725sqvSRhC7bOsEffpQ1SR3uj9bBy5OslhQZqO1WeBI2Q97vWZnLx__ZGZXJmighyxAQ8Yvm20PcDToa916AMKH-hlxsn9AOjm249t')"></div>
+<div class="flex-1 pb-2">
+<div class="flex items-center gap-2 mb-1">
+<h3 class="text-2xl font-bold">Alex Rivera</h3>
+<span class="material-symbols-outlined text-primary text-xl" title="Verified Creator">verified</span>
+</div>
+<div class="flex flex-wrap gap-4 text-sm text-slate-500 dark:text-slate-400">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">group</span> 15.2k Followers</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">inventory_2</span> 142 Items</span>
+<span class="flex items-center gap-1 text-primary"><span class="material-symbols-outlined text-sm">location_on</span> Digital Nomad</span>
+</div>
+</div>
+<div class="flex gap-3 pb-2">
+<button class="bg-primary text-white px-6 py-2.5 rounded-lg font-semibold hover:opacity-90 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">person_add</span> Follow
+                </button>
+<button class="bg-slate-200 dark:bg-primary/10 text-slate-900 dark:text-slate-100 px-4 py-2.5 rounded-lg font-semibold hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined text-sm leading-none">share</span>
+</button>
+</div>
+</section>
+<!-- Product Filter Tabs -->
+<nav class="flex items-center gap-8 border-b border-primary/10 mb-12 overflow-x-auto whitespace-nowrap pb-1">
+<a class="pb-4 border-b-2 border-primary text-primary font-semibold text-sm" href="#">All Products</a>
+<a class="pb-4 border-b-2 border-transparent text-slate-500 hover:text-slate-200 transition-colors font-semibold text-sm" href="#">New Arrivals</a>
+<a class="pb-4 border-b-2 border-transparent text-slate-500 hover:text-slate-200 transition-colors font-semibold text-sm" href="#">Limited Drops</a>
+<a class="pb-4 border-b-2 border-transparent text-slate-500 hover:text-slate-200 transition-colors font-semibold text-sm" href="#">Hoodies &amp; Tees</a>
+<a class="pb-4 border-b-2 border-transparent text-slate-500 hover:text-slate-200 transition-colors font-semibold text-sm" href="#">Digital Art</a>
+</nav>
+<!-- Product Grid -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+<!-- Product Card 1 -->
+<div class="group flex flex-col bg-slate-100/50 dark:bg-primary/5 rounded-xl border border-primary/10 overflow-hidden hover:border-primary/40 transition-all">
+<div class="relative aspect-square overflow-hidden bg-slate-200 dark:bg-slate-800">
+<div class="absolute top-3 right-3 z-10">
+<button class="p-2 bg-background-dark/50 backdrop-blur-md rounded-full text-white hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg">favorite</span>
+</button>
+</div>
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Black premium hoodie with minimalist white AI line art" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVMXEyDv_fkUySVxONCOGWA_j1U8SZru2BOGimqw48CzvLJAtUy_HyiCcMHuWAqsizBYqjz3sgGdimm8Pz335dKpCDSQzTM-33MAhqPGJRY3uP62kIaOHRXa2oHw6j0p-hPsfefV2osmuNqy2G_e4fX0vstTFP04273cvlYbq2y0svym5cnfJCfph9_Nxo7kIWt1TlR2cqJfW1Ntriwi_4NomFpefen94-kXyusmuAb1wv7En5AqwMXau37h32CnZ1AlqdJU0MAsHu"/>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-bold text-lg leading-tight group-hover:text-primary transition-colors">Neural Mesh Hoodie</h4>
+<span class="text-primary font-bold">$78.00</span>
+</div>
+<p class="text-xs text-slate-500 mb-6">Heavyweight organic cotton, algorithmic pattern embroidery.</p>
+<button class="mt-auto w-full bg-primary text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:shadow-[0_0_20px_rgba(137,90,246,0.3)] transition-all">
+                        Buy Now <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="group flex flex-col bg-slate-100/50 dark:bg-primary/5 rounded-xl border border-primary/10 overflow-hidden hover:border-primary/40 transition-all">
+<div class="relative aspect-square overflow-hidden bg-slate-200 dark:bg-slate-800">
+<div class="absolute top-3 left-3 z-10">
+<span class="bg-primary text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Popular</span>
+</div>
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="White t-shirt with vibrant neon colorful AI landscape print" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUHyHV16rd-VctP4PF19R1RJWflQQKbP9zBdmRuL4N9Pr3HGDznFn6quIvUIDkSmAh5EvM2isBhmwdy4Lal6QIRxRiZBTJvH1jN30mD4-L8USba-fX7YpbgHIUEshsUHI6imGVYM2STEuyWU2iPiPdlE_ZxU-HE2sk1NHQd2zgn0i-QEtAp963f8JU8AmU3b3wQqyrStwEycoJga2VX24c_AC0kPOxJ6hE3XRWVB0coNd_zYENk6D0mPsuuFVSsBrUcKaUBoaBPKAv"/>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-bold text-lg leading-tight group-hover:text-primary transition-colors">Digital Mirage Tee</h4>
+<span class="text-primary font-bold">$42.00</span>
+</div>
+<p class="text-xs text-slate-500 mb-6">Vibrant sublimation print, premium relaxed fit.</p>
+<button class="mt-auto w-full bg-primary text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:shadow-[0_0_20px_rgba(137,90,246,0.3)] transition-all">
+                        Buy Now <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="group flex flex-col bg-slate-100/50 dark:bg-primary/5 rounded-xl border border-primary/10 overflow-hidden hover:border-primary/40 transition-all">
+<div class="relative aspect-square overflow-hidden bg-slate-200 dark:bg-slate-800">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Deep blue denim jacket with AI generated geometric patch on back" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9Z1C99BTmSRoUBhXCp5zVeWuKypgLT3c3Ss75mSMmEAUmhUTHRi3zwJJHqy9LEaK5dmwR_RBtGaQokYBEoZ2MXZYh47zf_vObie4hQPJb6WrMv2tl1so4qZAlE5G5qN7I4Zd6pB6433dlLTlsNgxkEhyfa19gW9VL6OhioJqD1DOn9BQvC77dBc8dwRN9QC5SwT-Fd06qspfUJ6XmvlTXWZCKqPzlaAuqZrGzBS5L6Jb0sLyvhT5IkqLd_JFcowgRvXEpg4n1BO0w"/>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-bold text-lg leading-tight group-hover:text-primary transition-colors">Fragment Denim Jacket</h4>
+<span class="text-primary font-bold">$124.00</span>
+</div>
+<p class="text-xs text-slate-500 mb-6">Custom distressed finish with generative geometry patches.</p>
+<button class="mt-auto w-full bg-primary text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:shadow-[0_0_20px_rgba(137,90,246,0.3)] transition-all">
+                        Buy Now <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="group flex flex-col bg-slate-100/50 dark:bg-primary/5 rounded-xl border border-primary/10 overflow-hidden hover:border-primary/40 transition-all">
+<div class="relative aspect-square overflow-hidden bg-slate-200 dark:bg-slate-800">
+<div class="absolute top-3 right-3 z-10">
+<span class="bg-slate-800 text-white px-2 py-1 rounded text-[10px] font-bold uppercase">Sold Out</span>
+</div>
+<img class="w-full h-full object-cover grayscale transition-transform duration-500 group-hover:scale-110" data-alt="Black graphic tee with intricate white algorithmic circular design" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAK2k26CvrXTMkzPzkHwOzl5hs13VYoVxWmN4cH1HJ-GkecK4hOLBIdc_C_pJf_yWcbXNG710UsuL28nKUIEUNyyL6rf-1VLDALH14TIW4sKV62yAabu0OGWg8Utewh1dIviJmmmUeZbabjRDsOWcFGWJ36ik3GfKtm2JsgsDCWC3BmU1n1_SEAwEetn2pb8wVIr5osfqhW1fOGjq7Tl-zbIa8WeI5kKZ5M6dLWYOHM3JJgo1bjBemkJvzwLrdHJIbeVtGAPlV5PeOo"/>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-bold text-lg leading-tight text-slate-400">Void Cycle Longsleeve</h4>
+<span class="text-slate-500 font-bold">$55.00</span>
+</div>
+<p class="text-xs text-slate-500 mb-6">Sleeve printed design, luxury heavyweight jersey.</p>
+<button class="mt-auto w-full bg-slate-700 text-slate-400 py-3 rounded-lg font-bold cursor-not-allowed" disabled="">
+                        Out of Stock
+                    </button>
+</div>
+</div>
+</section>
+<!-- Reviews Section -->
+<section class="mt-24">
+<div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-4">
+<div>
+<h3 class="text-3xl font-bold mb-2">Community Feedback</h3>
+<p class="text-slate-500">Real thoughts from humans who wear the future.</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex text-primary">
+<span class="material-symbols-outlined fill-1">star</span>
+<span class="material-symbols-outlined fill-1">star</span>
+<span class="material-symbols-outlined fill-1">star</span>
+<span class="material-symbols-outlined fill-1">star</span>
+<span class="material-symbols-outlined">star_half</span>
+</div>
+<span class="text-lg font-bold">4.8 Average</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="p-6 rounded-xl bg-slate-100 dark:bg-primary/5 border border-primary/5">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-full bg-slate-300 dark:bg-slate-700 bg-cover" data-alt="Female customer avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAb6rxUnBhY1pMWhugfy-92IJgk6DhPnCKPUOnTxVwfOStL0SLTf2wVO_tfckVnteICT89SLYUmJ948l1v2BjGcx2NmrNmnLZuJnsu_aJ_xN6Ie-b1oyOmVUm2hX6fD78OyGROQXtDWiG_jxO9Yja1NhiSKZzqbza-uIjx9g2E2Of_fyrcnnKs7EtBiiy3eFOdtLezlopAOfdQMs-SOq-VhTFyZDe17Uti4zyurVxd4lBaOWJGvjfjZsKPmdXXHsWuPzWn8Yx_byR87')"></div>
+<div>
+<p class="text-sm font-bold">Sarah Jenkins</p>
+<p class="text-xs text-slate-500">Purchased: Neural Mesh Hoodie</p>
+</div>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed italic">"The quality of the embroidery is insane. You can really see the complexity of the AI design translated into physical thread. Absolute favorite hoodie."</p>
+</div>
+<div class="p-6 rounded-xl bg-slate-100 dark:bg-primary/5 border border-primary/5">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-full bg-slate-300 dark:bg-slate-700 bg-cover" data-alt="Male customer avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBXEN446fTfwzO3Yz2CvZtX0FtgBRw89SrD15rq8hEEGa9Rgs_7bwttNRVqZIO0u3bruI6l00we882921VcCrQXK2J_c4Rx2XLQA3CkGelm2bfMhLkxaImxIy1KuecID-ccsQIjvkvBSo74stIBVADsCjZH3FUNgy5mfU5zMOQ1hwOQ5Vwidrx7LxRMBNlVl1Dgurv6VLeaFxlWYbkzfOlsOQvztFpEE2saqGx8iGFpFhvDfUwkhVS1ioIsrLNBiZycGUFUuldXNPt-')"></div>
+<div>
+<p class="text-sm font-bold">Marcus Thorne</p>
+<p class="text-xs text-slate-500">Purchased: Digital Mirage Tee</p>
+</div>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed italic">"The print colors are so vibrant. It looks exactly like the mockup, maybe even better in person. Fits perfectly true to size. Def buying more."</p>
+</div>
+<div class="p-6 rounded-xl bg-slate-100 dark:bg-primary/5 border border-primary/5">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-full bg-slate-300 dark:bg-slate-700 bg-cover" data-alt="Female customer avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD4E5hGkYbZvqjhrOwWyjDugGfir1G-j-u00n8BKPi5RZGSZIk89nWALqIlKDHgYkXefzwYkpJBawedyiIyt7YRIyfSYCy2MFGQVBo50_DO4WabroFX9jzPUYU3FzGqVW9UN_9E-DVhKmYqhZdu39w88kVUBja-JdImbKdU9ov42BAMYyN0eQ69xVyQ_PtnGBKlU2t4jhwSv5TkwIP0_hfNisC8QaJoFD68w6tBAZMcsnQqEC10nGcNgSFMQ_G57ZGArIwS3ZRxsl01')"></div>
+<div>
+<p class="text-sm font-bold">Elena Rodriguez</p>
+<p class="text-xs text-slate-500">Purchased: Fragment Denim</p>
+</div>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed italic">"A true statement piece. Every time I wear this jacket someone asks where I got it. The MerchForge team really knows how to curate AI art."</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Minimalist Footer -->
+<footer class="bg-slate-100 dark:bg-primary/5 border-t border-primary/10 py-12 px-6">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex flex-col gap-4 items-center md:items-start">
+<div class="flex items-center gap-2 text-primary opacity-80">
+<span class="material-symbols-outlined">diamond</span>
+<span class="font-bold tracking-tight">MerchForge AI</span>
+</div>
+<p class="text-xs text-slate-500 text-center md:text-left">© 2024 Alex Rivera Studio. All Rights Reserved.</p>
+</div>
+<div class="flex gap-12">
+<div class="flex flex-col gap-2">
+<p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Support</p>
+<a class="text-sm hover:text-primary transition-colors" href="#">Shipping Info</a>
+<a class="text-sm hover:text-primary transition-colors" href="#">Returns</a>
+</div>
+<div class="flex flex-col gap-2">
+<p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Company</p>
+<a class="text-sm hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-sm hover:text-primary transition-colors" href="#">Terms of Service</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<a class="w-10 h-10 rounded-full border border-primary/20 flex items-center justify-center hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-lg">public</span>
+</a>
+<a class="w-10 h-10 rounded-full border border-primary/20 flex items-center justify-center hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-lg">alternate_email</span>
+</a>
+<a class="w-10 h-10 rounded-full border border-primary/20 flex items-center justify-center hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-lg">play_circle</span>
+</a>
+</div>
+</div>
+<div class="max-w-7xl mx-auto mt-12 pt-8 border-t border-primary/5 flex justify-center">
+<p class="text-[10px] text-slate-600 dark:text-slate-500 uppercase tracking-[0.2em]">Powered by MerchForge AI Engine</p>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MerchForge AI - Pricing</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#895af6",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#0f0f12",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .pro-glow {
+            box-shadow: 0 0 20px rgba(137, 90, 246, 0.15);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display min-h-screen pb-24">
+<!-- Header Navigation -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 py-3 flex items-center justify-between">
+<button class="flex items-center justify-center p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="text-lg font-semibold tracking-tight">Pricing</h1>
+<button class="flex items-center justify-center p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined">info</span>
+</button>
+</header>
+<main class="max-w-md mx-auto px-4 pt-8">
+<!-- Hero Section -->
+<div class="text-center mb-8">
+<h2 class="text-3xl font-bold tracking-tight mb-3">Simple, Transparent Pricing</h2>
+<p class="text-slate-600 dark:text-slate-400 text-base leading-relaxed">
+                Scale your merch business with AI automation. Choose the plan that fits your growth.
+            </p>
+</div>
+<!-- Billing Toggle -->
+<div class="flex p-1 bg-slate-200 dark:bg-slate-800/50 rounded-xl mb-10 relative">
+<button class="flex-1 py-2 text-sm font-medium rounded-lg text-slate-500 dark:text-slate-400">
+                Monthly
+            </button>
+<button class="flex-1 py-2 text-sm font-medium rounded-lg bg-primary text-white shadow-lg shadow-primary/20">
+                Annual <span class="ml-1 text-[10px] bg-white/20 px-1.5 py-0.5 rounded-full uppercase tracking-wider">-20%</span>
+</button>
+</div>
+<!-- Pricing Cards Container -->
+<div class="space-y-6 mb-12">
+<!-- Free Plan -->
+<div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl p-6 relative overflow-hidden">
+<div class="mb-4">
+<h3 class="text-lg font-bold">Free</h3>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Perfect for hobbyists</p>
+</div>
+<div class="mb-6">
+<span class="text-4xl font-bold">$0</span>
+<span class="text-slate-500 dark:text-slate-400 text-sm">/mo</span>
+</div>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+                        10 AI generations / month
+                    </li>
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+                        Standard resolution exports
+                    </li>
+<li class="flex items-center gap-3 text-sm text-slate-400">
+<span class="material-symbols-outlined text-slate-600 text-sm">block</span>
+                        No commercial license
+                    </li>
+</ul>
+<button class="w-full py-3 px-4 rounded-lg font-semibold border border-primary text-primary hover:bg-primary/5 transition-colors">
+                    Start Free
+                </button>
+</div>
+<!-- Pro Plan (Highlighted) -->
+<div class="bg-white dark:bg-slate-900 border-2 border-primary rounded-xl p-6 relative overflow-hidden pro-glow">
+<div class="absolute top-0 right-0 bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider">
+                    Most Popular
+                </div>
+<div class="mb-4">
+<h3 class="text-lg font-bold">Pro</h3>
+<p class="text-slate-500 dark:text-slate-400 text-sm">For serious creators</p>
+</div>
+<div class="mb-6">
+<span class="text-4xl font-bold text-primary">$29</span>
+<span class="text-slate-500 dark:text-slate-400 text-sm">/mo</span>
+</div>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-3 text-sm font-medium">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+                        Unlimited AI generations
+                    </li>
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+                        4K High-res exports
+                    </li>
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+                        Commercial license included
+                    </li>
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+                        Priority generation queue
+                    </li>
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+                        Batch processing
+                    </li>
+</ul>
+<button class="w-full py-4 px-4 rounded-lg font-bold bg-primary text-white shadow-lg shadow-primary/30 hover:opacity-90 transition-opacity">
+                    Upgrade to Pro
+                </button>
+</div>
+<!-- Business Plan -->
+<div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl p-6 relative overflow-hidden">
+<div class="mb-4">
+<h3 class="text-lg font-bold">Business</h3>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Scaling teams &amp; agencies</p>
+</div>
+<div class="mb-6">
+<span class="text-4xl font-bold">$99</span>
+<span class="text-slate-500 dark:text-slate-400 text-sm">/mo</span>
+</div>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+                        Up to 5 team members
+                    </li>
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+                        Custom AI style training
+                    </li>
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+                        API access for automation
+                    </li>
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+                        Dedicated account manager
+                    </li>
+</ul>
+<button class="w-full py-3 px-4 rounded-lg font-semibold border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                    Contact Sales
+                </button>
+</div>
+</div>
+<!-- Comparison Section -->
+<section class="mb-12">
+<h3 class="text-xl font-bold mb-6 text-center">Compare Features</h3>
+<div class="space-y-4">
+<!-- Row 1 -->
+<div class="p-4 bg-slate-100 dark:bg-slate-800/30 rounded-lg">
+<div class="flex justify-between items-center mb-2">
+<span class="font-semibold text-sm">Daily Generations</span>
+<span class="material-symbols-outlined text-slate-400 text-sm">expand_more</span>
+</div>
+<div class="grid grid-cols-3 gap-2 text-[11px] font-medium text-center uppercase tracking-tighter">
+<div class="text-slate-500">Free: 3</div>
+<div class="text-primary font-bold">Pro: Unlimited</div>
+<div class="text-slate-500">Biz: Unlimited</div>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="p-4 bg-slate-100 dark:bg-slate-800/30 rounded-lg">
+<div class="flex justify-between items-center mb-2">
+<span class="font-semibold text-sm">Max Resolution</span>
+<span class="material-symbols-outlined text-slate-400 text-sm">expand_more</span>
+</div>
+<div class="grid grid-cols-3 gap-2 text-[11px] font-medium text-center uppercase tracking-tighter">
+<div class="text-slate-500">Free: 1080p</div>
+<div class="text-primary font-bold">Pro: 4K</div>
+<div class="text-slate-500">Biz: 8K Upscale</div>
+</div>
+</div>
+<!-- Row 3 -->
+<div class="p-4 bg-slate-100 dark:bg-slate-800/30 rounded-lg">
+<div class="flex justify-between items-center mb-2">
+<span class="font-semibold text-sm">Support Speed</span>
+<span class="material-symbols-outlined text-slate-400 text-sm">expand_more</span>
+</div>
+<div class="grid grid-cols-3 gap-2 text-[11px] font-medium text-center uppercase tracking-tighter">
+<div class="text-slate-500">Free: 48h</div>
+<div class="text-primary font-bold">Pro: 4h</div>
+<div class="text-slate-500">Biz: Instant</div>
+</div>
+</div>
+</div>
+</section>
+<!-- FAQ Section -->
+<section class="mb-12">
+<h3 class="text-xl font-bold mb-6 text-center">Common Questions</h3>
+<div class="space-y-4">
+<div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+<button class="flex justify-between items-center w-full text-left font-medium text-sm">
+                        Can I cancel anytime?
+                        <span class="material-symbols-outlined text-slate-400">add</span>
+</button>
+</div>
+<div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+<button class="flex justify-between items-center w-full text-left font-medium text-sm">
+                        Do I own the copyrights?
+                        <span class="material-symbols-outlined text-slate-400">add</span>
+</button>
+</div>
+<div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+<button class="flex justify-between items-center w-full text-left font-medium text-sm">
+                        What AI models do you use?
+                        <span class="material-symbols-outlined text-slate-400">add</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-background-dark/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-4 py-2 flex items-center justify-around z-50">
+<a class="flex flex-col items-center gap-1 p-2 text-slate-400" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 text-slate-400" href="#">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="text-[10px] font-medium">Generate</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 text-primary" href="#">
+<span class="material-symbols-outlined fill-1">payments</span>
+<span class="text-[10px] font-bold">Pricing</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 text-slate-400" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="text-[10px] font-medium">Profile</span>
+</a>
+</nav>
+<!-- Abstract Gradient Background Element -->
+<div class="fixed top-0 left-1/2 -translate-x-1/2 w-full h-[500px] pointer-events-none -z-10 opacity-30 dark:opacity-20 blur-[120px]">
+<div class="w-full h-full bg-gradient-to-tr from-primary via-transparent to-primary/40 rounded-full"></div>
+</div>
+</body></html>

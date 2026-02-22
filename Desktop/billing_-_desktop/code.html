@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Billing &amp; Subscription | MerchForge AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#895af6",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#151022",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2d2839;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen font-display">
+<div class="flex h-screen overflow-hidden">
+<!-- Side Bar Navigation -->
+<aside class="w-64 flex-shrink-0 border-r border-primary/10 bg-background-light dark:bg-background-dark flex flex-col justify-between p-6">
+<div class="flex flex-col gap-8">
+<!-- Logo/Brand -->
+<div class="flex items-center gap-3">
+<div class="bg-primary/20 p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary text-3xl">auto_awesome</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-none">MerchForge AI</h1>
+<p class="text-primary text-xs font-semibold uppercase tracking-wider mt-1">Premium Plan</p>
+</div>
+</div>
+<!-- Nav Links -->
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 transition-colors text-slate-600 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 transition-colors text-slate-600 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">folder_open</span>
+<span class="text-sm font-medium">Projects</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 transition-colors text-slate-600 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">image</span>
+<span class="text-sm font-medium">Assets</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/20 text-primary border border-primary/20 shadow-sm shadow-primary/10" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-sm font-bold">Billing</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 transition-colors text-slate-600 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+</div>
+<!-- Profile/Upgrade -->
+<div class="flex flex-col gap-4">
+<div class="bg-gradient-to-br from-primary/20 to-transparent p-4 rounded-xl border border-primary/10">
+<p class="text-xs font-bold text-primary uppercase mb-2">Usage Limit</p>
+<div class="h-1.5 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden mb-2">
+<div class="h-full bg-primary" style="width: 30%;"></div>
+</div>
+<p class="text-[10px] text-slate-500">15 / 50 credits used this month</p>
+</div>
+<button class="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white rounded-xl h-12 font-bold transition-all shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-sm">rocket_launch</span>
+<span>Upgrade Plan</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto custom-scrollbar">
+<div class="max-w-6xl mx-auto p-8 lg:p-12 space-y-10">
+<!-- Header Section -->
+<header class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h2 class="text-4xl font-black tracking-tight text-slate-900 dark:text-slate-100">Billing &amp; Subscription</h2>
+<p class="text-slate-500 dark:text-slate-400 mt-2 text-lg">Manage your workspace's subscription, credits, and payment preferences.</p>
+</div>
+<div class="flex items-center gap-2 text-sm font-medium text-slate-500">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span>Next billing date: Oct 12, 2024</span>
+</div>
+</header>
+<!-- Top Row: Plan & Credits -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- Current Plan Card -->
+<div class="bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded-xl p-8 flex flex-col justify-between shadow-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4">
+<span class="bg-primary/10 text-primary text-[10px] font-black px-2 py-1 rounded uppercase tracking-widest border border-primary/20">Active Now</span>
+</div>
+<div class="relative z-10">
+<h3 class="text-slate-500 dark:text-slate-400 text-sm font-bold uppercase tracking-widest mb-4">Current Plan</h3>
+<div class="flex items-baseline gap-2 mb-2">
+<span class="text-4xl font-black text-slate-900 dark:text-slate-100">Pro Plan</span>
+<span class="text-slate-500 dark:text-slate-400 text-lg">/ Yearly</span>
+</div>
+<p class="text-2xl font-bold text-primary mb-6">$29<span class="text-sm font-normal text-slate-500">/mo</span></p>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+<span>Unlimited high-res exports</span>
+</li>
+<li class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+<span>Priority AI processing</span>
+</li>
+</ul>
+</div>
+<div class="flex gap-3">
+<button class="flex-1 bg-primary text-white rounded-lg h-11 font-bold text-sm hover:brightness-110 transition-all">Change Plan</button>
+<button class="flex-1 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg h-11 font-bold text-sm transition-all">Cancel</button>
+</div>
+<!-- Decorative background element -->
+<div class="absolute -bottom-10 -right-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors"></div>
+</div>
+<!-- Credits Usage Card -->
+<div class="bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded-xl p-8 flex flex-col justify-between shadow-sm">
+<div>
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-slate-500 dark:text-slate-400 text-sm font-bold uppercase tracking-widest">Credits Usage</h3>
+<div class="bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-slate-500">history</span>
+<span class="text-[10px] font-bold text-slate-500 uppercase tracking-tighter">Resets in 18 days</span>
+</div>
+</div>
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<div>
+<p class="text-4xl font-black text-slate-900 dark:text-slate-100">15 <span class="text-slate-400 text-2xl">/ 50</span></p>
+<p class="text-slate-500 text-sm mt-1">Credits used this billing cycle</p>
+</div>
+<div class="size-20 relative flex items-center justify-center">
+<!-- Radial mockup using SVG -->
+<svg class="size-full -rotate-90" viewbox="0 0 36 36">
+<circle class="stroke-slate-200 dark:stroke-slate-800" cx="18" cy="18" fill="none" r="16" stroke-width="3"></circle>
+<circle class="stroke-primary" cx="18" cy="18" fill="none" r="16" stroke-dasharray="30, 100" stroke-linecap="round" stroke-width="3"></circle>
+</svg>
+<span class="absolute text-[10px] font-black text-primary">30%</span>
+</div>
+</div>
+<div class="space-y-2">
+<div class="w-full h-3 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary/60 to-primary rounded-full" style="width: 30%;"></div>
+</div>
+<p class="text-xs text-slate-500 text-right font-medium">35 credits remaining</p>
+</div>
+</div>
+</div>
+<div class="mt-8">
+<button class="w-full flex items-center justify-center gap-2 border border-primary/30 text-primary hover:bg-primary/10 rounded-lg h-11 font-bold text-sm transition-all">
+<span class="material-symbols-outlined text-sm">add_circle</span>
+<span>Top Up Credits</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Middle Section: Payment Methods -->
+<section class="space-y-6">
+<div class="flex items-center justify-between">
+<h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">Payment Methods</h3>
+<button class="text-primary text-sm font-bold flex items-center gap-1 hover:underline">
+<span class="material-symbols-outlined text-sm">add</span>
+<span>Add New Method</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Card Item -->
+<div class="flex items-center justify-between p-5 bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded-xl hover:border-primary/50 transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="bg-slate-100 dark:bg-slate-800 p-3 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">credit_card</span>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100">Visa ending in 4242</p>
+<p class="text-xs text-slate-500">Expires 12/26 • Default</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[10px] bg-primary/10 text-primary font-bold px-2 py-0.5 rounded uppercase">Primary</span>
+<button class="material-symbols-outlined text-slate-400 hover:text-slate-100 text-lg">more_vert</button>
+</div>
+</div>
+<!-- Empty State/Placeholder for Add New -->
+<div class="flex items-center justify-center p-5 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl hover:border-primary/50 transition-all cursor-pointer group">
+<div class="flex items-center gap-2 text-slate-500 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="text-sm font-medium">Add a secondary payment method</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom Section: Invoice History -->
+<section class="space-y-6">
+<h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">Invoice History</h3>
+<div class="bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Date</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Plan</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Amount</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Status</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest text-right">Receipt</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 text-sm font-medium text-slate-700 dark:text-slate-300">Sep 12, 2024</td>
+<td class="px-6 py-4 text-sm text-slate-500">Pro Plan - Annual</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-slate-100">$348.00</td>
+<td class="px-6 py-4 text-sm">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-500/10 text-green-500">
+<span class="size-1.5 bg-green-500 rounded-full"></span>
+                                            Paid
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:bg-primary/10 p-2 rounded-lg transition-all" title="Download Invoice">
+<span class="material-symbols-outlined text-lg">download</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 text-sm font-medium text-slate-700 dark:text-slate-300">Aug 12, 2024</td>
+<td class="px-6 py-4 text-sm text-slate-500">Extra Credits (20)</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-slate-100">$15.00</td>
+<td class="px-6 py-4 text-sm">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-500/10 text-green-500">
+<span class="size-1.5 bg-green-500 rounded-full"></span>
+                                            Paid
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:bg-primary/10 p-2 rounded-lg transition-all" title="Download Invoice">
+<span class="material-symbols-outlined text-lg">download</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 text-sm font-medium text-slate-700 dark:text-slate-300">Jul 12, 2024</td>
+<td class="px-6 py-4 text-sm text-slate-500">Basic Plan - Annual Upgrade</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-slate-100">$120.00</td>
+<td class="px-6 py-4 text-sm">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-500/10 text-green-500">
+<span class="size-1.5 bg-green-500 rounded-full"></span>
+                                            Paid
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:bg-primary/10 p-2 rounded-lg transition-all" title="Download Invoice">
+<span class="material-symbols-outlined text-lg">download</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="px-6 py-4 bg-slate-50/50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-800 flex justify-center">
+<button class="text-sm font-bold text-slate-500 hover:text-primary transition-colors">Load more history</button>
+</div>
+</div>
+</section>
+<!-- Footer Support Note -->
+<footer class="pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col md:flex-row justify-between gap-4">
+<p class="text-slate-500 text-sm italic">Need a custom enterprise agreement or specialized billing? <a class="text-primary font-bold hover:underline" href="#">Contact Support</a></p>
+<div class="flex gap-6">
+<a class="text-slate-500 hover:text-slate-300 text-xs font-medium uppercase tracking-widest" href="#">Privacy Policy</a>
+<a class="text-slate-500 hover:text-slate-300 text-xs font-medium uppercase tracking-widest" href="#">Terms of Service</a>
+</div>
+</footer>
+</div>
+</main>
+</div>
+</body></html>

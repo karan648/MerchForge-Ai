@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pricing | MerchForge AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#895af6",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#0f0f12",
+                        "surface-dark": "#1a1a1e",
+                        "border-dark": "#2d2d32",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(26, 26, 30, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .pro-glow {
+            position: relative;
+        }
+        .pro-glow::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            background: linear-gradient(to bottom right, #895af6, transparent, #895af6);
+            border-radius: 1.05rem;
+            z-index: -1;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<div class="relative flex min-h-screen flex-col overflow-x-hidden">
+<!-- Navigation -->
+<header class="flex items-center justify-between border-b border-border-dark px-6 py-4 lg:px-20">
+<div class="flex items-center gap-3">
+<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-white">
+<span class="material-symbols-outlined">auto_awesome</span>
+</div>
+<h2 class="text-xl font-bold tracking-tight">MerchForge AI</h2>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Product</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Features</a>
+<a class="text-sm font-medium text-primary" href="#">Pricing</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Showcase</a>
+</nav>
+<div class="flex items-center gap-3">
+<button class="hidden sm:block px-4 py-2 text-sm font-semibold hover:text-primary transition-colors">Log In</button>
+<button class="rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
+                    Get Started
+                </button>
+</div>
+</header>
+<main class="mx-auto flex w-full max-w-7xl flex-1 flex-col px-6 py-12 lg:px-8">
+<!-- Hero Section -->
+<div class="text-center mb-16">
+<h1 class="text-4xl font-extrabold tracking-tight sm:text-6xl mb-6">
+                    Simple, transparent <span class="text-primary">pricing</span>
+</h1>
+<p class="mx-auto max-w-2xl text-lg text-slate-500 dark:text-slate-400">
+                    Choose the plan that's right for your merch empire. Scale your brand with high-fidelity AI-driven designs and seamless storefront integrations.
+                </p>
+<!-- Toggle -->
+<div class="mt-10 flex items-center justify-center gap-4">
+<span class="text-sm font-medium text-slate-400">Monthly</span>
+<button class="relative inline-flex h-8 w-14 items-center rounded-full bg-border-dark">
+<span class="absolute left-1 h-6 w-6 rounded-full bg-primary transition-transform translate-x-6"></span>
+</button>
+<div class="flex items-center gap-2">
+<span class="text-sm font-medium">Annual</span>
+<span class="inline-flex items-center rounded-full bg-primary/20 px-2.5 py-0.5 text-xs font-semibold text-primary">
+                            Save 20%
+                        </span>
+</div>
+</div>
+</div>
+<!-- Pricing Grid -->
+<div class="grid grid-cols-1 gap-8 md:grid-cols-3 mb-24">
+<!-- Free Tier -->
+<div class="glass-card flex flex-col rounded-lg p-8 transition-transform hover:scale-[1.02]">
+<div class="mb-8">
+<h3 class="text-lg font-semibold text-slate-400">Free</h3>
+<div class="mt-4 flex items-baseline gap-1">
+<span class="text-5xl font-extrabold tracking-tight">$0</span>
+<span class="text-slate-400">/mo</span>
+</div>
+<p class="mt-4 text-sm text-slate-400 leading-relaxed">Perfect for hobbyists starting their journey.</p>
+</div>
+<ul class="mb-8 space-y-4 flex-1">
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+                            5 generations / mo
+                        </li>
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+                            1 active storefront
+                        </li>
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+                            Standard mockups
+                        </li>
+</ul>
+<button class="w-full rounded-lg bg-border-dark py-3 text-sm font-bold transition-colors hover:bg-white/10">
+                        Start Creating
+                    </button>
+</div>
+<!-- Pro Tier (Recommended) -->
+<div class="pro-glow glass-card relative flex flex-col rounded-lg bg-surface-dark p-8 transition-transform hover:scale-[1.02]">
+<div class="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1 text-xs font-bold uppercase tracking-wider text-white">
+                        Most Popular
+                    </div>
+<div class="mb-8">
+<h3 class="text-lg font-semibold text-primary">Pro</h3>
+<div class="mt-4 flex items-baseline gap-1">
+<span class="text-5xl font-extrabold tracking-tight">$29</span>
+<span class="text-slate-400">/mo</span>
+</div>
+<p class="mt-4 text-sm text-slate-400 leading-relaxed">For professional creators scaling their brand.</p>
+</div>
+<ul class="mb-8 space-y-4 flex-1">
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+                            Unlimited generations
+                        </li>
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+                            5 active storefronts
+                        </li>
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+                            Premium mockups
+                        </li>
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+                            Priority support
+                        </li>
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+                            Analytics dashboard
+                        </li>
+</ul>
+<button class="w-full rounded-lg bg-primary py-3 text-sm font-bold text-white shadow-xl shadow-primary/20 transition-all hover:bg-primary/90">
+                        Scale Your Brand
+                    </button>
+</div>
+<!-- Business Tier -->
+<div class="glass-card flex flex-col rounded-lg p-8 transition-transform hover:scale-[1.02]">
+<div class="mb-8">
+<h3 class="text-lg font-semibold text-slate-400">Business</h3>
+<div class="mt-4 flex items-baseline gap-1">
+<span class="text-5xl font-extrabold tracking-tight">$99</span>
+<span class="text-slate-400">/mo</span>
+</div>
+<p class="mt-4 text-sm text-slate-400 leading-relaxed">Enterprise power for high-volume teams.</p>
+</div>
+<ul class="mb-8 space-y-4 flex-1">
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+                            Unlimited everything
+                        </li>
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+                            Custom domain
+                        </li>
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+                            White-label storefronts
+                        </li>
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+                            API access
+                        </li>
+<li class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+                            Dedicated account manager
+                        </li>
+</ul>
+<button class="w-full rounded-lg bg-border-dark py-3 text-sm font-bold transition-colors hover:bg-white/10">
+                        Enterprise Power
+                    </button>
+</div>
+</div>
+<!-- Comparison Table -->
+<div class="mt-20 overflow-hidden">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold">Compare features</h2>
+<p class="mt-2 text-slate-400">A detailed breakdown of what's included in each plan.</p>
+</div>
+<div class="inline-block min-w-full align-middle overflow-x-auto rounded-xl border border-border-dark">
+<table class="min-w-full divide-y divide-border-dark">
+<thead class="bg-surface-dark">
+<tr>
+<th class="py-5 pl-6 text-left text-sm font-semibold" scope="col">Feature</th>
+<th class="px-3 py-5 text-center text-sm font-semibold" scope="col">Free</th>
+<th class="px-3 py-5 text-center text-sm font-semibold text-primary" scope="col">Pro</th>
+<th class="px-3 py-5 text-center text-sm font-semibold" scope="col">Business</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-dark">
+<!-- Generation Group -->
+<tr class="bg-surface-dark/30">
+<td class="py-3 pl-6 text-xs font-bold uppercase tracking-widest text-slate-500" colspan="4">Creation</td>
+</tr>
+<tr>
+<td class="py-4 pl-6 text-sm text-slate-300">Monthly Generations</td>
+<td class="px-3 py-4 text-center text-sm">5</td>
+<td class="px-3 py-4 text-center text-sm font-medium">Unlimited</td>
+<td class="px-3 py-4 text-center text-sm">Unlimited</td>
+</tr>
+<tr>
+<td class="py-4 pl-6 text-sm text-slate-300">Mockup Quality</td>
+<td class="px-3 py-4 text-center text-sm text-slate-500">Standard</td>
+<td class="px-3 py-4 text-center text-sm">Premium 4K</td>
+<td class="px-3 py-4 text-center text-sm">Premium 4K</td>
+</tr>
+<!-- Storefront Group -->
+<tr class="bg-surface-dark/30">
+<td class="py-3 pl-6 text-xs font-bold uppercase tracking-widest text-slate-500" colspan="4">Storefronts</td>
+</tr>
+<tr>
+<td class="py-4 pl-6 text-sm text-slate-300">Active Stores</td>
+<td class="px-3 py-4 text-center text-sm">1</td>
+<td class="px-3 py-4 text-center text-sm">5</td>
+<td class="px-3 py-4 text-center text-sm font-medium">Unlimited</td>
+</tr>
+<tr>
+<td class="py-4 pl-6 text-sm text-slate-300">White-labeling</td>
+<td class="px-3 py-4 text-center text-sm"><span class="material-symbols-outlined text-slate-600">close</span></td>
+<td class="px-3 py-4 text-center text-sm"><span class="material-symbols-outlined text-slate-600">close</span></td>
+<td class="px-3 py-4 text-center text-sm"><span class="material-symbols-outlined text-primary">check</span></td>
+</tr>
+<tr>
+<td class="py-4 pl-6 text-sm text-slate-300">Custom Domain</td>
+<td class="px-3 py-4 text-center text-sm"><span class="material-symbols-outlined text-slate-600">close</span></td>
+<td class="px-3 py-4 text-center text-sm"><span class="material-symbols-outlined text-primary">check</span></td>
+<td class="px-3 py-4 text-center text-sm"><span class="material-symbols-outlined text-primary">check</span></td>
+</tr>
+<!-- Technical Group -->
+<tr class="bg-surface-dark/30">
+<td class="py-3 pl-6 text-xs font-bold uppercase tracking-widest text-slate-500" colspan="4">Support &amp; API</td>
+</tr>
+<tr>
+<td class="py-4 pl-6 text-sm text-slate-300">Support Level</td>
+<td class="px-3 py-4 text-center text-sm">Community</td>
+<td class="px-3 py-4 text-center text-sm">Priority Email</td>
+<td class="px-3 py-4 text-center text-sm">24/7 Dedicated</td>
+</tr>
+<tr>
+<td class="py-4 pl-6 text-sm text-slate-300">API Access</td>
+<td class="px-3 py-4 text-center text-sm"><span class="material-symbols-outlined text-slate-600">close</span></td>
+<td class="px-3 py-4 text-center text-sm"><span class="material-symbols-outlined text-slate-600">close</span></td>
+<td class="px-3 py-4 text-center text-sm"><span class="material-symbols-outlined text-primary">check</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Trusted By -->
+<div class="mt-24 text-center">
+<p class="text-sm font-medium text-slate-500 uppercase tracking-widest mb-8">Integrated with the best</p>
+<div class="flex flex-wrap justify-center items-center gap-12 opacity-50 grayscale hover:grayscale-0 transition-all">
+<img class="h-8 w-auto" data-alt="Shopify platform logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUDk7w6j4T9XEa8cMgj3Xsx0bYrEvxkdCLK-bzpZVepI31gd4oYpHVH1s9IIu2c2XGWUhhiEe5enA-L_xkeZ6wmLe7yMuOKekX7Fhyn7OQE76uHibX-Fdx4W_Sbg7OCA9WD1e3A5B9Q5eZ0pB9wE02FRtZ0DVNHUhEnk7o29dXIVhVwALMGIZaHd0X-hcEuRbAvHcIs1pq0R3oO9SPPqbAq1rAvSCjMUosaYP2BvbH_LEFaK026grG8afVTThpii5cz4UM2lMHzQMr"/>
+<img class="h-6 w-auto" data-alt="Printful logistics logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2qGWzsLXytMyPHgqHD0xNlgDcQkD8Qa6Ht7WkFmCb_NzwmwgtntWnn9P7NVy-fdhWtpu9dq5xtlRS57nkzUSjVXJxsbtgNvdYicGslnlLJkQnl2PrtNKv54UcKMGy7j9j9RdT4kanHsyec-C0KFDAIHCAs9YhcBsenHBdbss4iplqgptOTDBvQR_eLKKOfxCuRZDd51tILPTRhJXAhzBCea_RjZfZhc5CD9_z6KGUOa0euvKzSB_FKNLI1SVFjLa7NW5U7xlIBk3a"/>
+<img class="h-8 w-auto" data-alt="Slack integration logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuASoU9BqX7pa4Cb9C9RvNJUd-1FaxJxiz4PY2sF78Ajt7-fPL7rNeWXVnKq3OZfkPmiglc2z4HVmAPoW50KQt8RE061Q8tZ7KDC_VgFcKuB7gDziRKrKvfYQ-oHJ-Vc6k1N1cOOC13L9kxwFkUnOc2BG8rXFRFDLAgh94O46lHWMYeiCdzPR-LT0vlHwma3FP4HcB3vMLjLkmKNLTXGudQhrAF03ASLG-rXtWH9XD_XhLGEcockCtMLUoqZxA-n9q1Ycl7Jh1-X9e29"/>
+<img class="h-6 w-auto" data-alt="Amazon marketplace logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmKjiyOdgP0R1NhYh6WgDueT2p7T6n94twGv3XHv15_ZnXFDxsJ3JU2eUzuy5OdRXoc4Gfp0rTB-ye7ZyFzhvSGvJk4rmJkDee9oiz5RdocPnG9CCAQZnb3oM4Wi5hQs0QqS3EWx-iefdi44ae9xTFbb98CdvRPZ3tvYoJsLKblIlEx5JGNRiL5ttRJHg7Zah7w2evdF7G2cocLwouKtiqmsZOlcBVFNic5wr2bsbadlupejN3FjPbq460yRBLPrfDbPMRNDCiONKX"/>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="mt-20 border-t border-border-dark bg-surface-dark/20 px-6 py-12 lg:px-20">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-7xl mx-auto">
+<div>
+<h4 class="text-sm font-bold text-white mb-4">Product</h4>
+<ul class="space-y-2 text-sm text-slate-400">
+<li><a class="hover:text-primary" href="#">Features</a></li>
+<li><a class="hover:text-primary" href="#">AI Generator</a></li>
+<li><a class="hover:text-primary" href="#">Integrations</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-sm font-bold text-white mb-4">Company</h4>
+<ul class="space-y-2 text-sm text-slate-400">
+<li><a class="hover:text-primary" href="#">About</a></li>
+<li><a class="hover:text-primary" href="#">Blog</a></li>
+<li><a class="hover:text-primary" href="#">Careers</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-sm font-bold text-white mb-4">Support</h4>
+<ul class="space-y-2 text-sm text-slate-400">
+<li><a class="hover:text-primary" href="#">Help Center</a></li>
+<li><a class="hover:text-primary" href="#">API Docs</a></li>
+<li><a class="hover:text-primary" href="#">Status</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-sm font-bold text-white mb-4">Legal</h4>
+<ul class="space-y-2 text-sm text-slate-400">
+<li><a class="hover:text-primary" href="#">Privacy</a></li>
+<li><a class="hover:text-primary" href="#">Terms</a></li>
+<li><a class="hover:text-primary" href="#">Cookie Policy</a></li>
+</ul>
+</div>
+</div>
+<div class="mt-12 flex flex-col md:flex-row items-center justify-between gap-4 border-t border-border-dark pt-8 max-w-7xl mx-auto">
+<p class="text-xs text-slate-500">© 2024 MerchForge AI Inc. All rights reserved.</p>
+<div class="flex gap-6">
+<span class="material-symbols-outlined text-slate-500 hover:text-primary cursor-pointer">brand_awareness</span>
+<span class="material-symbols-outlined text-slate-500 hover:text-primary cursor-pointer">public</span>
+<span class="material-symbols-outlined text-slate-500 hover:text-primary cursor-pointer">mail</span>
+</div>
+</div>
+</footer>
+</div>
+</body></html>
