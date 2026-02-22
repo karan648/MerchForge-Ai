@@ -27,6 +27,10 @@ html.dark {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-brand: var(--brand);
+  --color-background-light: #f6f5f8;
+  --color-background-dark: #0f0f15;
+  --color-panel-dark: #1a1a24;
+  --color-border-dark: #2d2839;
 }
 
 * {

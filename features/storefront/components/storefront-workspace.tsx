@@ -210,6 +210,13 @@ export function StorefrontWorkspace({
                 className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none ring-0 focus:border-[#895af6] focus:ring-2 focus:ring-[#895af6]/20 dark:border-[#895af6]/15 dark:bg-[#0f0f15]"
               />
               <Link
+                href="/dashboard/store-builder"
+                className="flex items-center gap-2 rounded-lg border border-[#895af6] bg-white px-4 py-2 text-sm font-semibold text-[#895af6] transition-colors hover:bg-[#895af6]/10 dark:bg-[#895af6]/10 dark:text-white dark:hover:bg-[#895af6]/20"
+              >
+                <span className="material-symbols-outlined text-sm">edit</span>
+                Edit Store
+              </Link>
+              <Link
                 href={overview.publicStorePath}
                 target="_blank"
                 rel="noreferrer"
