@@ -1,17 +1,19 @@
 import { notFound } from "next/navigation";
 
+import { getSessionUserId } from "@/features/onboarding/server/session-user";
 import { StorefrontWorkspace } from "@/features/storefront/components/storefront-workspace";
-import { getPublicStorefrontOverviewByUsername } from "@/features/storefront/server/storefront-service";
+import { getPublicStorefrontOverviewByUserId } from "@/features/storefront/server/storefront-service";
 
 type PublicStorefrontPageProps = {
   params: Promise<{
-    username: string;
+    userId: string;
   }>;
 };
 
 export default async function PublicStorefrontPage({ params }: PublicStorefrontPageProps) {
-  const { username } = await params;
-  const storefront = await getPublicStorefrontOverviewByUsername(username);
+  const { userId } = await params;
+  const viewerUserId = await getSessionUserId();
+  const storefront = await getPublicStorefrontOverviewByUserId(userId, viewerUserId);
 
   if (!storefront) {
     notFound();

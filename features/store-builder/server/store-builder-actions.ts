@@ -126,9 +126,8 @@ export async function publishStorefrontAction(
       const user = await tx.user.findUnique({
         where: { id: userId },
         select: {
-          username: true,
           storefront: {
-            select: { id: true, slug: true },
+            select: { id: true },
           },
         },
       });
@@ -197,7 +196,6 @@ export async function publishStorefrontAction(
       });
 
       return {
-        username: user.username,
         publishedCount: publishResult.count,
         storefrontId,
       };
@@ -205,9 +203,9 @@ export async function publishStorefrontAction(
 
     revalidatePath("/dashboard/store-builder");
     revalidatePath("/dashboard/storefront");
+    revalidatePath(`/store/${userId}`);
     revalidatePath("/dashboard/settings");
     revalidatePath("/dashboard/profile");
-    revalidatePath(`/store/${result.username}`);
 
     const message =
       result.publishedCount > 0
@@ -275,9 +273,8 @@ export async function saveStorefrontDraftAction(
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: {
-        username: true,
         storefront: {
-          select: { id: true, slug: true },
+          select: { id: true },
         },
       },
     });
@@ -336,6 +333,7 @@ export async function saveStorefrontDraftAction(
 
     revalidatePath("/dashboard/store-builder");
     revalidatePath("/dashboard/storefront");
+    revalidatePath(`/store/${userId}`);
 
     return {
       ok: true,

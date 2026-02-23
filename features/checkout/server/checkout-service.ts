@@ -11,6 +11,7 @@ export type CheckoutProductDetails = {
   imageUrl: string;
   sellerName: string;
   sellerUsername: string;
+  sellerId: string;
 };
 
 export type CreateCheckoutOrderInput = {
@@ -65,6 +66,7 @@ export async function getCheckoutProductById(productId: string): Promise<Checkou
       images: true,
       owner: {
         select: {
+          id: true,
           fullName: true,
           username: true,
         },
@@ -90,6 +92,7 @@ export async function getCheckoutProductById(productId: string): Promise<Checkou
     imageUrl,
     sellerName: product.owner.fullName?.trim() || product.owner.username,
     sellerUsername: product.owner.username,
+    sellerId: product.owner.id,
   };
 }
 

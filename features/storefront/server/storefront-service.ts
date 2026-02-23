@@ -4,6 +4,7 @@ import { getPrismaClient } from "@/server/db/prisma";
 import type { StorefrontData } from "./storefront-actions";
 
 export type StorefrontOverview = {
+  creatorId: string;
   username: string;
   publicStorePath: string;
   creatorName: string;
@@ -11,7 +12,9 @@ export type StorefrontOverview = {
   avatarUrl: string | null;
   heroImageUrl: string;
   primaryColor: string;
+  followerCount: number;
   followersLabel: string;
+  viewerIsFollowing: boolean;
   itemsCount: number;
   hasStorefront: boolean;
   isPublished: boolean;
@@ -34,6 +37,18 @@ export type StorefrontOverview = {
   }>;
   isDemoData: boolean;
 };
+
+function formatFollowersLabel(followerCount: number): string {
+  if (followerCount >= 1_000_000) {
+    return `${(followerCount / 1_000_000).toFixed(1).replace(/\.0$/, "")}M Followers`;
+  }
+
+  if (followerCount >= 1_000) {
+    return `${(followerCount / 1_000).toFixed(1).replace(/\.0$/, "")}k Followers`;
+  }
+
+  return `${followerCount} Follower${followerCount === 1 ? "" : "s"}`;
+}
 
 const FALLBACK_PRODUCTS: StorefrontOverview["products"] = [
   {
@@ -136,7 +151,7 @@ async function buildStorefrontOverviewByUser(
 ): Promise<StorefrontOverview | null> {
   const prisma = getPrismaClient();
 
-  const [user, products, reviews] = await Promise.all([
+  const [user, products, reviews, followerCount] = await Promise.all([
     prisma.user.findUnique({
       where: { id: userId },
       select: {
@@ -188,6 +203,11 @@ async function buildStorefrontOverviewByUser(
         },
       },
     }),
+    prisma.storefrontFollow
+      .count({
+        where: { creatorId: userId },
+      })
+      .catch(() => 0),
   ]);
 
   if (!user) {
@@ -222,18 +242,22 @@ async function buildStorefrontOverviewByUser(
   }));
 
   const username = user.username || "creator";
+  const followersLabel = formatFollowersLabel(followerCount);
 
   if (!storefront) {
     return {
+      creatorId: userId,
       username,
-      publicStorePath: `/store/${username}`,
+      publicStorePath: `/store/${userId}`,
       creatorName: user.fullName?.trim() || username,
       creatorBio: user.bio?.trim() || "",
       avatarUrl: user.avatarUrl ?? null,
       heroImageUrl:
         "https://lh3.googleusercontent.com/aida-public/AB6AXuA3tvsaz82Y4S2NERdl3GqX82uMagmGChplefdFv0TK_M8tXU9LNV5XLg0hH7Gyb5orzswsS9WsTXIqY6E4a3WprnVvKROu_npiYbqHEHqBbIuh1IiE83_BNJaPYtNsn4ivQDNK-313BI8VkzWFKx7HU_Dw5b5lIHCRESCG7bgw985mhNIs4HgSN0ZAGmIgoHCIDAkESt7IblWHRTUbSKAQNoLeZyGYguOoFXC6PES54AOXFTH7idzmpnXdt8WyX9sem_Gp7FE1a-0k",
       primaryColor: "#895af6",
-      followersLabel: "15.2k Followers",
+      followerCount,
+      followersLabel,
+      viewerIsFollowing: false,
       itemsCount: 0,
       hasStorefront: false,
       isPublished: false,
@@ -245,8 +269,9 @@ async function buildStorefrontOverviewByUser(
   }
 
   return {
+    creatorId: userId,
     username,
-    publicStorePath: `/store/${storefront.slug}`,
+    publicStorePath: `/store/${userId}`,
     creatorName: storefront.storeName,
     creatorBio: storefront.bio ?? "",
     avatarUrl: storefront.logoUrl ?? user.avatarUrl ?? null,
@@ -254,7 +279,9 @@ async function buildStorefrontOverviewByUser(
       storefront.bannerUrl ??
       "https://lh3.googleusercontent.com/aida-public/AB6AXuA3tvsaz82Y4S2NERdl3GqX82uMagmGChplefdFv0TK_M8tXU9LNV5XLg0hH7Gyb5orzswsS9WsTXIqY6E4a3WprnVvKROu_npiYbqHEHqBbIuh1IiE83_BNJaPYtNsn4ivQDNK-313BI8VkzWFKx7HU_Dw5b5lIHCRESCG7bgw985mhNIs4HgSN0ZAGmIgoHCIDAkESt7IblWHRTUbSKAQNoLeZyGYguOoFXC6PES54AOXFTH7idzmpnXdt8WyX9sem_Gp7FE1a-0k",
     primaryColor: storefront.primaryColor,
-    followersLabel: "15.2k Followers",
+    followerCount,
+    followersLabel,
+    viewerIsFollowing: false,
     itemsCount: mappedProducts.length > 0 ? mappedProducts.length : FALLBACK_PRODUCTS.length,
     hasStorefront: true,
     isPublished: storefront.isPublished,
@@ -298,6 +325,7 @@ export async function getStorefrontOverview(userId: string): Promise<StorefrontO
   }
 
   return {
+    creatorId: "creator",
     username: "creator",
     publicStorePath: "/store/creator",
     creatorName: "Creator",
@@ -306,7 +334,9 @@ export async function getStorefrontOverview(userId: string): Promise<StorefrontO
     heroImageUrl:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuA3tvsaz82Y4S2NERdl3GqX82uMagmGChplefdFv0TK_M8tXU9LNV5XLg0hH7Gyb5orzswsS9WsTXIqY6E4a3WprnVvKROu_npiYbqHEHqBbIuh1IiE83_BNJaPYtNsn4ivQDNK-313BI8VkzWFKx7HU_Dw5b5lIHCRESCG7bgw985mhNIs4HgSN0ZAGmIgoHCIDAkESt7IblWHRTUbSKAQNoLeZyGYguOoFXC6PES54AOXFTH7idzmpnXdt8WyX9sem_Gp7FE1a-0k",
     primaryColor: "#895af6",
-    followersLabel: "15.2k Followers",
+    followerCount: 0,
+    followersLabel: "0 Followers",
+    viewerIsFollowing: false,
     itemsCount: FALLBACK_PRODUCTS.length,
     hasStorefront: false,
     isPublished: false,
@@ -317,13 +347,19 @@ export async function getStorefrontOverview(userId: string): Promise<StorefrontO
   };
 }
 
-export async function getPublicStorefrontOverviewByUsername(
-  username: string,
+export async function getPublicStorefrontOverviewByUserId(
+  userId: string,
+  viewerUserId?: string | null,
 ): Promise<StorefrontOverview | null> {
+  const normalizedUserId = userId.trim();
+  if (!normalizedUserId) {
+    return null;
+  }
+
   const prisma = getPrismaClient();
 
-  const user = await prisma.user.findUnique({
-    where: { username },
+  let user = await prisma.user.findUnique({
+    where: { id: normalizedUserId },
     select: {
       id: true,
       username: true,
@@ -332,6 +368,19 @@ export async function getPublicStorefrontOverviewByUsername(
       avatarUrl: true,
     },
   });
+
+  if (!user) {
+    user = await prisma.user.findUnique({
+      where: { username: normalizedUserId },
+      select: {
+        id: true,
+        username: true,
+        fullName: true,
+        bio: true,
+        avatarUrl: true,
+      },
+    });
+  }
 
   if (!user) {
     return null;
@@ -345,12 +394,10 @@ export async function getPublicStorefrontOverviewByUsername(
     return null;
   }
 
-  const [products, reviews] = await Promise.all([
+  const [products, reviews, followerCount, viewerFollow] = await Promise.all([
     prisma.storeProduct.findMany({
       where: {
-        owner: {
-          username,
-        },
+        ownerId: user.id,
         status: ProductStatus.ACTIVE,
       },
       orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }],
@@ -366,9 +413,7 @@ export async function getPublicStorefrontOverviewByUsername(
     }),
     prisma.review.findMany({
       where: {
-        seller: {
-          username,
-        },
+        sellerId: user.id,
       },
       orderBy: { createdAt: "desc" },
       take: 6,
@@ -389,7 +434,25 @@ export async function getPublicStorefrontOverviewByUsername(
         },
       },
     }),
+    prisma.storefrontFollow
+      .count({
+        where: { creatorId: user.id },
+      })
+      .catch(() => 0),
+    viewerUserId
+      ? prisma.storefrontFollow.findUnique({
+          where: {
+            followerId_creatorId: {
+              followerId: viewerUserId,
+              creatorId: user.id,
+            },
+          },
+          select: { id: true },
+        }).catch(() => null)
+      : Promise.resolve(null),
   ]);
+  const viewerIsFollowing =
+    Boolean(viewerUserId) && viewerUserId !== user.id ? Boolean(viewerFollow) : false;
 
   const mappedProducts = products
     .map((product) => {
@@ -418,9 +481,12 @@ export async function getPublicStorefrontOverviewByUsername(
     avatarUrl: review.author.avatarUrl,
   }));
 
+  const followersLabel = formatFollowersLabel(followerCount);
+
   return {
+    creatorId: user.id,
     username: user.username,
-    publicStorePath: `/store/${user.username}`,
+    publicStorePath: `/store/${user.id}`,
     creatorName: storefront.storeName,
     creatorBio:
       storefront.bio?.trim() ||
@@ -430,7 +496,9 @@ export async function getPublicStorefrontOverviewByUsername(
       storefront.bannerUrl ??
       "https://lh3.googleusercontent.com/aida-public/AB6AXuA3tvsaz82Y4S2NERdl3GqX82uMagmGChplefdFv0TK_M8tXU9LNV5XLg0hH7Gyb5orzswsS9WsTXIqY6E4a3WprnVvKROu_npiYbqHEHqBbIuh1IiE83_BNJaPYtNsn4ivQDNK-313BI8VkzWFKx7HU_Dw5b5lIHCRESCG7bgw985mhNIs4HgSN0ZAGmIgoHCIDAkESt7IblWHRTUbSKAQNoLeZyGYguOoFXC6PES54AOXFTH7idzmpnXdt8WyX9sem_Gp7FE1a-0k",
     primaryColor: storefront.primaryColor,
-    followersLabel: "Public Store",
+    followerCount,
+    followersLabel,
+    viewerIsFollowing,
     itemsCount: mappedProducts.length,
     hasStorefront: true,
     isPublished: true,

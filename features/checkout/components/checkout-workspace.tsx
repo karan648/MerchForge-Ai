@@ -71,7 +71,7 @@ export function CheckoutWorkspace({ product }: { product: CheckoutProductDetails
         transition={{ duration: 0.32 }}
         className="mb-6"
       >
-        <Link href={`/store/${product.sellerUsername}`} className="text-sm text-[#895af6] hover:underline">
+        <Link href={`/store/${product.sellerId}`} className="text-sm text-[#895af6] hover:underline">
           Back to @{product.sellerUsername}
         </Link>
         <h1 className="mt-2 text-3xl font-black tracking-tight text-slate-900 dark:text-slate-100">Secure Checkout</h1>

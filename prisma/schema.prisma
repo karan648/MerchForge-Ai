@@ -176,6 +176,19 @@ model Storefront {
   @@index([isPublished])
 }
 
+model StorefrontFollow {
+  id         String   @id @default(cuid())
+  followerId String
+  creatorId  String
+  follower   User     @relation("StorefrontFollowing", fields: [followerId], references: [id], onDelete: Cascade)
+  creator    User     @relation("StorefrontFollowers", fields: [creatorId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@unique([followerId, creatorId])
+  @@index([creatorId, createdAt(sort: Desc)])
+  @@index([followerId, createdAt(sort: Desc)])
+}
+
 model User {
   id                      String              @id @default(cuid())
   supabaseId              String              @unique
@@ -209,6 +222,8 @@ model User {
   brandKits               BrandKit[]
   authoredReviews         Review[]            @relation("ReviewAuthor")
   receivedReviews         Review[]            @relation("ReviewSeller")
+  followers               StorefrontFollow[]  @relation("StorefrontFollowers")
+  following               StorefrontFollow[]  @relation("StorefrontFollowing")
   storefront              Storefront?
   createdAt               DateTime            @default(now())
   updatedAt               DateTime            @updatedAt

@@ -47,11 +47,6 @@ export async function purchaseTemplateAction(templateId: string): Promise<Purcha
           priceCents: true,
           currency: true,
           fileUrl: true,
-          creator: {
-            select: {
-              username: true,
-            },
-          },
         },
       });
 
@@ -79,7 +74,7 @@ export async function purchaseTemplateAction(templateId: string): Promise<Purcha
           orderId: existingPurchase.orderId,
           alreadyOwned: true,
           message: "Template already in your library.",
-          creatorUsername: template.creator.username,
+          creatorId: template.creatorId,
         };
       }
 
@@ -131,13 +126,13 @@ export async function purchaseTemplateAction(templateId: string): Promise<Purcha
         orderId: order.id,
         alreadyOwned: false,
         message: "Template purchased successfully.",
-        creatorUsername: template.creator.username,
+        creatorId: template.creatorId,
       };
     });
 
     revalidatePath("/dashboard/templates");
     revalidatePath("/dashboard/orders");
-    revalidatePath(`/store/${result.creatorUsername}`);
+    revalidatePath(`/store/${result.creatorId}`);
 
     return {
       ok: true,

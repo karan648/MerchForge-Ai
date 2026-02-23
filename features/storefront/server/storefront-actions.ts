@@ -45,6 +45,10 @@ type StorefrontActionResult<T = void> =
   | { ok: true; data: T }
   | { ok: false; error: string };
 
+type ToggleStoreFollowActionResult =
+  | { ok: true; isFollowing: boolean; followerCount: number }
+  | { ok: false; error: string };
+
 const MAX_DATA_IMAGE_BYTES = 5_000_000;
 
 function generateSlug(name: string): string {
@@ -232,7 +236,7 @@ export async function createStorefront(
 
     revalidatePath("/dashboard/storefront");
     revalidatePath("/dashboard/store-builder");
-    revalidatePath(`/store/${slug}`);
+    revalidatePath(`/store/${userId}`);
 
     return {
       ok: true,
@@ -348,7 +352,7 @@ export async function updateStorefront(
 
     revalidatePath("/dashboard/storefront");
     revalidatePath("/dashboard/store-builder");
-    revalidatePath(`/store/${storefront.slug}`);
+    revalidatePath(`/store/${userId}`);
 
     return {
       ok: true,
@@ -399,7 +403,7 @@ export async function publishStorefront(): Promise<StorefrontActionResult<Storef
 
     revalidatePath("/dashboard/storefront");
     revalidatePath("/dashboard/store-builder");
-    revalidatePath(`/store/${storefront.slug}`);
+    revalidatePath(`/store/${userId}`);
 
     return {
       ok: true,
@@ -437,7 +441,7 @@ export async function deleteStorefront(): Promise<StorefrontActionResult> {
   try {
     const existingStorefront = await prisma.storefront.findUnique({
       where: { userId },
-      select: { slug: true },
+      select: { id: true },
     });
 
     if (!existingStorefront) {
@@ -450,11 +454,82 @@ export async function deleteStorefront(): Promise<StorefrontActionResult> {
 
     revalidatePath("/dashboard/storefront");
     revalidatePath("/dashboard/store-builder");
-    revalidatePath(`/store/${existingStorefront.slug}`);
+    revalidatePath(`/store/${userId}`);
 
     return { ok: true, data: undefined };
   } catch (error) {
     console.error("Delete storefront error:", error);
     return { ok: false, error: "Unable to delete storefront. Please try again." };
+  }
+}
+
+export async function toggleStoreFollowAction(creatorId: string): Promise<ToggleStoreFollowActionResult> {
+  const followerId = await getSessionUserId();
+  if (!followerId) {
+    return { ok: false, error: "Please sign in to follow this creator." };
+  }
+
+  const normalizedCreatorId = creatorId.trim();
+  if (!normalizedCreatorId) {
+    return { ok: false, error: "Creator identifier is required." };
+  }
+
+  if (normalizedCreatorId === followerId) {
+    return { ok: false, error: "You cannot follow your own store." };
+  }
+
+  const prisma = getPrismaClient();
+
+  try {
+    const creatorExists = await prisma.user.findUnique({
+      where: { id: normalizedCreatorId },
+      select: { id: true },
+    });
+
+    if (!creatorExists) {
+      return { ok: false, error: "Store creator not found." };
+    }
+
+    const existingFollow = await prisma.storefrontFollow.findUnique({
+      where: {
+        followerId_creatorId: {
+          followerId,
+          creatorId: normalizedCreatorId,
+        },
+      },
+      select: { id: true },
+    });
+
+    let isFollowing = false;
+
+    if (existingFollow) {
+      await prisma.storefrontFollow.delete({
+        where: { id: existingFollow.id },
+      });
+    } else {
+      await prisma.storefrontFollow.create({
+        data: {
+          followerId,
+          creatorId: normalizedCreatorId,
+        },
+      });
+      isFollowing = true;
+    }
+
+    const followerCount = await prisma.storefrontFollow.count({
+      where: { creatorId: normalizedCreatorId },
+    });
+
+    revalidatePath(`/store/${normalizedCreatorId}`);
+    revalidatePath("/dashboard/storefront");
+
+    return {
+      ok: true,
+      isFollowing,
+      followerCount,
+    };
+  } catch (error) {
+    console.error("Toggle storefront follow error:", error);
+    return { ok: false, error: "Unable to update follow status right now." };
   }
 }

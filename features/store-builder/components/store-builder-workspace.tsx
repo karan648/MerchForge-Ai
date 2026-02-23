@@ -448,15 +448,21 @@ export function StoreBuilderWorkspace({ overview }: StoreBuilderWorkspaceProps) 
             </div>
             <div className="flex-1 max-w-md mx-auto h-6 bg-white dark:bg-[#1a1a24] border border-slate-200 dark:border-[#2d2839] rounded-md flex items-center px-3 gap-2">
               <span className="material-symbols-outlined text-[10px] text-slate-500">lock</span>
-              <p className="text-[10px] text-slate-500 truncate">merchforge.ai/{overview.username}</p>
+              <p className="text-[10px] text-slate-500 truncate">merchforge.ai{overview.publicStorePath}</p>
             </div>
           </div>
 
           {/* Actual Website Mockup Scrollable */}
           <div className="flex-1 overflow-y-auto custom-scrollbar">
             {/* Store Banner */}
-            <div className="relative h-48 w-full" style={{ background: `linear-gradient(to right, ${themeColor}, #4f46e5)` }}>
-              <img alt="Banner" className="size-full object-cover opacity-60" src={bannerUrl} />
+            <div className="relative h-48 w-full overflow-hidden">
+              <img alt="Banner" className="size-full object-cover" src={bannerUrl} />
+              <div
+                className="absolute inset-0"
+                style={{
+                  background: `linear-gradient(125deg, ${themeColor}99 0%, ${themeColor}66 36%, #0f172ab3 100%)`,
+                }}
+              />
             </div>
 
             <div className="max-w-4xl mx-auto px-8 -mt-10 pb-20 relative">
