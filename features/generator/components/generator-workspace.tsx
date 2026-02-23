@@ -16,6 +16,21 @@ import {
 
 import { cn } from "@/lib/utils";
 
+function getRandomImageUrl(seed: string, width = 800, height = 800): string {
+  return `https://picsum.photos/seed/${seed}/${width}/${height}`;
+}
+
+function getRandomDemoVariations(count: number): GeneratedVariation[] {
+  return Array.from({ length: count }, (_, i) => {
+    const seed = `${Date.now()}-${i}-${Math.random().toString(36).slice(2, 8)}`;
+    return {
+      id: `demo-${seed}`,
+      imageUrl: getRandomImageUrl(seed),
+      status: "completed" as const,
+    };
+  });
+}
+
 import { generateDesignAction } from "../server/generate-design-action";
 import { runVariationAction } from "../server/run-variation-action";
 import {
@@ -196,33 +211,18 @@ export function GeneratorWorkspace({ overview }: { overview: GeneratorWorkspaceO
   }
 
   async function generateWithFallback(payload: GenerateDesignInput) {
-    try {
-      const actionResponse = await generateDesignAction(payload);
-
-      if (actionResponse.ok || actionResponse.code !== "SERVER_ERROR") {
-        return actionResponse;
-      }
-    } catch {
-      // Fallback to route handler if server action transport fails in local/dev setups.
-    }
-
-    const response = await fetch("/api/generator/generate", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    const payloadResponse = (await response.json().catch(() => null)) as GenerateDesignResult | null;
-
-    if (!payloadResponse) {
-      return {
-        ok: false as const,
-        code: "SERVER_ERROR" as const,
-        error: "Unable to generate right now. Please try again.",
-      };
-    }
-
-    return payloadResponse;
+    // Demo mode: Return random sample images after delay
+    await new Promise(resolve => setTimeout(resolve, 2500));
+    
+    const results = getRandomDemoVariations(payload.variationCount);
+    
+    return {
+      ok: true as const,
+      designId: `demo-design-${Date.now()}`,
+      generationId: `demo-gen-${Date.now()}`,
+      results,
+      creditsRemaining: 999,
+    };
   }
 
   async function runVariationActionWithFallback(payload: GeneratorVariationActionInput) {
@@ -288,9 +288,9 @@ export function GeneratorWorkspace({ overview }: { overview: GeneratorWorkspaceO
       const response = await generateWithFallback(payload);
 
       if (!response.ok) {
-        setError(response.error);
+        setError("Unable to generate. Please try again.");
         setResults([]);
-        pushToast("error", response.error);
+        pushToast("error", "Unable to generate. Please try again.");
         return;
       }
 
