@@ -48,7 +48,7 @@ export function UserAvatar({
   return (
     <div
       className={cn(
-        "relative grid size-full place-items-center overflow-hidden rounded-full bg-[#895af6]/20 text-[10px] font-bold text-[#895af6]",
+        "relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#895af6]/20",
         fallbackClassName,
         className,
       )}
@@ -57,7 +57,7 @@ export function UserAvatar({
         <img
           src={avatarUrl ?? undefined}
           alt={fullName ? `${fullName} avatar` : "User avatar"}
-          className="size-full object-cover"
+          className="h-full w-full object-cover"
           onError={() => setFailedAvatarUrl(avatarUrl ?? null)}
         />
       ) : (

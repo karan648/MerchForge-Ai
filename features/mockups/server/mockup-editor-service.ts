@@ -1,57 +1,19 @@
-import {
-  GarmentType,
-  MockupStatus,
-  Prisma,
-  type PrismaClient,
-} from "@prisma/client";
+import { MockupStatus, Prisma, type PrismaClient } from "@prisma/client";
 
 import { getPrismaClient } from "@/server/db/prisma";
 
-export type MockupLayerType = "design" | "text";
-
-export type MockupEditorLayer = {
-  id: string;
-  type: MockupLayerType;
-  name: string;
-  visible: boolean;
-  x: number;
-  y: number;
-  scale: number;
-  rotation: number;
-  imageUrl?: string;
-  text?: string;
-  color?: string;
-  fontSize?: number;
-};
-
-export type MockupEditorState = {
-  version: number;
-  garmentColor: string;
-  activeLayerId: string;
-  layers: MockupEditorLayer[];
-};
-
-export type MockupEditorData = {
-  id: string;
-  name: string;
-  garmentType: string;
-  garmentColor: string;
-  status: "Draft" | "Ready" | "Exported";
-  previewUrl: string | null;
-  printReadyUrl: string | null;
-  dpi: number;
-  updatedAtIso: string;
-  state: MockupEditorState;
-};
-
-export type SaveMockupEditorInput = {
-  mockupId: string;
-  name: string;
-  garmentColor: string;
-  state: MockupEditorState;
-};
-
-export type MockupExportFormat = "PNG" | "PRINT_READY";
+export {
+  GarmentType,
+  PRODUCT_TYPES,
+  getProductTypeInfo,
+  type MockupLayerType,
+  type MockupEditorLayer,
+  type MockupEditorState,
+  type MockupEditorData,
+  type SaveMockupEditorInput,
+  type MockupExportFormat,
+  type ProductTypeInfo,
+} from "../types/mockup-editor-types";
 
 const DEFAULT_DESIGN_IMAGE =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuAPSjjvewf3fpztpQFQlVfm9zG6IvAbIWjOTJVabrTBIiaLE8V79jNAQQrN44bKUkTge40gkmyl2CNa6wMYFfyNuEcMtu-j0nvcGkQXQmSnu0RLZ7nnHAMx6lHBp7vO362R_ukQoD-BTRYugJGd-41FqA9DuusQiSbsATk9sk5vPn4XxlDiT0mwp-kg6poHa6yPGeErh6vqx__OwvR8x9JGa-x2ETv1OK53dS4fhFz3izSmdNqv5ZqDofTBUflUHXHfQcD4UXQYw6-T";
@@ -60,49 +22,33 @@ const DEFAULT_MOCKUP_PREVIEW =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuBO7OJElyXcwkpNMfSdBQ6xRc_N9lKfDPU2K3UO52S3JudJxDVdTTVwQXPXqV50EqeGhg-DudmIOzmsUn8McTq60IY6zBJ66KAEsbC-lAGMdv0Uoi9mWFOYts4Tu_1qw0eYvInkUwHoQVR6KQZnIi1tuA4O1EDtGH4Kbq1jjsPTPFmLO5_d47PlQIynK7ixDIehH9b8_KNu6kRWD-y0pu5ONAKMoxVa78gdM6gRFDUDodYxSEP-ovzf6VZRJIupTKq_qrtgSqYszmM2";
 
 function mapStatus(status: MockupStatus): "Draft" | "Ready" | "Exported" {
-  if (status === MockupStatus.READY) {
-    return "Ready";
-  }
-
-  if (status === MockupStatus.EXPORTED) {
-    return "Exported";
-  }
-
+  if (status === MockupStatus.READY) return "Ready";
+  if (status === MockupStatus.EXPORTED) return "Exported";
   return "Draft";
 }
 
 function toJsonObject(value: Prisma.JsonValue | null | undefined): Prisma.JsonObject {
-  if (!value || Array.isArray(value) || typeof value !== "object") {
-    return {};
-  }
-
+  if (!value || Array.isArray(value) || typeof value !== "object") return {};
   return value as Prisma.JsonObject;
 }
 
-function safeLayerType(value: unknown): MockupLayerType {
+function safeLayerType(value: unknown): "design" | "text" {
   return value === "text" ? "text" : "design";
 }
 
 function safeNumber(value: unknown, fallback: number): number {
-  if (typeof value !== "number" || Number.isNaN(value)) {
-    return fallback;
-  }
-
+  if (typeof value !== "number" || Number.isNaN(value)) return fallback;
   return value;
 }
 
 function safeString(value: unknown, fallback: string): string {
-  if (typeof value !== "string") {
-    return fallback;
-  }
-
+  if (typeof value !== "string") return fallback;
   const trimmed = value.trim();
   return trimmed.length > 0 ? trimmed : fallback;
 }
 
-function normalizeLayer(input: MockupEditorLayer): MockupEditorLayer {
+function normalizeLayer(input: { x: number; y: number; scale: number; rotation: number }): { x: number; y: number; scale: number; rotation: number } {
   return {
-    ...input,
     x: Math.max(0, Math.min(100, input.x)),
     y: Math.max(0, Math.min(100, input.y)),
     scale: Math.max(0.2, Math.min(2.5, input.scale)),
@@ -110,10 +56,15 @@ function normalizeLayer(input: MockupEditorLayer): MockupEditorLayer {
   };
 }
 
-function defaultState(designImageUrl?: string | null): MockupEditorState {
+import { GarmentType } from "../types/mockup-editor-types";
+import type { MockupEditorState, MockupEditorLayer, MockupEditorData, SaveMockupEditorInput } from "../types/mockup-editor-types";
+
+function defaultState(designImageUrl?: string | null, garmentTypeVal?: GarmentType): MockupEditorState {
   return {
     version: 1,
+    garmentType: garmentTypeVal ?? GarmentType.T_SHIRT,
     garmentColor: "#111827",
+    productAngle: 0,
     activeLayerId: "layer-design",
     layers: [
       {
@@ -144,47 +95,38 @@ function defaultState(designImageUrl?: string | null): MockupEditorState {
   };
 }
 
-function parseMockupState(value: Prisma.JsonValue | null, designImageUrl?: string | null): MockupEditorState {
-  if (!value) {
-    return defaultState(designImageUrl);
-  }
+function parseMockupState(value: Prisma.JsonValue | null, designImageUrl?: string | null, forcedGarmentType?: GarmentType): MockupEditorState {
+  if (!value) return defaultState(designImageUrl, forcedGarmentType);
 
   const json = toJsonObject(value);
-
-  if (!Array.isArray(json.layers)) {
-    return defaultState(designImageUrl);
-  }
+  if (!Array.isArray(json.layers)) return defaultState(designImageUrl, forcedGarmentType);
 
   const rawLayers = json.layers
     .map((layer) => {
-      if (!layer || Array.isArray(layer) || typeof layer !== "object") {
-        return null;
-      }
-
+      if (!layer || Array.isArray(layer) || typeof layer !== "object") return null;
       const obj = layer as Record<string, unknown>;
-
+      const transform = normalizeLayer({
+        x: safeNumber(obj.x, 50),
+        y: safeNumber(obj.y, 50),
+        scale: safeNumber(obj.scale, 1),
+        rotation: safeNumber(obj.rotation, 0),
+      });
       const normalized: MockupEditorLayer = {
         id: safeString(obj.id, `layer-${Math.random().toString(36).slice(2, 8)}`),
         type: safeLayerType(obj.type),
         name: safeString(obj.name, safeLayerType(obj.type) === "text" ? "Text" : "Design"),
         visible: obj.visible !== false,
-        x: safeNumber(obj.x, 50),
-        y: safeNumber(obj.y, 50),
-        scale: safeNumber(obj.scale, 1),
-        rotation: safeNumber(obj.rotation, 0),
+        ...transform,
         imageUrl: typeof obj.src === "string" ? obj.src : typeof obj.imageUrl === "string" ? obj.imageUrl : undefined,
         text: typeof obj.text === "string" ? obj.text : undefined,
         color: typeof obj.color === "string" ? obj.color : undefined,
         fontSize: typeof obj.fontSize === "number" ? obj.fontSize : undefined,
-      };
-
-      return normalizeLayer(normalized);
+      } as MockupEditorLayer;
+      return normalized;
     })
     .filter((layer): layer is MockupEditorLayer => layer !== null);
 
-  if (rawLayers.length === 0) {
-    return defaultState(designImageUrl);
-  }
+  if (rawLayers.length === 0) return defaultState(designImageUrl, forcedGarmentType);
 
   const hasDesignLayer = rawLayers.some((layer) => layer.type === "design");
   const withDesign: MockupEditorLayer[] = hasDesignLayer
@@ -209,44 +151,39 @@ function parseMockupState(value: Prisma.JsonValue | null, designImageUrl?: strin
       ? json.activeLayerId
       : withDesign[0]?.id ?? "layer-design";
 
-  const garmentColor =
-    typeof json.garmentColor === "string" && json.garmentColor.trim().length > 0
-      ? json.garmentColor
-      : "#111827";
+  const garmentColor = typeof json.garmentColor === "string" && json.garmentColor.trim().length > 0 ? json.garmentColor : "#111827";
 
-  return {
-    version: 1,
-    garmentColor,
-    activeLayerId,
-    layers: withDesign,
-  };
+  const garmentType = Object.values(GarmentType).includes(json.garmentType as GarmentType)
+    ? (json.garmentType as GarmentType)
+    : (forcedGarmentType ?? GarmentType.T_SHIRT);
+
+  const productAngle = typeof json.productAngle === "number" ? json.productAngle : 0;
+
+  return { version: 1, garmentType, garmentColor, productAngle, activeLayerId, layers: withDesign };
 }
 
 function sanitizeState(input: MockupEditorState): MockupEditorState {
-  const layers = input.layers
+  const layers: MockupEditorLayer[] = input.layers
     .map((layer) => {
       const type = safeLayerType(layer.type);
-
-      return normalizeLayer({
+      const transform = normalizeLayer({ x: layer.x, y: layer.y, scale: layer.scale, rotation: layer.rotation });
+      return {
         id: safeString(layer.id, `layer-${Date.now().toString(36)}`),
         type,
         name: safeString(layer.name, type === "text" ? "Text" : "Design"),
         visible: layer.visible !== false,
-        x: layer.x,
-        y: layer.y,
-        scale: layer.scale,
-        rotation: layer.rotation,
+        ...transform,
         imageUrl: type === "design" ? safeString(layer.imageUrl, DEFAULT_DESIGN_IMAGE) : undefined,
         text: type === "text" ? safeString(layer.text, "Limited Drop") : undefined,
         color: type === "text" ? safeString(layer.color, "#ffffff") : undefined,
         fontSize: type === "text" ? Math.max(12, Math.min(96, safeNumber(layer.fontSize, 36))) : undefined,
-      });
+      } as MockupEditorLayer;
     })
     .slice(0, 8);
 
   const hasDesign = layers.some((layer) => layer.type === "design");
   if (!hasDesign) {
-    layers.unshift({
+    const designLayer: MockupEditorLayer = {
       id: "layer-design",
       type: "design",
       name: "Design",
@@ -256,29 +193,24 @@ function sanitizeState(input: MockupEditorState): MockupEditorState {
       scale: 1,
       rotation: 0,
       imageUrl: DEFAULT_DESIGN_IMAGE,
-    });
+    };
+    layers.unshift(designLayer as MockupEditorLayer);
   }
 
-  const activeLayerId = layers.some((layer) => layer.id === input.activeLayerId)
-    ? input.activeLayerId
-    : layers[0]?.id ?? "layer-design";
+  const activeLayerId = layers.some((layer) => layer.id === input.activeLayerId) ? input.activeLayerId : layers[0]?.id ?? "layer-design";
+  const garmentColor = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(input.garmentColor) ? input.garmentColor : "#111827";
+  const garmentType = Object.values(GarmentType).includes(input.garmentType) ? input.garmentType : GarmentType.T_SHIRT;
+  const productAngle = typeof input.productAngle === "number" ? Math.max(0, Math.min(360, input.productAngle)) : 0;
 
-  const garmentColor = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(input.garmentColor)
-    ? input.garmentColor
-    : "#111827";
-
-  return {
-    version: 1,
-    garmentColor,
-    activeLayerId,
-    layers,
-  };
+  return { version: 1, garmentType, garmentColor, productAngle, activeLayerId, layers };
 }
 
 function stateToJson(state: MockupEditorState): Prisma.InputJsonValue {
   return {
     version: state.version,
+    garmentType: state.garmentType,
     garmentColor: state.garmentColor,
+    productAngle: state.productAngle,
     activeLayerId: state.activeLayerId,
     layers: state.layers.map((layer) => ({
       id: layer.id,
@@ -304,9 +236,7 @@ function derivePreviewUrl(state: MockupEditorState, fallback?: string | null): s
 }
 
 function ensureOwner(whereUserId: string, userId: string) {
-  if (whereUserId !== userId) {
-    throw new Error("FORBIDDEN");
-  }
+  if (whereUserId !== userId) throw new Error("FORBIDDEN");
 }
 
 async function findOwnedMockup(prisma: PrismaClient, userId: string, mockupId: string) {
@@ -324,12 +254,7 @@ async function findOwnedMockup(prisma: PrismaClient, userId: string, mockupId: s
       dpi: true,
       status: true,
       updatedAt: true,
-      design: {
-        select: {
-          primaryImageUrl: true,
-          thumbnailUrl: true,
-        },
-      },
+      design: { select: { primaryImageUrl: true, thumbnailUrl: true } },
     },
   });
 }
@@ -348,33 +273,22 @@ export async function createBlankMockupForUser(userId: string): Promise<string> 
       previewUrl: derivePreviewUrl(state),
       printReadyUrl: derivePreviewUrl(state),
       status: MockupStatus.DRAFT,
-      metadata: {
-        source: "mockup_editor_new",
-      },
+      metadata: { source: "mockup_editor_new" },
     },
-    select: {
-      id: true,
-    },
+    select: { id: true },
   });
 
   return mockup.id;
 }
 
-export async function getMockupEditorDataForUser(
-  userId: string,
-  mockupId: string,
-): Promise<MockupEditorData | null> {
+export async function getMockupEditorDataForUser(userId: string, mockupId: string): Promise<MockupEditorData | null> {
   const prisma = getPrismaClient();
   const mockup = await findOwnedMockup(prisma, userId, mockupId);
-
-  if (!mockup) {
-    return null;
-  }
-
+  if (!mockup) return null;
   ensureOwner(mockup.userId, userId);
 
   const designImageUrl = mockup.design?.primaryImageUrl ?? mockup.design?.thumbnailUrl ?? mockup.previewUrl;
-  const state = parseMockupState(mockup.canvasState, designImageUrl);
+  const state = parseMockupState(mockup.canvasState, designImageUrl, mockup.garmentType);
 
   return {
     id: mockup.id,
@@ -390,23 +304,14 @@ export async function getMockupEditorDataForUser(
   };
 }
 
-export async function saveMockupEditorStateForUser(
-  userId: string,
-  input: SaveMockupEditorInput,
-): Promise<MockupEditorData> {
+export async function saveMockupEditorStateForUser(userId: string, input: SaveMockupEditorInput): Promise<MockupEditorData> {
   const prisma = getPrismaClient();
   const existing = await findOwnedMockup(prisma, userId, input.mockupId);
-
-  if (!existing) {
-    throw new Error("NOT_FOUND");
-  }
-
+  if (!existing) throw new Error("NOT_FOUND");
   ensureOwner(existing.userId, userId);
 
   const name = input.name.trim();
-  if (name.length < 2) {
-    throw new Error("VALIDATION_NAME");
-  }
+  if (name.length < 2) throw new Error("VALIDATION_NAME");
 
   const state = sanitizeState(input.state);
   const previewUrl = derivePreviewUrl(state, existing.previewUrl);
@@ -415,6 +320,7 @@ export async function saveMockupEditorStateForUser(
     where: { id: existing.id },
     data: {
       name,
+      garmentType: state.garmentType,
       garmentColor: state.garmentColor,
       canvasState: stateToJson(state),
       previewUrl,
@@ -448,18 +354,10 @@ export async function saveMockupEditorStateForUser(
   };
 }
 
-export async function exportMockupForUser(
-  userId: string,
-  mockupId: string,
-  format: MockupExportFormat,
-): Promise<{ downloadUrl: string; dpi: number }> {
+export async function exportMockupForUser(userId: string, mockupId: string, format: "PNG" | "PRINT_READY"): Promise<{ downloadUrl: string; dpi: number }> {
   const prisma = getPrismaClient();
   const mockup = await findOwnedMockup(prisma, userId, mockupId);
-
-  if (!mockup) {
-    throw new Error("NOT_FOUND");
-  }
-
+  if (!mockup) throw new Error("NOT_FOUND");
   ensureOwner(mockup.userId, userId);
 
   const state = parseMockupState(mockup.canvasState, mockup.previewUrl);
@@ -467,7 +365,6 @@ export async function exportMockupForUser(
 
   const downloadUrl = (() => {
     const token = Date.now().toString(36);
-
     try {
       const url = new URL(baseUrl);
       url.searchParams.set("mf_export", format === "PNG" ? "png" : "print");
@@ -487,31 +384,17 @@ export async function exportMockupForUser(
       printReadyUrl: downloadUrl,
       dpi,
       status: MockupStatus.EXPORTED,
-      metadata: {
-        source: "mockup_export_action",
-        format,
-        exportedAtIso: new Date().toISOString(),
-      },
+      metadata: { source: "mockup_export_action", format, exportedAtIso: new Date().toISOString() },
     },
   });
 
-  return {
-    downloadUrl,
-    dpi,
-  };
+  return { downloadUrl, dpi };
 }
 
 export async function deleteMockupForUser(userId: string, mockupId: string): Promise<void> {
   const prisma = getPrismaClient();
   const existing = await findOwnedMockup(prisma, userId, mockupId);
-
-  if (!existing) {
-    return;
-  }
-
+  if (!existing) return;
   ensureOwner(existing.userId, userId);
-
-  await prisma.mockup.delete({
-    where: { id: existing.id },
-  });
+  await prisma.mockup.delete({ where: { id: existing.id } });
 }

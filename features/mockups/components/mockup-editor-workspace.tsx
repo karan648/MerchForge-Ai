@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import {
   type CSSProperties,
   type PointerEvent as ReactPointerEvent,
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -13,18 +14,22 @@ import {
 } from "react";
 
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/components/providers/theme-provider";
 
 import {
   deleteMockupEditorAction,
   exportMockupEditorAction,
   saveMockupEditorAction,
 } from "../server/mockup-editor-actions";
-import type {
-  MockupEditorData,
-  MockupEditorLayer,
-  MockupEditorState,
-  MockupLayerType,
-} from "../server/mockup-editor-service";
+import {
+  PRODUCT_TYPES,
+  getProductTypeInfo,
+  GarmentType,
+  type MockupEditorData,
+  type MockupEditorLayer,
+  type MockupEditorState,
+  type MockupLayerType,
+} from "../types/mockup-editor-types";
 
 type ToastTone = "success" | "error" | "info";
 
@@ -43,21 +48,26 @@ type DragState = {
   startY: number;
 };
 
-const GARMENT_COLORS = ["#111827", "#1f2937", "#ffffff", "#a855f7", "#0ea5e9", "#f43f5e"] as const;
+type RotateDragState = {
+  startAngle: number;
+  currentAngle: number;
+};
 
 function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));
+}
+
+function clamp360(value: number): number {
+  return ((value % 360) + 360) % 360;
 }
 
 function toneClass(tone: ToastTone): string {
   if (tone === "success") {
     return "border-emerald-500/35 bg-emerald-500/15 text-emerald-100";
   }
-
   if (tone === "error") {
     return "border-red-500/35 bg-red-500/15 text-red-100";
   }
-
   return "border-slate-300/35 bg-slate-700/65 text-slate-100";
 }
 
@@ -65,11 +75,9 @@ function statusClass(status: MockupEditorData["status"]): string {
   if (status === "Ready") {
     return "bg-emerald-500/15 text-emerald-500 border-emerald-500/30";
   }
-
   if (status === "Exported") {
     return "bg-[#895af6]/15 text-[#895af6] border-[#895af6]/30";
   }
-
   return "bg-slate-500/10 text-slate-500 border-slate-400/30";
 }
 
@@ -86,12 +94,41 @@ function localDate(valueIso: string): string {
   });
 }
 
+function getProductPlaceholder(type: GarmentType): string {
+  const product = getProductTypeInfo(type);
+  switch (type) {
+    case GarmentType.MUG:
+      return "Mug";
+    case GarmentType.HAT:
+    case GarmentType.CAP:
+      return "Hat";
+    case GarmentType.POSTER:
+    case GarmentType.CANVAS:
+      return "Poster";
+    case GarmentType.STICKER:
+      return "Sticker";
+    case GarmentType.TOTE_BAG:
+      return "Tote Bag";
+    case GarmentType.PHONE_CASE:
+      return "Phone Case";
+    case GarmentType.NOTEBOOK:
+      return "Notebook";
+    default:
+      return product.name;
+  }
+}
+
 export function MockupEditorWorkspace({ mockup }: { mockup: MockupEditorData }) {
   const shouldReduceMotion = useReducedMotion();
   const router = useRouter();
+  const { theme } = useTheme();
   const canvasRef = useRef<HTMLDivElement | null>(null);
   const dragStateRef = useRef<DragState | null>(null);
+  const rotateDragRef = useRef<RotateDragState | null>(null);
   const toastIdRef = useRef(0);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [rightPanelOpen, setRightPanelOpen] = useState(true);
+  const [activeTab, setActiveTab] = useState<"products" | "layers">("products");
 
   const [name, setName] = useState(mockup.name);
   const [state, setState] = useState<MockupEditorState>(mockup.state);
@@ -103,16 +140,20 @@ export function MockupEditorWorkspace({ mockup }: { mockup: MockupEditorData }) 
   const [isDeleting, setIsDeleting] = useState(false);
   const [toasts, setToasts] = useState<EditorToast[]>([]);
 
+  const currentProduct = useMemo(
+    () => getProductTypeInfo(state.garmentType),
+    [state.garmentType]
+  );
+
   const activeLayer = useMemo(
     () => state.layers.find((layer) => layer.id === state.activeLayerId) ?? state.layers[0],
-    [state.activeLayerId, state.layers],
+    [state.activeLayerId, state.layers]
   );
 
   function pushToast(tone: ToastTone, message: string) {
     toastIdRef.current += 1;
     const id = `mockup-toast-${toastIdRef.current}`;
     setToasts((current) => [...current, { id, tone, message }]);
-
     window.setTimeout(() => {
       setToasts((current) => current.filter((toast) => toast.id !== id));
     }, 2600);
@@ -139,37 +180,35 @@ export function MockupEditorWorkspace({ mockup }: { mockup: MockupEditorData }) 
     }));
   }
 
+  function setGarmentType(type: GarmentType) {
+    const product = getProductTypeInfo(type);
+    setState((current) => ({
+      ...current,
+      garmentType: type,
+      garmentColor: product.colors[0] ?? current.garmentColor,
+    }));
+  }
+
   function moveLayer(direction: "up" | "down") {
     setState((current) => {
       const index = current.layers.findIndex((layer) => layer.id === current.activeLayerId);
-      if (index === -1) {
-        return current;
-      }
+      if (index === -1) return current;
 
       const targetIndex = direction === "up" ? index + 1 : index - 1;
-      if (targetIndex < 0 || targetIndex >= current.layers.length) {
-        return current;
-      }
+      if (targetIndex < 0 || targetIndex >= current.layers.length) return current;
 
       const layers = [...current.layers];
       const [moved] = layers.splice(index, 1);
       layers.splice(targetIndex, 0, moved);
 
-      return {
-        ...current,
-        layers,
-      };
+      return { ...current, layers };
     });
   }
 
   function addTextLayer() {
     const existingText = state.layers.find((layer) => layer.type === "text");
-
     if (existingText) {
-      updateLayer(existingText.id, (layer) => ({
-        ...layer,
-        visible: true,
-      }));
+      updateLayer(existingText.id, (layer) => ({ ...layer, visible: true }));
       setActiveLayer(existingText.id);
       return;
     }
@@ -196,27 +235,17 @@ export function MockupEditorWorkspace({ mockup }: { mockup: MockupEditorData }) 
   }
 
   function removeActiveTextLayer() {
-    if (!activeLayer || activeLayer.type !== "text") {
-      return;
-    }
+    if (!activeLayer || activeLayer.type !== "text") return;
 
     setState((current) => {
       const nextLayers = current.layers.filter((layer) => layer.id !== activeLayer.id);
       const fallbackLayerId = nextLayers.find((layer) => layer.type === "design")?.id ?? nextLayers[0]?.id ?? "";
-
-      return {
-        ...current,
-        activeLayerId: fallbackLayerId,
-        layers: nextLayers,
-      };
+      return { ...current, activeLayerId: fallbackLayerId, layers: nextLayers };
     });
   }
 
   function resetActiveLayerTransform() {
-    if (!activeLayer) {
-      return;
-    }
-
+    if (!activeLayer) return;
     updateLayer(activeLayer.id, (layer) => ({
       ...layer,
       x: 50,
@@ -227,27 +256,15 @@ export function MockupEditorWorkspace({ mockup }: { mockup: MockupEditorData }) 
   }
 
   function centerActiveLayer() {
-    if (!activeLayer) {
-      return;
-    }
-
-    updateLayer(activeLayer.id, (layer) => ({
-      ...layer,
-      x: 50,
-      y: 50,
-    }));
+    if (!activeLayer) return;
+    updateLayer(activeLayer.id, (layer) => ({ ...layer, x: 50, y: 50 }));
   }
 
   function handleLayerPointerDown(event: ReactPointerEvent<HTMLDivElement>, layer: MockupEditorLayer) {
-    if (isSaving || isExporting || isDeleting || !layer.visible) {
-      return;
-    }
-
+    if (isSaving || isExporting || isDeleting || !layer.visible) return;
     event.preventDefault();
     event.stopPropagation();
-
     setActiveLayer(layer.id);
-
     dragStateRef.current = {
       layerId: layer.id,
       pointerId: event.pointerId,
@@ -258,19 +275,28 @@ export function MockupEditorWorkspace({ mockup }: { mockup: MockupEditorData }) 
     };
   }
 
+  const handleRotateStart = useCallback((event: React.PointerEvent<HTMLButtonElement>) => {
+    if (isSaving || isExporting || isDeleting) return;
+    event.preventDefault();
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const startAngle = Math.atan2(event.clientY - centerY, event.clientX - centerX);
+    rotateDragRef.current = {
+      startAngle,
+      currentAngle: state.productAngle,
+    };
+  }, [isSaving, isExporting, isDeleting, state.productAngle]);
+
   useEffect(() => {
     function onPointerMove(event: PointerEvent) {
       const drag = dragStateRef.current;
       const canvas = canvasRef.current;
-
-      if (!drag || !canvas) {
-        return;
-      }
+      if (!drag || !canvas) return;
 
       const rect = canvas.getBoundingClientRect();
-      if (rect.width <= 0 || rect.height <= 0) {
-        return;
-      }
+      if (rect.width <= 0 || rect.height <= 0) return;
 
       const deltaX = ((event.clientX - drag.startClientX) / rect.width) * 100;
       const deltaY = ((event.clientY - drag.startClientY) / rect.height) * 100;
@@ -284,14 +310,8 @@ export function MockupEditorWorkspace({ mockup }: { mockup: MockupEditorData }) 
 
     function onPointerUp(event: PointerEvent) {
       const drag = dragStateRef.current;
-      if (!drag) {
-        return;
-      }
-
-      if (drag.pointerId !== event.pointerId) {
-        return;
-      }
-
+      if (!drag) return;
+      if (drag.pointerId !== event.pointerId) return;
       dragStateRef.current = null;
     }
 
@@ -304,26 +324,49 @@ export function MockupEditorWorkspace({ mockup }: { mockup: MockupEditorData }) 
     };
   }, []);
 
-  async function saveMockup(options?: { silent?: boolean }) {
-    if (isSaving || isExporting || isDeleting) {
-      return { ok: false as const };
+  useEffect(() => {
+    function onRotateMove(event: PointerEvent) {
+      const rotate = rotateDragRef.current;
+      const canvas = canvasRef.current;
+      if (!rotate || !canvas) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const currentAngle = Math.atan2(event.clientY - centerY, event.clientX - centerX);
+      const deltaAngle = ((currentAngle - rotate.startAngle) * 180) / Math.PI;
+      const newAngle = clamp360(rotate.currentAngle + deltaAngle);
+
+      setState((current) => ({ ...current, productAngle: newAngle }));
     }
 
-    setIsSaving(true);
+    function onRotateUp() {
+      rotateDragRef.current = null;
+    }
 
+    window.addEventListener("pointermove", onRotateMove);
+    window.addEventListener("pointerup", onRotateUp);
+
+    return () => {
+      window.removeEventListener("pointermove", onRotateMove);
+      window.removeEventListener("pointerup", onRotateUp);
+    };
+  }, []);
+
+  async function saveMockup(options?: { silent?: boolean }) {
+    if (isSaving || isExporting || isDeleting) return { ok: false as const };
+
+    setIsSaving(true);
     const response = await saveMockupEditorAction({
       mockupId: mockup.id,
       name,
       garmentColor: state.garmentColor,
       state,
     });
-
     setIsSaving(false);
 
     if (!response.ok) {
-      if (!options?.silent) {
-        pushToast("error", response.error);
-      }
+      if (!options?.silent) pushToast("error", response.error);
       return { ok: false as const };
     }
 
@@ -332,23 +375,15 @@ export function MockupEditorWorkspace({ mockup }: { mockup: MockupEditorData }) 
     setStatus(response.mockup.status);
     setLastSavedAt(response.mockup.updatedAtIso);
     setPrintReadyUrl(response.mockup.printReadyUrl);
-
-    if (!options?.silent) {
-      pushToast("success", response.message);
-    }
-
+    if (!options?.silent) pushToast("success", response.message);
     router.refresh();
-
     return { ok: true as const };
   }
 
   async function exportMockup(format: "PNG" | "PRINT_READY") {
-    if (isSaving || isExporting || isDeleting) {
-      return;
-    }
+    if (isSaving || isExporting || isDeleting) return;
 
     setIsExporting(true);
-
     const saveResult = await saveMockup({ silent: true });
     if (!saveResult.ok) {
       setIsExporting(false);
@@ -356,11 +391,7 @@ export function MockupEditorWorkspace({ mockup }: { mockup: MockupEditorData }) 
       return;
     }
 
-    const response = await exportMockupEditorAction({
-      mockupId: mockup.id,
-      format,
-    });
-
+    const response = await exportMockupEditorAction({ mockupId: mockup.id, format });
     setIsExporting(false);
 
     if (!response.ok) {
@@ -371,35 +402,25 @@ export function MockupEditorWorkspace({ mockup }: { mockup: MockupEditorData }) 
     setStatus("Exported");
     setPrintReadyUrl(response.downloadUrl);
     pushToast("success", response.message);
-
     if (typeof window !== "undefined") {
       window.open(response.downloadUrl, "_blank", "noopener,noreferrer");
     }
-
     router.refresh();
   }
 
   async function deleteMockup() {
-    if (isSaving || isExporting || isDeleting) {
-      return;
-    }
-
+    if (isSaving || isExporting || isDeleting) return;
     const confirmed = window.confirm("Delete this mockup permanently?");
-    if (!confirmed) {
-      return;
-    }
+    if (!confirmed) return;
 
     setIsDeleting(true);
-    const response = await deleteMockupEditorAction({
-      mockupId: mockup.id,
-    });
+    const response = await deleteMockupEditorAction({ mockupId: mockup.id });
     setIsDeleting(false);
 
     if (!response.ok) {
       pushToast("error", response.error);
       return;
     }
-
     pushToast("success", response.message);
     router.push(response.redirectPath);
     router.refresh();
@@ -420,7 +441,7 @@ export function MockupEditorWorkspace({ mockup }: { mockup: MockupEditorData }) 
               transition={{ duration: 0.2 }}
               className={cn(
                 "pointer-events-auto rounded-lg border px-3 py-2 text-xs font-semibold shadow-2xl backdrop-blur-lg",
-                toneClass(toast.tone),
+                toneClass(toast.tone)
               )}
             >
               {toast.message}
@@ -429,445 +450,572 @@ export function MockupEditorWorkspace({ mockup }: { mockup: MockupEditorData }) 
         </AnimatePresence>
       </div>
 
-      <div className="custom-scrollbar h-full overflow-y-auto p-4 md:p-8">
-        <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
-          <motion.section
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35 }}
-            className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900/70"
-          >
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <Link
-                    href="/dashboard/mockups"
-                    className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-semibold text-slate-600 transition-colors hover:bg-slate-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-slate-300"
-                  >
-                    <span className="material-symbols-outlined text-[16px]">arrow_back</span>
-                    Mockups
-                  </Link>
-
-                  <span className={cn("rounded-full border px-2 py-1 text-[11px] font-bold", statusClass(status))}>
-                    {status}
-                  </span>
-                </div>
-
-                <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-slate-100">
-                  Mockup Editor
-                </h1>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Last saved {localDate(lastSavedAt)}</p>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => void saveMockup()}
-                  disabled={isSaving || isExporting || isDeleting}
-                  className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-70 dark:border-zinc-800 dark:bg-zinc-900 dark:text-slate-200"
-                >
-                  <span className="material-symbols-outlined text-[18px]">save</span>
-                  {isSaving ? "Saving..." : "Save"}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => void exportMockup("PNG")}
-                  disabled={isSaving || isExporting || isDeleting}
-                  className="inline-flex items-center gap-2 rounded-lg border border-[#895af6]/40 bg-[#895af6]/10 px-3 py-2 text-sm font-semibold text-[#895af6] transition-colors hover:bg-[#895af6]/15 disabled:cursor-not-allowed disabled:opacity-70"
-                >
-                  <span className="material-symbols-outlined text-[18px]">download</span>
-                  {isExporting ? "Exporting..." : "Export PNG"}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => void exportMockup("PRINT_READY")}
-                  disabled={isSaving || isExporting || isDeleting}
-                  className="inline-flex items-center gap-2 rounded-lg bg-[#895af6] px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#895af6]/90 disabled:cursor-not-allowed disabled:opacity-70"
-                >
-                  <span className="material-symbols-outlined text-[18px]">high_quality</span>
-                  300 DPI
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => void deleteMockup()}
-                  disabled={isSaving || isExporting || isDeleting}
-                  className="inline-flex items-center gap-2 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm font-semibold text-red-500 transition-colors hover:bg-red-500/20 disabled:cursor-not-allowed disabled:opacity-70"
-                >
-                  <span className="material-symbols-outlined text-[18px]">delete</span>
-                  {isDeleting ? "Deleting..." : "Delete"}
-                </button>
-              </div>
-            </div>
-          </motion.section>
-
-          <div className="grid gap-6 xl:grid-cols-[320px_1fr_300px]">
-            <motion.aside
-              initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, x: -8 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3, delay: 0.02 }}
-              className="space-y-5 rounded-2xl border border-slate-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900/70"
+      <div className="flex h-screen flex-col bg-slate-50 dark:bg-zinc-950">
+        <header className="flex h-14 shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4 dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="flex items-center gap-3">
+            <Link
+              href="/dashboard/mockups"
+              className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs font-semibold text-slate-600 transition-colors hover:bg-slate-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-slate-300"
             >
-              <section className="space-y-2">
-                <p className="text-[11px] font-bold tracking-[0.1em] text-slate-400 uppercase">Mockup Name</p>
-                <input
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
-                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 outline-none transition-colors focus:border-[#895af6] dark:border-zinc-800 dark:bg-zinc-900 dark:text-slate-100"
-                />
-                <p className="text-[11px] text-slate-500 dark:text-slate-400">{mockup.garmentType}</p>
-              </section>
+              <span className="material-symbols-outlined text-[16px]">arrow_back</span>
+              <span className="hidden sm:inline">Mockups</span>
+            </Link>
+            <div className="h-4 w-px bg-slate-200 dark:bg-zinc-800" />
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-40 rounded border border-transparent bg-transparent text-sm font-semibold text-slate-900 outline-none focus:border-[#895af6] dark:text-slate-100 sm:w-64"
+            />
+            <span className={cn("rounded-full border px-2 py-0.5 text-[10px] font-bold", statusClass(status))}>
+              {status}
+            </span>
+          </div>
 
-              <section className="space-y-2">
-                <p className="text-[11px] font-bold tracking-[0.1em] text-slate-400 uppercase">Garment Color</p>
-                <div className="flex flex-wrap gap-2">
-                  {GARMENT_COLORS.map((color) => (
-                    <button
-                      key={color}
-                      type="button"
-                      onClick={() =>
-                        setState((current) => ({
-                          ...current,
-                          garmentColor: color,
-                        }))
-                      }
-                      style={{ backgroundColor: color }}
-                      className={cn(
-                        "size-7 rounded-full border transition-transform hover:scale-110",
-                        state.garmentColor === color
-                          ? "border-[#895af6] ring-2 ring-[#895af6]/35"
-                          : "border-slate-300 dark:border-zinc-700",
-                      )}
-                    />
-                  ))}
-                </div>
-              </section>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className={cn(
+                "rounded-lg p-2 text-slate-500 transition-colors hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-zinc-800",
+                sidebarOpen && "bg-slate-100 dark:bg-zinc-800"
+              )}
+            >
+              <span className="material-symbols-outlined text-[20px]">sidebar</span>
+            </button>
 
-              <section className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <p className="text-[11px] font-bold tracking-[0.1em] text-slate-400 uppercase">Layers</p>
+            <div className="hidden h-4 w-px bg-slate-200 dark:bg-zinc-800 sm:block" />
+
+            <button
+              type="button"
+              onClick={() => void saveMockup()}
+              disabled={isSaving || isExporting || isDeleting}
+              className="hidden items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-70 dark:border-zinc-800 dark:bg-zinc-900 dark:text-slate-200 sm:flex"
+            >
+              <span className="material-symbols-outlined text-[16px]">save</span>
+              {isSaving ? "Saving..." : "Save"}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => void exportMockup("PNG")}
+              disabled={isSaving || isExporting || isDeleting}
+              className="flex items-center gap-1.5 rounded-lg border border-[#895af6]/40 bg-[#895af6]/10 px-3 py-1.5 text-xs font-semibold text-[#895af6] transition-colors hover:bg-[#895af6]/15 disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              <span className="material-symbols-outlined text-[16px]">download</span>
+              <span className="hidden sm:inline">{isExporting ? "Exporting..." : "Export"}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => void exportMockup("PRINT_READY")}
+              disabled={isSaving || isExporting || isDeleting}
+              className="flex items-center gap-1.5 rounded-lg bg-[#895af6] px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-[#895af6]/90 disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              <span className="material-symbols-outlined text-[16px]">high_quality</span>
+              <span className="hidden sm:inline">300 DPI</span>
+            </button>
+          </div>
+        </header>
+
+        <div className="flex flex-1 overflow-hidden">
+          <AnimatePresence mode="wait">
+            {sidebarOpen && (
+              <motion.aside
+                initial={{ width: 0, opacity: 0 }}
+                animate={{ width: 280, opacity: 1 }}
+                exit={{ width: 0, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="flex shrink-0 flex-col overflow-hidden border-r border-slate-200 bg-white dark:border-zinc-800 dark:bg-zinc-900"
+              >
+                <div className="flex border-b border-slate-200 dark:border-zinc-800">
                   <button
-                    type="button"
-                    onClick={addTextLayer}
-                    className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 px-2 py-1 text-[11px] font-semibold text-slate-600 transition-colors hover:bg-slate-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-slate-300"
+                    onClick={() => setActiveTab("products")}
+                    className={cn(
+                      "flex-1 px-3 py-2.5 text-xs font-semibold transition-colors",
+                      activeTab === "products"
+                        ? "border-b-2 border-[#895af6] text-[#895af6]"
+                        : "text-slate-500 dark:text-slate-400"
+                    )}
                   >
-                    <span className="material-symbols-outlined text-[14px]">add</span>
-                    Text
+                    Products
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("layers")}
+                    className={cn(
+                      "flex-1 px-3 py-2.5 text-xs font-semibold transition-colors",
+                      activeTab === "layers"
+                        ? "border-b-2 border-[#895af6] text-[#895af6]"
+                        : "text-slate-500 dark:text-slate-400"
+                    )}
+                  >
+                    Layers
                   </button>
                 </div>
 
-                <div className="space-y-2">
-                  {state.layers.map((layer, index) => {
-                    const isActive = layer.id === state.activeLayerId;
-                    return (
-                      <button
-                        key={layer.id}
-                        type="button"
-                        onClick={() => setActiveLayer(layer.id)}
-                        className={cn(
-                          "flex w-full items-center justify-between rounded-lg border px-3 py-2 text-left transition-colors",
-                          isActive
-                            ? "border-[#895af6]/45 bg-[#895af6]/10"
-                            : "border-slate-200 bg-slate-50 hover:bg-slate-100 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800/80",
-                        )}
-                      >
-                        <span>
-                          <span className="block text-xs font-semibold text-slate-800 dark:text-slate-100">{layer.name}</span>
-                          <span className="text-[10px] uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400">
-                            {layerTitle(layer.type)} · Layer {index + 1}
-                          </span>
-                        </span>
-                        <span className="flex items-center gap-1">
+                <div className="flex-1 overflow-y-auto p-3">
+                  {activeTab === "products" ? (
+                    <div className="space-y-3">
+                      <p className="text-[10px] font-bold tracking-[0.1em] text-slate-400 uppercase">
+                        Product Type
+                      </p>
+                      <div className="grid grid-cols-2 gap-2">
+                        {PRODUCT_TYPES.map((product) => (
                           <button
-                            type="button"
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              toggleLayerVisibility(layer.id);
-                            }}
-                            className="rounded p-1 text-slate-500 transition-colors hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-zinc-700"
+                            key={product.type}
+                            onClick={() => setGarmentType(product.type)}
+                            className={cn(
+                              "flex flex-col items-center gap-1 rounded-lg border p-2.5 transition-all",
+                              state.garmentType === product.type
+                                ? "border-[#895af6] bg-[#895af6]/10"
+                                : "border-slate-200 hover:border-slate-300 dark:border-zinc-800 dark:hover:border-zinc-700"
+                            )}
                           >
-                            <span className="material-symbols-outlined text-[17px]">
-                              {layer.visible ? "visibility" : "visibility_off"}
+                            <span className="material-symbols-outlined text-[24px] text-slate-600 dark:text-slate-300">
+                              {product.icon}
+                            </span>
+                            <span className="text-[10px] font-medium text-slate-700 dark:text-slate-200">
+                              {product.name}
                             </span>
                           </button>
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </section>
+                        ))}
+                      </div>
 
-              {printReadyUrl ? (
-                <section className="rounded-lg border border-[#895af6]/30 bg-[#895af6]/8 p-3">
-                  <p className="text-xs font-semibold text-[#895af6]">Latest Export</p>
-                  <a
-                    href={printReadyUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-1 line-clamp-2 text-[11px] text-slate-600 underline-offset-2 hover:underline dark:text-slate-300"
-                  >
-                    {printReadyUrl}
-                  </a>
-                </section>
-              ) : null}
-            </motion.aside>
-
-            <motion.section
-              initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, delay: 0.05 }}
-              className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900/70"
-            >
-              <div className="mb-3 flex items-center justify-between">
-                <p className="text-sm font-bold text-slate-900 dark:text-slate-100">Live Canvas</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Drag layers directly on canvas</p>
-              </div>
-
-              <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-gradient-to-br from-slate-100 to-slate-200 p-5 dark:border-zinc-800 dark:from-zinc-900 dark:to-zinc-950">
-                <div
-                  ref={canvasRef}
-                  className="relative mx-auto aspect-[4/5] w-full max-w-[440px] overflow-hidden rounded-2xl border border-slate-300 bg-[#101827] shadow-2xl dark:border-zinc-800"
-                >
-                  <div
-                    className="absolute inset-[8%] rounded-[24%_24%_16%_16%] shadow-inner"
-                    style={{ backgroundColor: state.garmentColor }}
-                  />
-
-                  {state.layers.map((layer, index) => {
-                    if (!layer.visible) {
-                      return null;
-                    }
-
-                    const style: CSSProperties = {
-                      left: `${layer.x}%`,
-                      top: `${layer.y}%`,
-                      transform: `translate(-50%, -50%) rotate(${layer.rotation}deg) scale(${layer.scale})`,
-                      zIndex: 10 + index,
-                    };
-
-                    const isActive = layer.id === state.activeLayerId;
-
-                    return (
-                      <div
-                        key={layer.id}
-                        style={style}
-                        onPointerDown={(event) => handleLayerPointerDown(event, layer)}
-                        className={cn(
-                          "absolute select-none rounded px-1 transition-all",
-                          isActive ? "ring-2 ring-[#895af6]/50" : "",
-                          isSaving || isExporting || isDeleting ? "cursor-not-allowed" : "cursor-grab active:cursor-grabbing",
-                        )}
-                      >
-                        {layer.type === "design" ? (
-                          <img
-                            src={layer.imageUrl ?? designPreviewLayer?.imageUrl ?? mockup.previewUrl ?? ""}
-                            alt="Design layer"
-                            className="pointer-events-none h-40 w-40 rounded object-cover shadow-2xl"
+                      <p className="text-[10px] font-bold tracking-[0.1em] text-slate-400 uppercase">
+                        Color
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {currentProduct.colors.map((color) => (
+                          <button
+                            key={color}
+                            type="button"
+                            onClick={() =>
+                              setState((current) => ({ ...current, garmentColor: color }))
+                            }
+                            style={{ backgroundColor: color }}
+                            className={cn(
+                              "size-7 rounded-full border-2 transition-all hover:scale-110",
+                              state.garmentColor === color
+                                ? "border-[#895af6] ring-2 ring-[#895af6]/35"
+                                : "border-slate-300 dark:border-zinc-700",
+                              color === "transparent" && "bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAABtJREFUGFdjZEACjFDBgBFqmJAo+PLlC38kBwfWCRgMAADyBgX/3u6l3QAAAABJRU5ErkJggg==')] bg-contain"
+                            )}
                           />
-                        ) : (
-                          <span
-                            className="pointer-events-none block whitespace-nowrap font-black tracking-[0.08em] uppercase"
-                            style={{
-                              color: layer.color ?? "#ffffff",
-                              fontSize: `${layer.fontSize ?? 36}px`,
-                              textShadow: "0 2px 8px rgba(0,0,0,0.45)",
-                            }}
-                          >
-                            {layer.text}
-                          </span>
-                        )}
+                        ))}
                       </div>
-                    );
-                  })}
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <p className="text-[10px] font-bold tracking-[0.1em] text-slate-400 uppercase">
+                          Layers
+                        </p>
+                        <button
+                          type="button"
+                          onClick={addTextLayer}
+                          className="flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 px-2 py-1 text-[10px] font-semibold text-slate-600 transition-colors hover:bg-slate-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-slate-300"
+                        >
+                          <span className="material-symbols-outlined text-[12px]">add</span>
+                          Text
+                        </button>
+                      </div>
+
+                      <div className="space-y-1.5">
+                        {state.layers.map((layer, index) => {
+                          const isActive = layer.id === state.activeLayerId;
+                          return (
+                            <button
+                              key={layer.id}
+                              type="button"
+                              onClick={() => setActiveLayer(layer.id)}
+                              className={cn(
+                                "flex w-full items-center justify-between rounded-lg border px-2.5 py-2 text-left transition-colors",
+                                isActive
+                                  ? "border-[#895af6]/45 bg-[#895af6]/10"
+                                  : "border-slate-200 bg-slate-50 hover:bg-slate-100 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800/80"
+                              )}
+                            >
+                              <span>
+                                <span className="block text-xs font-semibold text-slate-800 dark:text-slate-100">
+                                  {layer.name}
+                                </span>
+                                <span className="text-[9px] uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400">
+                                  {layerTitle(layer.type)}
+                                </span>
+                              </span>
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleLayerVisibility(layer.id);
+                                }}
+                                className="rounded p-1 text-slate-500 transition-colors hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-zinc-700"
+                              >
+                                <span className="material-symbols-outlined text-[14px]">
+                                  {layer.visible ? "visibility" : "visibility_off"}
+                                </span>
+                              </button>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </motion.aside>
+            )}
+          </AnimatePresence>
+
+          <main className="flex-1 overflow-hidden">
+            <div className="flex h-full flex-col">
+              <div className="flex flex-1 items-center justify-center p-4">
+                <div className="relative w-full max-w-lg" style={{ aspectRatio: currentProduct.aspectRatio * 1.2 }}>
+                  <div
+                    ref={canvasRef}
+                    className={cn(
+                      "relative h-full w-full overflow-hidden rounded-2xl shadow-2xl",
+                      "bg-gradient-to-br from-slate-100 to-slate-200 dark:from-zinc-900 dark:to-zinc-950"
+                    )}
+                    style={{ perspective: "1000px" }}
+                  >
+                    <div
+                      className="absolute inset-0 flex items-center justify-center"
+                      style={{
+                        transform: `rotateY(${state.productAngle}deg)`,
+                        transformStyle: "preserve-3d",
+                      }}
+                    >
+                      <div
+                        className="relative w-[85%] rounded-2xl shadow-2xl transition-colors"
+                        style={{ backgroundColor: state.garmentColor }}
+                      >
+                        <div className="absolute inset-0 rounded-2xl overflow-hidden">
+                          <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent pointer-events-none" />
+                          {currentProduct.printAreas.map((area, i) => (
+                            <div
+                              key={i}
+                              className="absolute pointer-events-none"
+                              style={{
+                                left: `${area.x - area.width / 2}%`,
+                                top: `${area.y - area.height / 2}%`,
+                                width: `${area.width}%`,
+                                height: `${area.height}%`,
+                                border: "1px dashed rgba(255,255,255,0.3)",
+                                borderRadius: "4px",
+                              }}
+                            />
+                          ))}
+                        </div>
+                        <div
+                          className="absolute inset-0 flex items-center justify-center"
+                          style={{ padding: "15%" }}
+                        >
+                          {state.layers.map((layer, index) => {
+                            if (!layer.visible) return null;
+                            const style: CSSProperties = {
+                              left: `${layer.x}%`,
+                              top: `${layer.y}%`,
+                              transform: `translate(-50%, -50%) rotate(${layer.rotation}deg) scale(${layer.scale})`,
+                              zIndex: 10 + index,
+                            };
+                            const isActive = layer.id === state.activeLayerId;
+                            return (
+                              <div
+                                key={layer.id}
+                                style={style}
+                                onPointerDown={(e) => handleLayerPointerDown(e, layer)}
+                                className={cn(
+                                  "absolute select-none rounded px-1 transition-all",
+                                  isActive ? "ring-2 ring-[#895af6]/50" : "",
+                                  isSaving || isExporting || isDeleting
+                                    ? "cursor-not-allowed"
+                                    : "cursor-grab active:cursor-grabbing"
+                                )}
+                              >
+                                {layer.type === "design" ? (
+                                  <img
+                                    src={layer.imageUrl ?? designPreviewLayer?.imageUrl ?? mockup.previewUrl ?? ""}
+                                    alt="Design layer"
+                                    className="pointer-events-none max-w-32 rounded shadow-lg dark:brightness-90"
+                                  />
+                                ) : (
+                                  <span
+                                    className="pointer-events-none block whitespace-nowrap font-black uppercase tracking-[0.08em]"
+                                    style={{
+                                      color: layer.color ?? "#ffffff",
+                                      fontSize: `${layer.fontSize ?? 36}px`,
+                                      textShadow: "0 2px 8px rgba(0,0,0,0.45)",
+                                    }}
+                                  >
+                                    {layer.text}
+                                  </span>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2">
+                      <button
+                        onPointerDown={handleRotateStart}
+                        className="flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 text-[10px] font-medium text-white backdrop-blur-sm transition-transform hover:scale-105 active:scale-95"
+                      >
+                        <span className="material-symbols-outlined text-[14px]">360</span>
+                        Drag to rotate
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </motion.section>
 
-            <motion.aside
-              initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, x: 8 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.35, delay: 0.08 }}
-              className="space-y-5 rounded-2xl border border-slate-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900/70"
-            >
-              <section className="space-y-2">
-                <p className="text-[11px] font-bold tracking-[0.1em] text-slate-400 uppercase">Active Layer</p>
-                <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                  {activeLayer ? activeLayer.name : "No layer selected"}
-                </p>
-              </section>
+              <div className="flex items-center justify-between border-t border-slate-200 bg-white px-4 py-2 dark:border-zinc-800 dark:bg-zinc-900">
+                <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+                  <span className="material-symbols-outlined text-[14px]">drag_indicator</span>
+                  Drag layers to position
+                </div>
+                <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+                  <span>Angle: {Math.round(state.productAngle)}°</span>
+                </div>
+              </div>
+            </div>
+          </main>
 
-              {activeLayer ? (
-                <>
-                  <section className="space-y-3">
-                    <label className="grid gap-1">
-                      <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">X Position</span>
-                      <input
-                        type="range"
-                        min={0}
-                        max={100}
-                        step={0.5}
-                        value={activeLayer.x}
-                        onChange={(event) =>
-                          updateLayer(activeLayer.id, (layer) => ({
-                            ...layer,
-                            x: Number(event.target.value),
-                          }))
-                        }
-                        className="h-1.5 w-full cursor-pointer rounded bg-slate-200 accent-[#895af6] dark:bg-zinc-800"
-                      />
-                    </label>
+          <AnimatePresence mode="wait">
+            {rightPanelOpen && (
+              <motion.aside
+                initial={{ width: 0, opacity: 0 }}
+                animate={{ width: 300, opacity: 1 }}
+                exit={{ width: 0, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="flex shrink-0 flex-col overflow-hidden border-l border-slate-200 bg-white dark:border-zinc-800 dark:bg-zinc-900"
+              >
+                <div className="border-b border-slate-200 p-3 dark:border-zinc-800">
+                  <p className="text-[10px] font-bold tracking-[0.1em] text-slate-400 uppercase">
+                    Active Layer
+                  </p>
+                  <p className="mt-1 text-sm font-semibold text-slate-900 dark:text-slate-100">
+                    {activeLayer ? activeLayer.name : "No layer selected"}
+                  </p>
+                </div>
 
-                    <label className="grid gap-1">
-                      <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">Y Position</span>
-                      <input
-                        type="range"
-                        min={0}
-                        max={100}
-                        step={0.5}
-                        value={activeLayer.y}
-                        onChange={(event) =>
-                          updateLayer(activeLayer.id, (layer) => ({
-                            ...layer,
-                            y: Number(event.target.value),
-                          }))
-                        }
-                        className="h-1.5 w-full cursor-pointer rounded bg-slate-200 accent-[#895af6] dark:bg-zinc-800"
-                      />
-                    </label>
-
-                    <label className="grid gap-1">
-                      <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">Scale</span>
-                      <input
-                        type="range"
-                        min={0.2}
-                        max={2.5}
-                        step={0.01}
-                        value={activeLayer.scale}
-                        onChange={(event) =>
-                          updateLayer(activeLayer.id, (layer) => ({
-                            ...layer,
-                            scale: Number(event.target.value),
-                          }))
-                        }
-                        className="h-1.5 w-full cursor-pointer rounded bg-slate-200 accent-[#895af6] dark:bg-zinc-800"
-                      />
-                    </label>
-
-                    <label className="grid gap-1">
-                      <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">Rotation</span>
-                      <input
-                        type="range"
-                        min={-180}
-                        max={180}
-                        step={1}
-                        value={activeLayer.rotation}
-                        onChange={(event) =>
-                          updateLayer(activeLayer.id, (layer) => ({
-                            ...layer,
-                            rotation: Number(event.target.value),
-                          }))
-                        }
-                        className="h-1.5 w-full cursor-pointer rounded bg-slate-200 accent-[#895af6] dark:bg-zinc-800"
-                      />
-                    </label>
-                  </section>
-
-                  {activeLayer.type === "text" ? (
-                    <section className="space-y-2 rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-zinc-800 dark:bg-zinc-900">
-                      <p className="text-[11px] font-bold tracking-[0.1em] text-slate-400 uppercase">Text Content</p>
-                      <input
-                        value={activeLayer.text ?? ""}
-                        onChange={(event) =>
-                          updateLayer(activeLayer.id, (layer) => ({
-                            ...layer,
-                            text: event.target.value,
-                          }))
-                        }
-                        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 outline-none transition-colors focus:border-[#895af6] dark:border-zinc-700 dark:bg-zinc-900 dark:text-slate-100"
-                      />
-
-                      <div className="grid grid-cols-2 gap-2">
+                {activeLayer ? (
+                  <div className="flex-1 overflow-y-auto p-3 space-y-4">
+                    <div className="space-y-3">
+                      <label className="grid gap-1">
+                        <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">
+                          X Position
+                        </span>
                         <input
-                          type="color"
-                          value={activeLayer.color ?? "#ffffff"}
-                          onChange={(event) =>
+                          type="range"
+                          min={0}
+                          max={100}
+                          step={0.5}
+                          value={activeLayer.x}
+                          onChange={(e) =>
                             updateLayer(activeLayer.id, (layer) => ({
                               ...layer,
-                              color: event.target.value,
+                              x: Number(e.target.value),
                             }))
                           }
-                          className="h-9 w-full cursor-pointer rounded border border-slate-200 bg-white dark:border-zinc-700 dark:bg-zinc-900"
+                          className="h-1.5 w-full cursor-pointer rounded bg-slate-200 accent-[#895af6] dark:bg-zinc-800"
                         />
+                      </label>
+
+                      <label className="grid gap-1">
+                        <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">
+                          Y Position
+                        </span>
                         <input
-                          type="number"
-                          min={12}
-                          max={96}
-                          value={activeLayer.fontSize ?? 36}
-                          onChange={(event) =>
+                          type="range"
+                          min={0}
+                          max={100}
+                          step={0.5}
+                          value={activeLayer.y}
+                          onChange={(e) =>
                             updateLayer(activeLayer.id, (layer) => ({
                               ...layer,
-                              fontSize: clamp(Number(event.target.value), 12, 96),
+                              y: Number(e.target.value),
                             }))
                           }
-                          className="w-full rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-sm text-slate-700 outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-slate-100"
+                          className="h-1.5 w-full cursor-pointer rounded bg-slate-200 accent-[#895af6] dark:bg-zinc-800"
                         />
+                      </label>
+
+                      <label className="grid gap-1">
+                        <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">
+                          Scale
+                        </span>
+                        <input
+                          type="range"
+                          min={0.2}
+                          max={2.5}
+                          step={0.01}
+                          value={activeLayer.scale}
+                          onChange={(e) =>
+                            updateLayer(activeLayer.id, (layer) => ({
+                              ...layer,
+                              scale: Number(e.target.value),
+                            }))
+                          }
+                          className="h-1.5 w-full cursor-pointer rounded bg-slate-200 accent-[#895af6] dark:bg-zinc-800"
+                        />
+                      </label>
+
+                      <label className="grid gap-1">
+                        <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">
+                          Rotation
+                        </span>
+                        <input
+                          type="range"
+                          min={-180}
+                          max={180}
+                          step={1}
+                          value={activeLayer.rotation}
+                          onChange={(e) =>
+                            updateLayer(activeLayer.id, (layer) => ({
+                              ...layer,
+                              rotation: Number(e.target.value),
+                            }))
+                          }
+                          className="h-1.5 w-full cursor-pointer rounded bg-slate-200 accent-[#895af6] dark:bg-zinc-800"
+                        />
+                      </label>
+                    </div>
+
+                    {activeLayer.type === "text" && (
+                      <div className="space-y-2 rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-zinc-800 dark:bg-zinc-900">
+                        <p className="text-[10px] font-bold tracking-[0.1em] text-slate-400 uppercase">
+                          Text Content
+                        </p>
+                        <input
+                          value={activeLayer.text ?? ""}
+                          onChange={(e) =>
+                            updateLayer(activeLayer.id, (layer) => ({
+                              ...layer,
+                              text: e.target.value,
+                            }))
+                          }
+                          className="w-full rounded-lg border border-slate-200 bg-white px-2.5 py-2 text-xs text-slate-700 outline-none transition-colors focus:border-[#895af6] dark:border-zinc-700 dark:bg-zinc-950 dark:text-slate-100"
+                        />
+
+                        <div className="grid grid-cols-2 gap-2">
+                          <input
+                            type="color"
+                            value={activeLayer.color ?? "#ffffff"}
+                            onChange={(e) =>
+                              updateLayer(activeLayer.id, (layer) => ({
+                                ...layer,
+                                color: e.target.value,
+                              }))
+                            }
+                            className="h-8 w-full cursor-pointer rounded border border-slate-200 bg-white dark:border-zinc-700 dark:bg-zinc-950"
+                          />
+                          <input
+                            type="number"
+                            min={12}
+                            max={96}
+                            value={activeLayer.fontSize ?? 36}
+                            onChange={(e) =>
+                              updateLayer(activeLayer.id, (layer) => ({
+                                ...layer,
+                                fontSize: clamp(Number(e.target.value), 12, 96),
+                              }))
+                            }
+                            className="w-full rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-700 outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-slate-100"
+                          />
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={removeActiveTextLayer}
+                          className="w-full rounded-lg border border-red-500/30 bg-red-500/10 py-2 text-[10px] font-semibold text-red-500 transition-colors hover:bg-red-500/20"
+                        >
+                          Remove Text Layer
+                        </button>
                       </div>
+                    )}
 
+                    <div className="grid grid-cols-2 gap-2">
                       <button
                         type="button"
-                        onClick={removeActiveTextLayer}
-                        className="w-full rounded-lg border border-red-500/30 bg-red-500/10 py-2 text-xs font-semibold text-red-500 transition-colors hover:bg-red-500/20"
+                        onClick={centerActiveLayer}
+                        className="rounded-lg border border-slate-200 bg-slate-50 px-2 py-2 text-[10px] font-semibold text-slate-700 transition-colors hover:bg-slate-100 dark:border-zinc-800 dark:bg-zinc-950 dark:text-slate-200"
                       >
-                        Remove Text Layer
+                        Center
                       </button>
-                    </section>
-                  ) : null}
+                      <button
+                        type="button"
+                        onClick={resetActiveLayerTransform}
+                        className="rounded-lg border border-slate-200 bg-slate-50 px-2 py-2 text-[10px] font-semibold text-slate-700 transition-colors hover:bg-slate-100 dark:border-zinc-800 dark:bg-zinc-950 dark:text-slate-200"
+                      >
+                        Reset
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => moveLayer("up")}
+                        className="rounded-lg border border-slate-200 bg-slate-50 px-2 py-2 text-[10px] font-semibold text-slate-700 transition-colors hover:bg-slate-100 dark:border-zinc-800 dark:bg-zinc-950 dark:text-slate-200"
+                      >
+                        Forward
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => moveLayer("down")}
+                        className="rounded-lg border border-slate-200 bg-slate-50 px-2 py-2 text-[10px] font-semibold text-slate-700 transition-colors hover:bg-slate-100 dark:border-zinc-800 dark:bg-zinc-950 dark:text-slate-200"
+                      >
+                        Back
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-1 items-center justify-center p-4">
+                    <p className="text-center text-xs text-slate-500 dark:text-slate-400">
+                      Select a layer to edit its properties
+                    </p>
+                  </div>
+                )}
 
-                  <section className="grid grid-cols-2 gap-2">
-                    <button
-                      type="button"
-                      onClick={centerActiveLayer}
-                      className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-slate-200"
-                    >
-                      Center
-                    </button>
-                    <button
-                      type="button"
-                      onClick={resetActiveLayerTransform}
-                      className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-slate-200"
-                    >
-                      Reset
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => moveLayer("up")}
-                      className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-slate-200"
-                    >
-                      Bring Forward
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => moveLayer("down")}
-                      className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-slate-200"
-                    >
-                      Send Back
-                    </button>
-                  </section>
-                </>
-              ) : null}
+                <div className="border-t border-slate-200 p-3 dark:border-zinc-800">
+                  <button
+                    onClick={() => setRightPanelOpen(false)}
+                    className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-600 transition-colors hover:bg-slate-100 dark:border-zinc-800 dark:bg-zinc-950 dark:text-slate-300"
+                  >
+                    <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+                    Hide Panel
+                  </button>
+                </div>
+              </motion.aside>
+            )}
+          </AnimatePresence>
 
-              <Link
-                href="/dashboard/store-builder"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-[#895af6]/35 bg-[#895af6]/10 px-3 py-2 text-sm font-semibold text-[#895af6] transition-colors hover:bg-[#895af6]/15"
-              >
-                <span className="material-symbols-outlined text-[18px]">storefront</span>
-                Open Store Builder
-              </Link>
-            </motion.aside>
-          </div>
+          {!rightPanelOpen && (
+            <button
+              onClick={() => setRightPanelOpen(true)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 rounded-l-lg border border-l-0 border-slate-200 bg-white p-2 text-slate-500 shadow-lg transition-colors hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-slate-400"
+            >
+              <span className="material-symbols-outlined text-[20px]">chevron_left</span>
+            </button>
+          )}
         </div>
+
+        <footer className="flex h-10 shrink-0 items-center justify-between border-t border-slate-200 bg-white px-4 text-[10px] text-slate-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-slate-400">
+          <div className="flex items-center gap-3">
+            <span>Last saved {localDate(lastSavedAt)}</span>
+            <span className="hidden sm:inline">|</span>
+            <span className="hidden sm:inline">{currentProduct.name}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => void deleteMockup()}
+              disabled={isSaving || isExporting || isDeleting}
+              className="flex items-center gap-1 text-red-500 transition-colors hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <span className="material-symbols-outlined text-[14px]">delete</span>
+              Delete
+            </button>
+          </div>
+        </footer>
       </div>
     </>
   );

@@ -84,8 +84,8 @@ export function DashboardHeader({ currentUser }: { currentUser: DashboardCurrent
             fullName={currentUser.fullName}
             email={currentUser.email}
             avatarUrl={currentUser.avatarUrl}
-            className="size-8 border border-[#895af6]/30 bg-[#895af6]/20"
-            fallbackClassName="text-[11px]"
+            className="size-7 shrink-0 rounded-full border border-[#895af6]/30"
+            fallbackClassName="text-[9px]"
           />
           <div className="hidden min-w-0 pr-1 sm:block">
             <p className="truncate text-xs leading-tight font-semibold text-slate-700 dark:text-slate-100">

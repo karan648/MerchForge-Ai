@@ -190,8 +190,8 @@ function SidebarContent({
               fullName={currentUser.fullName}
               email={currentUser.email}
               avatarUrl={currentUser.avatarUrl}
-              className="size-9 border border-[#895af6]/30 bg-[#895af6]/15"
-              fallbackClassName="text-[11px]"
+              className="size-7 shrink-0 rounded-full border border-[#895af6]/30"
+              fallbackClassName="text-[9px]"
             />
             {compact ? null : (
               <div className="min-w-0">

@@ -142,10 +142,17 @@ enum GarmentType {
   T_SHIRT
   HOODIE
   SWEATSHIRT
+  SWEATER
   TANK_TOP
   HAT
+  CAP
   MUG
   POSTER
+  CANVAS
+  STICKER
+  TOTE_BAG
+  PHONE_CASE
+  NOTEBOOK
 }
 
 enum ReviewTargetType {
