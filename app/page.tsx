@@ -55,95 +55,71 @@ export default function Home() {
       </nav>
 
       <main>
-        <section className="relative overflow-hidden border-b border-slate-200 dark:border-neutral-800 pt-20 pb-32">
+        <section className="relative flex h-[calc(100vh-5rem)] min-h-[700px] items-center overflow-hidden">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 h-full w-full object-cover"
+          >
+            <source src="/banner.mp4" type="video/mp4" />
+          </video>
+          
+          <div className="absolute inset-0 bg-black/70" />
+          
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(137,90,246,0.15)_0%,transparent_70%)]" />
-          <div className="mx-auto grid w-full max-w-7xl items-center gap-16 px-6 lg:grid-cols-2">
-            <div className="flex flex-col gap-8">
-              <div className="inline-flex w-fit items-center gap-2 rounded-full border border-[#895af6]/30 bg-[#895af6]/10 px-3 py-1 text-xs font-bold tracking-[0.2em] text-[#895af6] uppercase">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#895af6] opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-[#895af6]" />
-                </span>
-                Next-Gen Merch Engine
-              </div>
-
-              <h1 className="text-5xl leading-[1.1] font-black tracking-tight text-slate-900 dark:text-slate-100 md:text-7xl">
-                Design Merch with <span className="text-[#895af6]">AI.</span>{" "}
-                Sell Anywhere.
-              </h1>
-
-              <p className="max-w-xl text-xl leading-relaxed text-slate-600 dark:text-slate-400">
-                The all-in-one platform to generate unique designs, create
-                stunning mockups, and sync to your favorite stores in seconds.
-                No design skills required.
-              </p>
-
-              <div className="flex flex-wrap gap-4">
-                <Link
-                  href="/register"
-                  className="group flex items-center gap-2 rounded-xl bg-[#895af6] px-8 py-4 text-lg font-bold text-white transition-all hover:bg-[#895af6]/90"
-                >
-                  Start Creating
-                  <span className="material-symbols-outlined transition-transform group-hover:translate-x-1">
-                    arrow_forward
-                  </span>
-                </Link>
-                <button className="rounded-xl border border-slate-200 dark:border-neutral-800 bg-white px-8 py-4 text-lg font-bold text-slate-900 transition-all hover:bg-slate-100 dark:bg-neutral-900 dark:text-slate-100 dark:hover:bg-neutral-800">
-                  View Demo
-                </button>
-              </div>
-
-              <div className="flex items-center gap-4 pt-4">
-                <div className="flex -space-x-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-slate-200 dark:border-black bg-slate-800 text-[10px] font-bold text-white">
-                    JD
-                  </div>
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-slate-200 dark:border-black bg-[#895af6] text-[10px] font-bold text-white">
-                    MK
-                  </div>
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-slate-200 dark:border-black bg-slate-700 text-[10px] font-bold text-white">
-                    SL
-                  </div>
-                </div>
-                <p className="text-sm font-medium text-slate-600 dark:text-slate-500">
-                  Joined by 2,000+ creators this week
-                </p>
-              </div>
+          
+          <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col items-center gap-8 px-6 text-center">
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-[#895af6]/30 bg-[#895af6]/10 px-3 py-1 text-xs font-bold tracking-[0.2em] text-[#895af6] uppercase">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#895af6] opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#895af6]" />
+              </span>
+              Next-Gen Merch Engine
             </div>
 
-            <div className="relative">
-              <div className="aspect-square overflow-hidden rounded-3xl border border-slate-200 dark:border-neutral-800 bg-neutral-900/50 p-4 backdrop-blur-sm">
-                <div
-                  className="relative h-full w-full rounded-2xl border border-slate-200 dark:border-neutral-800 bg-cover bg-center shadow-2xl"
-                  style={{
-                    backgroundImage:
-                      "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBBsTLC-L6xRS5LxF2JJRpTAbp9-AS3kSql5NqKXHFBRZXN8kfrD_mS6dLSjwa5WINFk1qjnKpXe95qRb4SofnH0MxeoKN-vGGGwdye9kjp2jyb6NlzYCplwLqndvwiks4y8Y5ASSKgT2Cbt3NkkVAMA1_xjq8RtdWUPCVW1MFCJT0f__7jRkgNggdcOEJIkNTeebtQ9Nl3O2oQiaTF-vWAynAgVhZC7zEFaTdbsOrgy-xg_ULSRqVNn07oMLyc2Q9IuL66eC5rwFoA')",
-                  }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute right-8 bottom-8 left-8 rounded-2xl border border-neutral-700 bg-neutral-900/90 p-6 backdrop-blur-md">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="mb-1 text-xs font-bold tracking-[0.2em] text-[#895af6] uppercase">
-                          Live Preview
-                        </p>
-                        <h3 className="text-lg font-bold text-white">
-                          Cyberpunk Soul #042
-                        </h3>
-                      </div>
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#895af6]/20">
-                        <span className="material-symbols-outlined text-[#895af6]">
-                          check_circle
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <h1 className="text-5xl font-black tracking-tight text-white md:text-7xl">
+              Design Merch with <span className="text-[#895af6]">AI.</span> Sell Anywhere.
+            </h1>
 
-              <div className="absolute -top-6 -right-6 h-32 w-32 rounded-full bg-[#895af6]/10 blur-3xl" />
-              <div className="absolute -bottom-10 -left-10 h-40 w-40 rounded-full bg-[#895af6]/5 blur-3xl" />
+            <p className="max-w-xl text-xl leading-relaxed text-slate-200">
+              The all-in-one platform to generate unique designs, create stunning mockups, 
+              and sync to your favorite stores in seconds. No design skills required.
+            </p>
+
+            <div className="mt-4 flex flex-col gap-4 sm:flex-row">
+              <Link
+                href="/register"
+                className="group flex items-center gap-2 rounded-xl bg-[#895af6] px-8 py-4 text-lg font-bold text-white shadow-[0_0_20px_rgba(137,90,246,0.3)] transition-all hover:bg-[#895af6]/90"
+              >
+                Get Started Free
+                <span className="transition-transform group-hover:translate-x-1">→</span>
+              </Link>
+              <button className="flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-8 py-4 text-lg font-bold text-white backdrop-blur-sm transition-all hover:bg-white/20">
+                <span className="material-symbols-outlined">play_circle</span>
+                See How It Works
+              </button>
             </div>
+
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm font-medium text-slate-300">
+              <span className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-[#895af6]">check_circle</span>
+                No credit card required
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-[#895af6]">check_circle</span>
+                14-day free trial
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-[#895af6]">check_circle</span>
+                Cancel anytime
+              </span>
+            </div>
+          </div>
+
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+            <span className="material-symbols-outlined text-white/50">keyboard_arrow_down</span>
           </div>
         </section>
 

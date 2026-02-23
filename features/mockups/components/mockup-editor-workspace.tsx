@@ -24,11 +24,13 @@ import {
 import {
   PRODUCT_TYPES,
   getProductTypeInfo,
+  getFrameUrl,
   GarmentType,
   type MockupEditorData,
   type MockupEditorLayer,
   type MockupEditorState,
   type MockupLayerType,
+  type ProductTypeInfo,
 } from "../types/mockup-editor-types";
 
 type ToastTone = "success" | "error" | "info";
@@ -51,6 +53,11 @@ type DragState = {
 type RotateDragState = {
   startAngle: number;
   currentAngle: number;
+};
+
+type FrameRotateState = {
+  startX: number;
+  currentFrame: number;
 };
 
 function clamp(value: number, min: number, max: number): number {
@@ -139,11 +146,41 @@ export function MockupEditorWorkspace({ mockup }: { mockup: MockupEditorData }) 
   const [isExporting, setIsExporting] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [toasts, setToasts] = useState<EditorToast[]>([]);
+  const [currentFrame, setCurrentFrame] = useState(1);
+  const [isPreloading, setIsPreloading] = useState(false);
 
   const currentProduct = useMemo(
     () => getProductTypeInfo(state.garmentType),
     [state.garmentType]
   );
+
+  const totalFrames = currentProduct.frames;
+  const has360Support = totalFrames > 1;
+
+  useEffect(() => {
+    if (!has360Support) return;
+    
+    setIsPreloading(true);
+    const framesToPreload = totalFrames;
+    let loadedCount = 0;
+    
+    for (let i = 1; i <= framesToPreload; i++) {
+      const img = new window.Image();
+      img.src = getFrameUrl(currentProduct.frameBaseUrl, i, totalFrames);
+      img.onload = () => {
+        loadedCount++;
+        if (loadedCount === framesToPreload) {
+          setIsPreloading(false);
+        }
+      };
+      img.onerror = () => {
+        loadedCount++;
+        if (loadedCount === framesToPreload) {
+          setIsPreloading(false);
+        }
+      };
+    }
+  }, [currentProduct.frameBaseUrl, totalFrames, has360Support]);
 
   const activeLayer = useMemo(
     () => state.layers.find((layer) => layer.id === state.activeLayerId) ?? state.layers[0],
@@ -276,18 +313,14 @@ export function MockupEditorWorkspace({ mockup }: { mockup: MockupEditorData }) 
   }
 
   const handleRotateStart = useCallback((event: React.PointerEvent<HTMLButtonElement>) => {
-    if (isSaving || isExporting || isDeleting) return;
+    if (isSaving || isExporting || isDeleting || !has360Support) return;
     event.preventDefault();
-    const rect = canvasRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const startAngle = Math.atan2(event.clientY - centerY, event.clientX - centerX);
+    const startX = event.clientX;
     rotateDragRef.current = {
-      startAngle,
-      currentAngle: state.productAngle,
+      startAngle: startX,
+      currentAngle: currentFrame,
     };
-  }, [isSaving, isExporting, isDeleting, state.productAngle]);
+  }, [isSaving, isExporting, isDeleting, has360Support, currentFrame] as const);
 
   useEffect(() => {
     function onPointerMove(event: PointerEvent) {
@@ -327,16 +360,16 @@ export function MockupEditorWorkspace({ mockup }: { mockup: MockupEditorData }) 
   useEffect(() => {
     function onRotateMove(event: PointerEvent) {
       const rotate = rotateDragRef.current;
-      const canvas = canvasRef.current;
-      if (!rotate || !canvas) return;
+      if (!rotate || !has360Support) return;
 
-      const rect = canvas.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const currentAngle = Math.atan2(event.clientY - centerY, event.clientX - centerX);
-      const deltaAngle = ((currentAngle - rotate.startAngle) * 180) / Math.PI;
-      const newAngle = clamp360(rotate.currentAngle + deltaAngle);
+      const deltaX = event.clientX - rotate.startAngle;
+      const frameChange = Math.floor(deltaX / 10);
+      let newFrame = ((rotate.currentAngle + frameChange - 1) % totalFrames) + 1;
+      if (newFrame <= 0) newFrame += totalFrames;
 
+      setCurrentFrame(newFrame);
+      
+      const newAngle = ((newFrame - 1) / totalFrames) * 360;
       setState((current) => ({ ...current, productAngle: newAngle }));
     }
 
@@ -344,14 +377,16 @@ export function MockupEditorWorkspace({ mockup }: { mockup: MockupEditorData }) 
       rotateDragRef.current = null;
     }
 
-    window.addEventListener("pointermove", onRotateMove);
-    window.addEventListener("pointerup", onRotateUp);
+    if (has360Support) {
+      window.addEventListener("pointermove", onRotateMove);
+      window.addEventListener("pointerup", onRotateUp);
+    }
 
     return () => {
       window.removeEventListener("pointermove", onRotateMove);
       window.removeEventListener("pointerup", onRotateUp);
     };
-  }, []);
+  }, [has360Support, totalFrames]);
 
   async function saveMockup(options?: { silent?: boolean }) {
     if (isSaving || isExporting || isDeleting) return { ok: false as const };
@@ -675,96 +710,162 @@ export function MockupEditorWorkspace({ mockup }: { mockup: MockupEditorData }) 
                       "relative h-full w-full overflow-hidden rounded-2xl shadow-2xl",
                       "bg-gradient-to-br from-slate-100 to-slate-200 dark:from-zinc-900 dark:to-zinc-950"
                     )}
-                    style={{ perspective: "1000px" }}
                   >
-                    <div
-                      className="absolute inset-0 flex items-center justify-center"
-                      style={{
-                        transform: `rotateY(${state.productAngle}deg)`,
-                        transformStyle: "preserve-3d",
-                      }}
-                    >
-                      <div
-                        className="relative w-[85%] rounded-2xl shadow-2xl transition-colors"
-                        style={{ backgroundColor: state.garmentColor }}
-                      >
-                        <div className="absolute inset-0 rounded-2xl overflow-hidden">
-                          <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent pointer-events-none" />
-                          {currentProduct.printAreas.map((area, i) => (
-                            <div
-                              key={i}
-                              className="absolute pointer-events-none"
-                              style={{
-                                left: `${area.x - area.width / 2}%`,
-                                top: `${area.y - area.height / 2}%`,
-                                width: `${area.width}%`,
-                                height: `${area.height}%`,
-                                border: "1px dashed rgba(255,255,255,0.3)",
-                                borderRadius: "4px",
-                              }}
-                            />
-                          ))}
-                        </div>
-                        <div
-                          className="absolute inset-0 flex items-center justify-center"
-                          style={{ padding: "15%" }}
-                        >
-                          {state.layers.map((layer, index) => {
-                            if (!layer.visible) return null;
-                            const style: CSSProperties = {
-                              left: `${layer.x}%`,
-                              top: `${layer.y}%`,
-                              transform: `translate(-50%, -50%) rotate(${layer.rotation}deg) scale(${layer.scale})`,
-                              zIndex: 10 + index,
-                            };
-                            const isActive = layer.id === state.activeLayerId;
-                            return (
+                    {has360Support ? (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <img
+                          src={getFrameUrl(currentProduct.frameBaseUrl, currentFrame, totalFrames)}
+                          alt={`Product view ${currentFrame}`}
+                          className="h-full w-full object-contain"
+                          draggable={false}
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="relative" style={{ width: '85%', height: '85%' }}>
+                            {currentProduct.printAreas.map((area, i) => (
                               <div
-                                key={layer.id}
-                                style={style}
-                                onPointerDown={(e) => handleLayerPointerDown(e, layer)}
-                                className={cn(
-                                  "absolute select-none rounded px-1 transition-all",
-                                  isActive ? "ring-2 ring-[#895af6]/50" : "",
-                                  isSaving || isExporting || isDeleting
-                                    ? "cursor-not-allowed"
-                                    : "cursor-grab active:cursor-grabbing"
-                                )}
+                                key={i}
+                                className="absolute pointer-events-none"
+                                style={{
+                                  left: `${area.x - area.width / 2}%`,
+                                  top: `${area.y - area.height / 2}%`,
+                                  width: `${area.width}%`,
+                                  height: `${area.height}%`,
+                                }}
                               >
-                                {layer.type === "design" ? (
-                                  <img
-                                    src={layer.imageUrl ?? designPreviewLayer?.imageUrl ?? mockup.previewUrl ?? ""}
-                                    alt="Design layer"
-                                    className="pointer-events-none max-w-32 rounded shadow-lg dark:brightness-90"
-                                  />
-                                ) : (
-                                  <span
-                                    className="pointer-events-none block whitespace-nowrap font-black uppercase tracking-[0.08em]"
-                                    style={{
-                                      color: layer.color ?? "#ffffff",
-                                      fontSize: `${layer.fontSize ?? 36}px`,
-                                      textShadow: "0 2px 8px rgba(0,0,0,0.45)",
-                                    }}
-                                  >
-                                    {layer.text}
-                                  </span>
-                                )}
+                                {state.layers.map((layer, index) => {
+                                  if (!layer.visible) return null;
+                                  const style: CSSProperties = {
+                                    left: `${layer.x}%`,
+                                    top: `${layer.y}%`,
+                                    transform: `translate(-50%, -50%) rotate(${layer.rotation}deg) scale(${layer.scale})`,
+                                    zIndex: 10 + index,
+                                  };
+                                  const isActive = layer.id === state.activeLayerId;
+                                  return (
+                                    <div
+                                      key={layer.id}
+                                      style={style}
+                                      onPointerDown={(e) => handleLayerPointerDown(e, layer)}
+                                      className={cn(
+                                        "absolute select-none rounded px-1 transition-all",
+                                        isActive ? "ring-2 ring-[#895af6]/50" : "",
+                                        isSaving || isExporting || isDeleting
+                                          ? "cursor-not-allowed"
+                                          : "cursor-grab active:cursor-grabbing"
+                                      )}
+                                    >
+                                      {layer.type === "design" ? (
+                                        <img
+                                          src={layer.imageUrl ?? designPreviewLayer?.imageUrl ?? mockup.previewUrl ?? ""}
+                                          alt="Design layer"
+                                          className="pointer-events-none max-w-32 rounded shadow-lg"
+                                          draggable={false}
+                                        />
+                                      ) : (
+                                        <span
+                                          className="pointer-events-none block whitespace-nowrap font-black uppercase tracking-[0.08em]"
+                                          style={{
+                                            color: layer.color ?? "#ffffff",
+                                            fontSize: `${layer.fontSize ?? 36}px`,
+                                            textShadow: "0 2px 8px rgba(0,0,0,0.45)",
+                                          }}
+                                        >
+                                          {layer.text}
+                                        </span>
+                                      )}
+                                    </div>
+                                  );
+                                })}
                               </div>
-                            );
-                          })}
+                            ))}
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div
+                          className="relative w-[85%] rounded-2xl shadow-2xl transition-colors"
+                          style={{ backgroundColor: state.garmentColor }}
+                        >
+                          <div className="absolute inset-0 rounded-2xl overflow-hidden">
+                            <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent pointer-events-none" />
+                            {currentProduct.printAreas.map((area, i) => (
+                              <div
+                                key={i}
+                                className="absolute pointer-events-none"
+                                style={{
+                                  left: `${area.x - area.width / 2}%`,
+                                  top: `${area.y - area.height / 2}%`,
+                                  width: `${area.width}%`,
+                                  height: `${area.height}%`,
+                                  border: "1px dashed rgba(255,255,255,0.3)",
+                                  borderRadius: "4px",
+                                }}
+                              />
+                            ))}
+                          </div>
+                          <div className="absolute inset-0 flex items-center justify-center" style={{ padding: "15%" }}>
+                            {state.layers.map((layer, index) => {
+                              if (!layer.visible) return null;
+                              const style: CSSProperties = {
+                                left: `${layer.x}%`,
+                                top: `${layer.y}%`,
+                                transform: `translate(-50%, -50%) rotate(${layer.rotation}deg) scale(${layer.scale})`,
+                                zIndex: 10 + index,
+                              };
+                              const isActive = layer.id === state.activeLayerId;
+                              return (
+                                <div
+                                  key={layer.id}
+                                  style={style}
+                                  onPointerDown={(e) => handleLayerPointerDown(e, layer)}
+                                  className={cn(
+                                    "absolute select-none rounded px-1 transition-all",
+                                    isActive ? "ring-2 ring-[#895af6]/50" : "",
+                                    isSaving || isExporting || isDeleting
+                                      ? "cursor-not-allowed"
+                                      : "cursor-grab active:cursor-grabbing"
+                                  )}
+                                >
+                                  {layer.type === "design" ? (
+                                    <img
+                                      src={layer.imageUrl ?? designPreviewLayer?.imageUrl ?? mockup.previewUrl ?? ""}
+                                      alt="Design layer"
+                                      className="pointer-events-none max-w-32 rounded shadow-lg"
+                                      draggable={false}
+                                    />
+                                  ) : (
+                                    <span
+                                      className="pointer-events-none block whitespace-nowrap font-black uppercase tracking-[0.08em]"
+                                      style={{
+                                        color: layer.color ?? "#ffffff",
+                                        fontSize: `${layer.fontSize ?? 36}px`,
+                                        textShadow: "0 2px 8px rgba(0,0,0,0.45)",
+                                      }}
+                                    >
+                                      {layer.text}
+                                    </span>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    )}
 
-                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2">
-                      <button
-                        onPointerDown={handleRotateStart}
-                        className="flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 text-[10px] font-medium text-white backdrop-blur-sm transition-transform hover:scale-105 active:scale-95"
-                      >
-                        <span className="material-symbols-outlined text-[14px]">360</span>
-                        Drag to rotate
-                      </button>
-                    </div>
+                    {has360Support && (
+                      <div className="absolute bottom-3 left-1/2 -translate-x-1/2">
+                        <button
+                          onPointerDown={handleRotateStart}
+                          disabled={isPreloading}
+                          className="flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 text-[10px] font-medium text-white backdrop-blur-sm transition-transform hover:scale-105 active:scale-95 disabled:opacity-50"
+                        >
+                          <span className="material-symbols-outlined text-[14px]">360</span>
+                          {isPreloading ? "Loading..." : "Drag to rotate"}
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

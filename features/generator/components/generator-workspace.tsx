@@ -496,7 +496,7 @@ export function GeneratorWorkspace({ overview }: { overview: GeneratorWorkspaceO
       </div>
 
       <div className="custom-scrollbar h-full overflow-y-auto p-4 md:p-8">
-        <div className="mx-auto w-full max-w-6xl space-y-8">
+        <div className="mx-auto w-full max-w-7xl space-y-8">
           <motion.section
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
